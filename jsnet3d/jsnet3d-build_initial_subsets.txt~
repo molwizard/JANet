@@ -1,0 +1,123 @@
+set windowCentered on;
+set fontscaling true;
+
+# #########################################################################################################################################################
+# ### Build subset 'full (all loaded network data' (needed for 'gene of interest' analysis overview) ###
+# #########################################################################################################################################################
+subsetFileNumber = 1;
+mmcifData = "";
+logMsg([level: "info", msg: "Processing full subset (all loaded network data)..."]);
+
+networkData..currentSubsetKey = "full";
+var subnetworkSize = networkData..subsets.[networkData..currentSubsetKey]..nodeInfo.size;
+
+var mmcifFile = "jsnet3d/janet-" + networkData..typesLoaded + "-" + networkData..currentSubsetKey + ".mmcif";
+
+if (subnetworkSize > 1) {
+  #networkData..exportSubset = networkData..currentSubsetKey;
+  #networkData..exportFilename = "biolayout/agefactdb-jsnet3d_full.txt";
+  #networkData..exportFormat = "pairTSV";
+  #exportSubset(networkData);
+
+  networkData..importFormat = "biolayout3d";
+  networkData..importFilename = "jsnet3d/janet-" + networkData..typesLoaded+ "-" + networkData..currentSubsetKey + ".layout";
+  networkData..importSubsetKey = networkData..currentSubsetKey;
+  networkData..importCoordinateScalingFactor = 0.2;
+  importSubsetCoordinates(networkData);
+
+#  buildMmcifData(networkData);
+#  mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;
+  zap @{networkData..currentSubsetKey};
+  load APPEND @mmcifFile FILTER "addBonds";
+#  load APPEND "@mmcifData" FILTER "addBonds";
+  initDisplay(layoutOptions);
+  frame ID @{networkData..currentSubsetKey};
+  setScale({"node": 2.5, "edge": 0.04, "frameSize": 50});
+  initHover;
+
+  select all; color bonds opaque;
+  moveto /* time, axisAngle */ 0.2 { -261 -832 490 159.71} /* zoom, translation */  200 -12.0 -12.0  /* center, rotationRadius */ {120.54255 90.74259 89.76001} 176.9747 /* navigation center, translation, depth */ {0 0 0} 0 0 0 /* cameraDepth, cameraX, cameraY */  3.0 0.0 0.0;
+
+  if (networkData..subsets.[networkData..currentSubsetKey].type == "hash") {
+    networkData..subsets.[networkData..currentSubsetKey]..storedOrientation = script("show orientation").split("#").[1];    
+    networkData..subsets.[networkData..currentSubsetKey]..storedSelection = {all};    
+  }
+  var subsetName = "Full";
+  networkData..subsets.[networkData..currentSubsetKey]..subsetName = subsetName;
+  networkData..subsets.[networkData..currentSubsetKey]..subsetType = "full";
+
+  javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
+  javascript @javascriptCommand;
+} else {
+  logMsg([level: "info", msg: "   no network data found for full subset - SKIPPED SUBSET GENERATION"]);
+}
+
+# #########################################################################################################################################################
+# ### Build subset 'All lifespan/ageing factor without homologs (putative ageing factors), no allele types and citations, no observation-species edges' ###
+# #########################################################################################################################################################
+subsetFileNumber = 2;
+mmcifData = "";
+logMsg([level: "info", msg: "Processing default subset (ageing factor/lifespan observation, no putative ageing factors, no allele types, nocitations)..."]);
+
+# Filter network data ()
+var startTime = now();
+networkData..baseSubsetKey = "full";
+networkData..currentSubsetKey = "default";
+networkData..nodeFilter = [filterExpression: "nodeType='ageingFactor' and lifespanDataAvailable='true'"
+                          ];
+networkData..edgeFilter = [maxPathLength: 2,
+                           filterExpression: "(nodeType='observation' AND (nodeSubType='increased' OR nodeSubType='decreased' OR nodeSubType='none')) OR nodeType='species'",
+                           stopConditions: [{"infoKey": "nodeType", "value": "species"}, {"infoKey": "nodeType", "value": "observation"}]];
+buildSubset(networkData);
+
+subnetworkSize = networkData..subsets.[networkData..currentSubsetKey]..nodeInfo.size;
+
+mmcifFile = "jsnet3d/janet-" + networkData..typesLoaded + "-" + networkData..currentSubsetKey + ".mmcif";
+
+if (subnetworkSize > 1) {
+
+  #networkData..exportSubset = networkData..currentSubsetKey;
+  #networkData..exportFilename = "biolayout/agefactdb-jsnet3d_default.txt";
+  #networkData..exportFormat = "pairTSV";
+  #exportSubset(networkData);
+
+  networkData..importFormat = "biolayout3d";
+  networkData..importFilename = "jsnet3d/janet-" + networkData..typesLoaded + "-" + networkData..currentSubsetKey + ".layout";
+  networkData..importSubsetKey = networkData..currentSubsetKey;
+  networkData..importCoordinateScalingFactor = 0.2;
+  importSubsetCoordinates(networkData);
+
+#  buildMmcifData(networkData);
+#  mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;
+  zap @{networkData..currentSubsetKey};
+#  load APPEND "@mmcifdata" FILTER "addBonds";
+  load APPEND @mmcifFile FILTER "addBonds";
+  initDisplay(layoutOptions);
+  frame ID @{networkData..currentSubsetKey};
+  setScale({"node": 2.6, "edge": 0.04, "frameSize": 50});
+  initHover;
+  setSizeByChange("node", 0.05, {[OB_INC] OR [OB_DEC] OR [OB_NON]});
+
+  #set fontscaling true;
+
+  #moveto /* time, axisAngle */ 1.0 { -895 431 -115 142.26} /* zoom, translation */  143.07 4.0 -11.0  /* center, rotationRadius */ {79.44696 71.509254 87.90653} 138.64299 /* navigation center, translation, depth */ {0 0 0} 0 0 0 /* cameraDepth, cameraX, cameraY */  3.0 0.0 0.0;
+  moveto /* time, axisAngle */ 0.2 { 572 -464 -676 147.45} /* zoom, translation */  143.07 10.0 -13.0  /* center, rotationRadius */ {79.44696 71.509254 87.90653} 138.64299 /* navigation center, translation, depth */ {0 0 0} 0 0 0 /* cameraDepth, cameraX, cameraY */  3.0 0.0 0.0;
+
+  initHover;
+  if (networkData..subsets.[networkData..currentSubsetKey].type == "hash") {
+    networkData..subsets.[networkData..currentSubsetKey]..storedOrientation = script("show orientation").split("#").[1];    
+    networkData..subsets.[networkData..currentSubsetKey]..storedSelection = {all};    
+  }
+  var subsetName = "Default";
+  networkData..subsets.[networkData..currentSubsetKey]..subsetName = subsetName;
+  networkData..subsets.[networkData..currentSubsetKey]..subsetType = "default";
+
+  javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
+  javascript @javascriptCommand;
+
+} else {
+  logMsg([level: "info", msg: "   no network data found for default subset - SKIPPED SUBSET GENERATION"]);
+}
+
+var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)";
+logMsg([level: "info", msg: "  finished processing default subset" + timeMessage]);

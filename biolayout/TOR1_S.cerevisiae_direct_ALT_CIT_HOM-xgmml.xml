@@ -1,0 +1,2863 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<graph label="TOR1_S.cerevisiae_direct_ALT_CIT_HOM"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:cy="http://www.cytoscape.org"
+  xmlns="http://www.cs.rpi.edu/XGMML"
+  directed="0">
+  <node label="AF_000303" id="1">
+    <att name="ageingFactorId" type="string" value="AF_000303"/>
+    <att name="ageingFactorName" type="string" value="FOB1"/>
+    <att name="ageingFactorType" type="string" value="gene"/>
+    <att name="baseEntryStableIds" type="string" value="AF_000303"/>
+    <att name="homologyAnalysisStatus" type="string" value="not added"/>
+    <att name="infoKey" type="string" value="ageingFactorId"/>
+    <att name="labelCustom" type="string" value="Gene: FOB1, Saccharomyces cerevisiae|(AF_000303)"/>
+    <att name="labelLong" type="string" value="Gene: FOB1, S. cerevisiae|(AF_000303, #1)"/>
+    <att name="labelShort" type="string" value="FOB1"/>
+    <att name="lifespanDataAvailable" type="string" value="true"/>
+    <att name="ncbiGeneId" type="string" value="851688"/>
+    <att name="nodeId" type="string" value="AF_000303"/>
+    <att name="nodeKey" type="string" value="ageingFactorId||AF_000303"/>
+    <att name="nodeNumber" type="string" value="1"/>
+    <att name="nodeSubType" type="string" value="gene"/>
+    <att name="nodeSubTypeId" type="string" value="AF_GEN"/>
+    <att name="nodeType" type="string" value="ageingFactor"/>
+    <att name="nodeTypeId" type="string" value="F"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="ageingFactorType"/>
+    <att name="subTypeInfoKeys" type="string" value="ageingFactorType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="9.753792"/>
+    <att name="y" type="string" value="3.0345416"/>
+    <att name="z" type="string" value="6.008068"/>
+  </node>'
+  <node label="AF_002185" id="38">
+    <att name="ageingFactorId" type="string" value="AF_002185"/>
+    <att name="ageingFactorName" type="string" value="tor2"/>
+    <att name="ageingFactorType" type="string" value="gene"/>
+    <att name="baseEntryStableIds" type="string" value="AF_008594"/>
+    <att name="homologyAnalysisStatus" type="string" value="added"/>
+    <att name="infoKey" type="string" value="ageingFactorId"/>
+    <att name="labelCustom" type="string" value="Gene: tor2, Schizosaccharomyces pombe|(AF_002185)"/>
+    <att name="labelLong" type="string" value="Gene: tor2, S. pombe|(AF_002185, #38)"/>
+    <att name="labelShort" type="string" value="tor2"/>
+    <att name="lifespanDataAvailable" type="string" value="false"/>
+    <att name="ncbiGeneId" type="string" value="2540720"/>
+    <att name="nodeId" type="string" value="AF_002185"/>
+    <att name="nodeKey" type="string" value="ageingFactorId||AF_002185"/>
+    <att name="nodeNumber" type="string" value="38"/>
+    <att name="nodeSubType" type="string" value="gene"/>
+    <att name="nodeSubTypeId" type="string" value="AF_GEN"/>
+    <att name="nodeType" type="string" value="ageingFactor"/>
+    <att name="nodeTypeId" type="string" value="F"/>
+    <att name="species" type="string" value="{
+  'Schizosaccharomyces pombe'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. pombe"/>
+    <att name="subTypeInfoKey" type="string" value="ageingFactorType"/>
+    <att name="subTypeInfoKeys" type="string" value="ageingFactorType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="3.1935124"/>
+    <att name="y" type="string" value="4.70185"/>
+    <att name="z" type="string" value="4.3084373"/>
+  </node>'
+  <node label="AF_008310" id="4">
+    <att name="ageingFactorId" type="string" value="AF_008310"/>
+    <att name="ageingFactorName" type="string" value="SIR2"/>
+    <att name="ageingFactorType" type="string" value="gene"/>
+    <att name="baseEntryStableIds" type="string" value="AF_000669||AF_008310"/>
+    <att name="homologyAnalysisStatus" type="string" value="not added"/>
+    <att name="infoKey" type="string" value="ageingFactorId"/>
+    <att name="labelCustom" type="string" value="Gene: SIR2, Saccharomyces cerevisiae|(AF_008310)"/>
+    <att name="labelLong" type="string" value="Gene: SIR2, S. cerevisiae|(AF_008310, #4)"/>
+    <att name="labelShort" type="string" value="SIR2"/>
+    <att name="lifespanDataAvailable" type="string" value="true"/>
+    <att name="ncbiGeneId" type="string" value="851520"/>
+    <att name="nodeId" type="string" value="AF_008310"/>
+    <att name="nodeKey" type="string" value="ageingFactorId||AF_008310"/>
+    <att name="nodeNumber" type="string" value="4"/>
+    <att name="nodeSubType" type="string" value="gene"/>
+    <att name="nodeSubTypeId" type="string" value="AF_GEN"/>
+    <att name="nodeType" type="string" value="ageingFactor"/>
+    <att name="nodeTypeId" type="string" value="F"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="ageingFactorType"/>
+    <att name="subTypeInfoKeys" type="string" value="ageingFactorType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="7.565668"/>
+    <att name="y" type="string" value="8.084023"/>
+    <att name="z" type="string" value="8.594282"/>
+  </node>'
+  <node label="AF_008594" id="6">
+    <att name="ageingFactorId" type="string" value="AF_008594"/>
+    <att name="ageingFactorName" type="string" value="TOR1"/>
+    <att name="ageingFactorType" type="string" value="gene"/>
+    <att name="baseEntryStableIds" type="string" value="AF_008594"/>
+    <att name="homologyAnalysisStatus" type="string" value="not added"/>
+    <att name="infoKey" type="string" value="ageingFactorId"/>
+    <att name="labelCustom" type="string" value="Gene: TOR1, Saccharomyces cerevisiae|(AF_008594)"/>
+    <att name="labelLong" type="string" value="Gene: TOR1, S. cerevisiae|(AF_008594, #6)"/>
+    <att name="labelShort" type="string" value="TOR1"/>
+    <att name="lifespanDataAvailable" type="string" value="true"/>
+    <att name="ncbiGeneId" type="string" value="853529"/>
+    <att name="nodeId" type="string" value="AF_008594"/>
+    <att name="nodeKey" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeNumber" type="string" value="6"/>
+    <att name="nodeSubType" type="string" value="gene"/>
+    <att name="nodeSubTypeId" type="string" value="AF_GEN"/>
+    <att name="nodeType" type="string" value="ageingFactor"/>
+    <att name="nodeTypeId" type="string" value="F"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="ageingFactorType"/>
+    <att name="subTypeInfoKeys" type="string" value="ageingFactorType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="9.407352"/>
+    <att name="y" type="string" value="8.778211"/>
+    <att name="z" type="string" value="8.776003"/>
+  </node>'
+  <node label="AF_008684" id="28">
+    <att name="ageingFactorId" type="string" value="AF_008684"/>
+    <att name="ageingFactorName" type="string" value="GCN4"/>
+    <att name="ageingFactorType" type="string" value="gene"/>
+    <att name="baseEntryStableIds" type="string" value="AF_008684"/>
+    <att name="homologyAnalysisStatus" type="string" value="not added"/>
+    <att name="infoKey" type="string" value="ageingFactorId"/>
+    <att name="labelCustom" type="string" value="Gene: GCN4, Saccharomyces cerevisiae|(AF_008684)"/>
+    <att name="labelLong" type="string" value="Gene: GCN4, S. cerevisiae|(AF_008684, #28)"/>
+    <att name="labelShort" type="string" value="GCN4"/>
+    <att name="lifespanDataAvailable" type="string" value="true"/>
+    <att name="ncbiGeneId" type="string" value="856709"/>
+    <att name="nodeId" type="string" value="AF_008684"/>
+    <att name="nodeKey" type="string" value="ageingFactorId||AF_008684"/>
+    <att name="nodeNumber" type="string" value="28"/>
+    <att name="nodeSubType" type="string" value="gene"/>
+    <att name="nodeSubTypeId" type="string" value="AF_GEN"/>
+    <att name="nodeType" type="string" value="ageingFactor"/>
+    <att name="nodeTypeId" type="string" value="F"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="ageingFactorType"/>
+    <att name="subTypeInfoKeys" type="string" value="ageingFactorType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="5.761535"/>
+    <att name="y" type="string" value="3.4917903"/>
+    <att name="z" type="string" value="8.113199"/>
+  </node>'
+  <node label="AF_008998" id="29">
+    <att name="ageingFactorId" type="string" value="AF_008998"/>
+    <att name="ageingFactorName" type="string" value="RPN4"/>
+    <att name="ageingFactorType" type="string" value="gene"/>
+    <att name="baseEntryStableIds" type="string" value="AF_008998"/>
+    <att name="homologyAnalysisStatus" type="string" value="not added"/>
+    <att name="infoKey" type="string" value="ageingFactorId"/>
+    <att name="labelCustom" type="string" value="Gene: RPN4, Saccharomyces cerevisiae|(AF_008998)"/>
+    <att name="labelLong" type="string" value="Gene: RPN4, S. cerevisiae|(AF_008998, #29)"/>
+    <att name="labelShort" type="string" value="RPN4"/>
+    <att name="lifespanDataAvailable" type="string" value="true"/>
+    <att name="ncbiGeneId" type="string" value="851542"/>
+    <att name="nodeId" type="string" value="AF_008998"/>
+    <att name="nodeKey" type="string" value="ageingFactorId||AF_008998"/>
+    <att name="nodeNumber" type="string" value="29"/>
+    <att name="nodeSubType" type="string" value="gene"/>
+    <att name="nodeSubTypeId" type="string" value="AF_GEN"/>
+    <att name="nodeType" type="string" value="ageingFactor"/>
+    <att name="nodeTypeId" type="string" value="F"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="ageingFactorType"/>
+    <att name="subTypeInfoKeys" type="string" value="ageingFactorType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="0.22355258"/>
+    <att name="y" type="string" value="9.907129"/>
+    <att name="z" type="string" value="9.589085"/>
+  </node>'
+  <node label="AF_009150" id="31">
+    <att name="ageingFactorId" type="string" value="AF_009150"/>
+    <att name="ageingFactorName" type="string" value="Dietary restriction"/>
+    <att name="ageingFactorType" type="string" value="other_factor"/>
+    <att name="infoKey" type="string" value="ageingFactorId"/>
+    <att name="labelCustom" type="string" value="Other_factor: Dietary restriction, Caenorhabditis elegans || Caenorhabditis remanei || Ceratitis capitata || Drosophila melanogaster || Mus musculus || Nothobranchius furzeri || Podospora anserina || Rattus norvegicus || Saccharomyces cerevisiae || Schizosaccharomyces pombe|(AF_009150)"/>
+    <att name="labelLong" type="string" value="Other_factor: Dietary restriction|(AF_009150, #31)"/>
+    <att name="labelShort" type="string" value="Dietary restriction"/>
+    <att name="lifespanDataAvailable" type="string" value="true"/>
+    <att name="ncbiGeneId" type="string" value=""/>
+    <att name="nodeId" type="string" value="AF_009150"/>
+    <att name="nodeKey" type="string" value="ageingFactorId||AF_009150"/>
+    <att name="nodeNumber" type="string" value="31"/>
+    <att name="nodeSubType" type="string" value="other_factor"/>
+    <att name="nodeSubTypeId" type="string" value="AF_OTF"/>
+    <att name="nodeType" type="string" value="ageingFactor"/>
+    <att name="nodeTypeId" type="string" value="F"/>
+    <att name="species" type="string" value="{
+  'Caenorhabditis elegans'  :  true
+  'Caenorhabditis remanei'  :  true
+  'Ceratitis capitata'  :  true
+  'Drosophila melanogaster'  :  true
+  'Mus musculus'  :  true
+  'Nothobranchius furzeri'  :  true
+  'Podospora anserina'  :  true
+  'Rattus norvegicus'  :  true
+  'Saccharomyces cerevisiae'  :  true
+  'Schizosaccharomyces pombe'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="{
+  'Caenorhabditis elegans'  :  true
+  'Caenorhabditis remanei'  :  true
+  'Ceratitis capitata'  :  true
+  'Drosophila melanogaster'  :  true
+  'Mus musculus'  :  true
+  'Nothobranchius furzeri'  :  true
+  'Podospora anserina'  :  true
+  'Rattus norvegicus'  :  true
+  'Saccharomyces cerevisiae'  :  true
+  'Schizosaccharomyces pombe'  :  true
+ }"/>
+    <att name="subTypeInfoKey" type="string" value="ageingFactorType"/>
+    <att name="subTypeInfoKeys" type="string" value="ageingFactorType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="0.14160752"/>
+    <att name="y" type="string" value="0.5761522"/>
+    <att name="z" type="string" value="7.416192"/>
+  </node>'
+  <node label="AF_016972" id="39">
+    <att name="ageingFactorId" type="string" value="AF_016972"/>
+    <att name="ageingFactorName" type="string" value="MGG_13130"/>
+    <att name="ageingFactorType" type="string" value="gene"/>
+    <att name="baseEntryStableIds" type="string" value="AF_008594"/>
+    <att name="homologyAnalysisStatus" type="string" value="added"/>
+    <att name="infoKey" type="string" value="ageingFactorId"/>
+    <att name="labelCustom" type="string" value="Gene: MGG_13130, Magnaporthe oryzae|(AF_016972)"/>
+    <att name="labelLong" type="string" value="Gene: MGG_13130, M. oryzae|(AF_016972, #39)"/>
+    <att name="labelShort" type="string" value="MGG_13130"/>
+    <att name="lifespanDataAvailable" type="string" value="false"/>
+    <att name="ncbiGeneId" type="string" value="5051531"/>
+    <att name="nodeId" type="string" value="AF_016972"/>
+    <att name="nodeKey" type="string" value="ageingFactorId||AF_016972"/>
+    <att name="nodeNumber" type="string" value="39"/>
+    <att name="nodeSubType" type="string" value="gene"/>
+    <att name="nodeSubTypeId" type="string" value="AF_GEN"/>
+    <att name="nodeType" type="string" value="ageingFactor"/>
+    <att name="nodeTypeId" type="string" value="F"/>
+    <att name="species" type="string" value="{
+  'Magnaporthe oryzae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="M. oryzae"/>
+    <att name="subTypeInfoKey" type="string" value="ageingFactorType"/>
+    <att name="subTypeInfoKeys" type="string" value="ageingFactorType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="0.7046139"/>
+    <att name="y" type="string" value="7.522531"/>
+    <att name="z" type="string" value="0.93194187"/>
+  </node>'
+  <node label="AF_016973" id="40">
+    <att name="ageingFactorId" type="string" value="AF_016973"/>
+    <att name="ageingFactorName" type="string" value="NCU05608"/>
+    <att name="ageingFactorType" type="string" value="gene"/>
+    <att name="baseEntryStableIds" type="string" value="AF_008594"/>
+    <att name="homologyAnalysisStatus" type="string" value="added"/>
+    <att name="infoKey" type="string" value="ageingFactorId"/>
+    <att name="labelCustom" type="string" value="Gene: NCU05608, Neurospora crassa|(AF_016973)"/>
+    <att name="labelLong" type="string" value="Gene: NCU05608, N. crassa|(AF_016973, #40)"/>
+    <att name="labelShort" type="string" value="NCU05608"/>
+    <att name="lifespanDataAvailable" type="string" value="false"/>
+    <att name="ncbiGeneId" type="string" value="3876685"/>
+    <att name="nodeId" type="string" value="AF_016973"/>
+    <att name="nodeKey" type="string" value="ageingFactorId||AF_016973"/>
+    <att name="nodeNumber" type="string" value="40"/>
+    <att name="nodeSubType" type="string" value="gene"/>
+    <att name="nodeSubTypeId" type="string" value="AF_GEN"/>
+    <att name="nodeType" type="string" value="ageingFactor"/>
+    <att name="nodeTypeId" type="string" value="F"/>
+    <att name="species" type="string" value="{
+  'Neurospora crassa'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="N. crassa"/>
+    <att name="subTypeInfoKey" type="string" value="ageingFactorType"/>
+    <att name="subTypeInfoKeys" type="string" value="ageingFactorType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="0.1429969"/>
+    <att name="y" type="string" value="9.3741"/>
+    <att name="z" type="string" value="5.511107"/>
+  </node>'
+  <node label="loss of function" id="2">
+    <att name="alleleType" type="string" value="loss of function"/>
+    <att name="infoKey" type="string" value="alleleType"/>
+    <att name="labelLong" type="string" value="Allele type:|loss of function|(#2)"/>
+    <att name="labelShort" type="string" value="loss of function"/>
+    <att name="nodeId" type="string" value="loss of function"/>
+    <att name="nodeKey" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber" type="string" value="2"/>
+    <att name="nodeSubType" type="string" value="alleleType"/>
+    <att name="nodeSubTypeId" type="string" value="ALT_ALT"/>
+    <att name="nodeType" type="string" value="alleleType"/>
+    <att name="nodeTypeId" type="string" value="Al"/>
+    <att name="speciesShortcut" type="string" value=""/>
+    <att name="subTypeInfoKey" type="string" value="nodeType"/>
+    <att name="subTypeInfoKeys" type="string" value="nodeType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="7.319761"/>
+    <att name="y" type="string" value="6.355254"/>
+    <att name="z" type="string" value="2.2726977"/>
+  </node>'
+  <node label="normal" id="3">
+    <att name="alleleType" type="string" value="normal"/>
+    <att name="infoKey" type="string" value="alleleType"/>
+    <att name="labelLong" type="string" value="Allele type:|normal|(#3)"/>
+    <att name="labelShort" type="string" value="normal"/>
+    <att name="nodeId" type="string" value="normal"/>
+    <att name="nodeKey" type="string" value="alleleType||normal"/>
+    <att name="nodeNumber" type="string" value="3"/>
+    <att name="nodeSubType" type="string" value="alleleType"/>
+    <att name="nodeSubTypeId" type="string" value="ALT_ALT"/>
+    <att name="nodeType" type="string" value="alleleType"/>
+    <att name="nodeTypeId" type="string" value="Al"/>
+    <att name="speciesShortcut" type="string" value=""/>
+    <att name="subTypeInfoKey" type="string" value="nodeType"/>
+    <att name="subTypeInfoKeys" type="string" value="nodeType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="2.3797262"/>
+    <att name="y" type="string" value="8.206434"/>
+    <att name="z" type="string" value="8.161356"/>
+  </node>'
+  <node label="overexpression" id="5">
+    <att name="alleleType" type="string" value="overexpression"/>
+    <att name="infoKey" type="string" value="alleleType"/>
+    <att name="labelLong" type="string" value="Allele type:|overexpression|(#5)"/>
+    <att name="labelShort" type="string" value="overexpression"/>
+    <att name="nodeId" type="string" value="overexpression"/>
+    <att name="nodeKey" type="string" value="alleleType||overexpression"/>
+    <att name="nodeNumber" type="string" value="5"/>
+    <att name="nodeSubType" type="string" value="alleleType"/>
+    <att name="nodeSubTypeId" type="string" value="ALT_ALT"/>
+    <att name="nodeType" type="string" value="alleleType"/>
+    <att name="nodeTypeId" type="string" value="Al"/>
+    <att name="speciesShortcut" type="string" value=""/>
+    <att name="subTypeInfoKey" type="string" value="nodeType"/>
+    <att name="subTypeInfoKeys" type="string" value="nodeType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="2.1909273"/>
+    <att name="y" type="string" value="0.5327147"/>
+    <att name="z" type="string" value="1.5458077"/>
+  </node>'
+  <node label="16293764" id="30">
+    <att name="citationId" type="string" value="16293764"/>
+    <att name="infoKey" type="string" value="citationId"/>
+    <att name="labelLong" type="string" value="Citation: PubMed ID 16293764|(#30)"/>
+    <att name="labelShort" type="string" value="PMID 16293764"/>
+    <att name="nodeId" type="string" value="16293764"/>
+    <att name="nodeKey" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber" type="string" value="30"/>
+    <att name="nodeSubType" type="string" value="citation"/>
+    <att name="nodeSubTypeId" type="string" value="CIT_CIT"/>
+    <att name="nodeType" type="string" value="citation"/>
+    <att name="nodeTypeId" type="string" value="C"/>
+    <att name="speciesShortcut" type="string" value=""/>
+    <att name="subTypeInfoKey" type="string" value="nodeType"/>
+    <att name="subTypeInfoKeys" type="string" value="nodeType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="2.8465986"/>
+    <att name="y" type="string" value="4.7873015"/>
+    <att name="z" type="string" value="5.976342"/>
+  </node>'
+  <node label="17403371" id="35">
+    <att name="citationId" type="string" value="17403371"/>
+    <att name="infoKey" type="string" value="citationId"/>
+    <att name="labelLong" type="string" value="Citation: PubMed ID 17403371|(#35)"/>
+    <att name="labelShort" type="string" value="PMID 17403371"/>
+    <att name="nodeId" type="string" value="17403371"/>
+    <att name="nodeKey" type="string" value="citationId||17403371"/>
+    <att name="nodeNumber" type="string" value="35"/>
+    <att name="nodeSubType" type="string" value="citation"/>
+    <att name="nodeSubTypeId" type="string" value="CIT_CIT"/>
+    <att name="nodeType" type="string" value="citation"/>
+    <att name="nodeTypeId" type="string" value="C"/>
+    <att name="speciesShortcut" type="string" value=""/>
+    <att name="subTypeInfoKey" type="string" value="nodeType"/>
+    <att name="subTypeInfoKeys" type="string" value="nodeType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="7.046912"/>
+    <att name="y" type="string" value="3.4753127"/>
+    <att name="z" type="string" value="8.43114"/>
+  </node>'
+  <node label="18340043" id="32">
+    <att name="citationId" type="string" value="18340043"/>
+    <att name="infoKey" type="string" value="citationId"/>
+    <att name="labelLong" type="string" value="Citation: PubMed ID 18340043|(#32)"/>
+    <att name="labelShort" type="string" value="PMID 18340043"/>
+    <att name="nodeId" type="string" value="18340043"/>
+    <att name="nodeKey" type="string" value="citationId||18340043"/>
+    <att name="nodeNumber" type="string" value="32"/>
+    <att name="nodeSubType" type="string" value="citation"/>
+    <att name="nodeSubTypeId" type="string" value="CIT_CIT"/>
+    <att name="nodeType" type="string" value="citation"/>
+    <att name="nodeTypeId" type="string" value="C"/>
+    <att name="speciesShortcut" type="string" value=""/>
+    <att name="subTypeInfoKey" type="string" value="nodeType"/>
+    <att name="subTypeInfoKeys" type="string" value="nodeType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="5.7987022"/>
+    <att name="y" type="string" value="7.667967"/>
+    <att name="z" type="string" value="3.2719696"/>
+  </node>'
+  <node label="18423200" id="33">
+    <att name="citationId" type="string" value="18423200"/>
+    <att name="infoKey" type="string" value="citationId"/>
+    <att name="labelLong" type="string" value="Citation: PubMed ID 18423200|(#33)"/>
+    <att name="labelShort" type="string" value="PMID 18423200"/>
+    <att name="nodeId" type="string" value="18423200"/>
+    <att name="nodeKey" type="string" value="citationId||18423200"/>
+    <att name="nodeNumber" type="string" value="33"/>
+    <att name="nodeSubType" type="string" value="citation"/>
+    <att name="nodeSubTypeId" type="string" value="CIT_CIT"/>
+    <att name="nodeType" type="string" value="citation"/>
+    <att name="nodeTypeId" type="string" value="C"/>
+    <att name="speciesShortcut" type="string" value=""/>
+    <att name="subTypeInfoKey" type="string" value="nodeType"/>
+    <att name="subTypeInfoKeys" type="string" value="nodeType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="6.1318836"/>
+    <att name="y" type="string" value="1.2609988"/>
+    <att name="z" type="string" value="4.375481"/>
+  </node>'
+  <node label="19030232" id="36">
+    <att name="citationId" type="string" value="19030232"/>
+    <att name="infoKey" type="string" value="citationId"/>
+    <att name="labelLong" type="string" value="Citation: PubMed ID 19030232|(#36)"/>
+    <att name="labelShort" type="string" value="PMID 19030232"/>
+    <att name="nodeId" type="string" value="19030232"/>
+    <att name="nodeKey" type="string" value="citationId||19030232"/>
+    <att name="nodeNumber" type="string" value="36"/>
+    <att name="nodeSubType" type="string" value="citation"/>
+    <att name="nodeSubTypeId" type="string" value="CIT_CIT"/>
+    <att name="nodeType" type="string" value="citation"/>
+    <att name="nodeTypeId" type="string" value="C"/>
+    <att name="speciesShortcut" type="string" value=""/>
+    <att name="subTypeInfoKey" type="string" value="nodeType"/>
+    <att name="subTypeInfoKeys" type="string" value="nodeType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="2.619803"/>
+    <att name="y" type="string" value="8.5223"/>
+    <att name="z" type="string" value="8.081796"/>
+  </node>'
+  <node label="20421943" id="37">
+    <att name="citationId" type="string" value="20421943"/>
+    <att name="infoKey" type="string" value="citationId"/>
+    <att name="labelLong" type="string" value="Citation: PubMed ID 20421943|(#37)"/>
+    <att name="labelShort" type="string" value="PMID 20421943"/>
+    <att name="nodeId" type="string" value="20421943"/>
+    <att name="nodeKey" type="string" value="citationId||20421943"/>
+    <att name="nodeNumber" type="string" value="37"/>
+    <att name="nodeSubType" type="string" value="citation"/>
+    <att name="nodeSubTypeId" type="string" value="CIT_CIT"/>
+    <att name="nodeType" type="string" value="citation"/>
+    <att name="nodeTypeId" type="string" value="C"/>
+    <att name="speciesShortcut" type="string" value=""/>
+    <att name="subTypeInfoKey" type="string" value="nodeType"/>
+    <att name="subTypeInfoKeys" type="string" value="nodeType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="8.992967"/>
+    <att name="y" type="string" value="1.7089295"/>
+    <att name="z" type="string" value="4.128433"/>
+  </node>'
+  <node label="21931558" id="34">
+    <att name="citationId" type="string" value="21931558"/>
+    <att name="infoKey" type="string" value="citationId"/>
+    <att name="labelLong" type="string" value="Citation: PubMed ID 21931558|(#34)"/>
+    <att name="labelShort" type="string" value="PMID 21931558"/>
+    <att name="nodeId" type="string" value="21931558"/>
+    <att name="nodeKey" type="string" value="citationId||21931558"/>
+    <att name="nodeNumber" type="string" value="34"/>
+    <att name="nodeSubType" type="string" value="citation"/>
+    <att name="nodeSubTypeId" type="string" value="CIT_CIT"/>
+    <att name="nodeType" type="string" value="citation"/>
+    <att name="nodeTypeId" type="string" value="C"/>
+    <att name="speciesShortcut" type="string" value=""/>
+    <att name="subTypeInfoKey" type="string" value="nodeType"/>
+    <att name="subTypeInfoKeys" type="string" value="nodeType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="x" type="string" value="8.109461"/>
+    <att name="y" type="string" value="3.8459706"/>
+    <att name="z" type="string" value="2.299457"/>
+  </node>'
+  <node label="OB_000064" id="7">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +23.0%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000064, #7)|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+23.0%"/>
+    <att name="lifespanChange" type="string" value="23"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000064"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000064"/>
+    <att name="nodeNumber" type="string" value="7"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000064"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="23"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="2.6929557"/>
+    <att name="y" type="string" value="6.604863"/>
+    <att name="z" type="string" value="6.1820793"/>
+  </node>'
+  <node label="OB_000065" id="8">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +21.0%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000065, #8)|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+21.0%"/>
+    <att name="lifespanChange" type="string" value="21"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000065"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000065"/>
+    <att name="nodeNumber" type="string" value="8"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000065"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="21"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="4.1868544"/>
+    <att name="y" type="string" value="1.218679"/>
+    <att name="z" type="string" value="0.38610637"/>
+  </node>'
+  <node label="OB_000066" id="9">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +22.0%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000066, #9)|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+22.0%"/>
+    <att name="lifespanChange" type="string" value="22"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000066"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000066"/>
+    <att name="nodeNumber" type="string" value="9"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000066"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="22"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="9.033103"/>
+    <att name="y" type="string" value="6.615651"/>
+    <att name="z" type="string" value="6.3491755"/>
+  </node>'
+  <node label="OB_000080" id="10">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +25.3%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000080, #10)|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+25.3%"/>
+    <att name="lifespanChange" type="string" value="25.2964"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000080"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000080"/>
+    <att name="nodeNumber" type="string" value="10"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000080"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="25.2964"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="7.257964"/>
+    <att name="y" type="string" value="0.61094284"/>
+    <att name="z" type="string" value="6.6863117"/>
+  </node>'
+  <node label="OB_000084" id="11">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +21.3%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000084, #11)|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+21.3%"/>
+    <att name="lifespanChange" type="string" value="21.2766"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000084"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000084"/>
+    <att name="nodeNumber" type="string" value="11"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000084"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="21.2766"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="5.621291"/>
+    <att name="y" type="string" value="7.471855"/>
+    <att name="z" type="string" value="6.564764"/>
+  </node>'
+  <node label="OB_000085" id="12">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_009150'  :
+  {
+    'ageingFactorId'  :  'AF_009150'
+    'ageingFactorName'  :  'Dietary restriction'
+    'ageingFactorType'  :  'other_factor'
+    'alleleTypes'  :  'NULL'
+    'species'  :
+    {
+      'Caenorhabditis elegans'  :  true
+      'Caenorhabditis remanei'  :  true
+      'Ceratitis capitata'  :  true
+      'Drosophila melanogaster'  :  true
+      'Mus musculus'  :  true
+      'Nothobranchius furzeri'  :  true
+      'Podospora anserina'  :  true
+      'Rattus norvegicus'  :  true
+      'Saccharomyces cerevisiae'  :  true
+      'Schizosaccharomyces pombe'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_009150'  :
+  {
+    'ageingFactorId'  :  'AF_009150'
+    'ageingFactorName'  :  'Dietary restriction'
+    'ageingFactorType'  :  'other_factor'
+    'alleleTypesBase'  :  'NULL'
+    'species'  :
+    {
+      'Caenorhabditis elegans'  :  true
+      'Caenorhabditis remanei'  :  true
+      'Ceratitis capitata'  :  true
+      'Drosophila melanogaster'  :  true
+      'Mus musculus'  :  true
+      'Nothobranchius furzeri'  :  true
+      'Podospora anserina'  :  true
+      'Rattus norvegicus'  :  true
+      'Saccharomyces cerevisiae'  :  true
+      'Schizosaccharomyces pombe'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +20.4%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000085, #12)|gene: TOR1 (AF_008594), Allele type: deletion / null;|other_factor: Dietary restriction (AF_009150), Allele type: NULL;"/>
+    <att name="labelShort" type="string" value="+20.4%"/>
+    <att name="lifespanChange" type="string" value="20.4255"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000085"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000085"/>
+    <att name="nodeNumber" type="string" value="12"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000085"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="20.4255"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="6.3903227"/>
+    <att name="y" type="string" value="8.134911"/>
+    <att name="z" type="string" value="2.718377"/>
+  </node>'
+  <node label="OB_000088" id="13">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +22.3%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000088, #13)|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+22.3%"/>
+    <att name="lifespanChange" type="string" value="22.314"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000088"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000088"/>
+    <att name="nodeNumber" type="string" value="13"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000088"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="22.314"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="7.76689"/>
+    <att name="y" type="string" value="4.7121897"/>
+    <att name="z" type="string" value="2.7760196"/>
+  </node>'
+  <node label="OB_000089" id="14">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_000303'  :
+  {
+    'ageingFactorId'  :  'AF_000303'
+    'ageingFactorName'  :  'FOB1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_000303'  :
+  {
+    'ageingFactorId'  :  'AF_000303'
+    'ageingFactorName'  :  'FOB1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +66.5%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000089, #14)|gene: FOB1 (AF_000303), Allele type: deletion / null;|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+66.5%"/>
+    <att name="lifespanChange" type="string" value="66.5289"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000089"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000089"/>
+    <att name="nodeNumber" type="string" value="14"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000089"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="66.5289"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="2.5773163"/>
+    <att name="y" type="string" value="9.917568"/>
+    <att name="z" type="string" value="8.689924"/>
+  </node>'
+  <node label="OB_000094" id="15">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_000303'  :
+  {
+    'ageingFactorId'  :  'AF_000303'
+    'ageingFactorName'  :  'FOB1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_008310'  :
+  {
+    'ageingFactorId'  :  'AF_008310'
+    'ageingFactorName'  :  'SIR2'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_000303'  :
+  {
+    'ageingFactorId'  :  'AF_000303'
+    'ageingFactorName'  :  'FOB1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_008310'  :
+  {
+    'ageingFactorId'  :  'AF_008310'
+    'ageingFactorName'  :  'SIR2'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +33.5%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000094, #15)|gene: FOB1 (AF_000303), Allele type: deletion / null;|gene: SIR2 (AF_008310), Allele type: deletion / null;|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+33.5%"/>
+    <att name="lifespanChange" type="string" value="33.4694"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000094"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000094"/>
+    <att name="nodeNumber" type="string" value="15"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000094"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="33.4694"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="7.480996"/>
+    <att name="y" type="string" value="3.878119"/>
+    <att name="z" type="string" value="2.8932047"/>
+  </node>'
+  <node label="OB_000096" id="16">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +19.2%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000096, #16)|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+19.2%"/>
+    <att name="lifespanChange" type="string" value="19.2488"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000096"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000096"/>
+    <att name="nodeNumber" type="string" value="16"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000096"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="19.2488"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="2.3489504"/>
+    <att name="y" type="string" value="7.057729"/>
+    <att name="z" type="string" value="3.1041038"/>
+  </node>'
+  <node label="OB_000179" id="17">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +20.3%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000179, #17)|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+20.3%"/>
+    <att name="lifespanChange" type="string" value="20.3"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000179"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000179"/>
+    <att name="nodeNumber" type="string" value="17"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000179"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="20.3"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="7.032294"/>
+    <att name="y" type="string" value="1.2173593"/>
+    <att name="z" type="string" value="5.5268073"/>
+  </node>'
+  <node label="OB_000211" id="18">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +21.6%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000211, #18)|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+21.6%"/>
+    <att name="lifespanChange" type="string" value="21.6"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000211"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000211"/>
+    <att name="nodeNumber" type="string" value="18"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000211"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="21.6"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="2.8111458"/>
+    <att name="y" type="string" value="7.7413235"/>
+    <att name="z" type="string" value="5.021941"/>
+  </node>'
+  <node label="OB_000291" id="19">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_008684'  :
+  {
+    'ageingFactorId'  :  'AF_008684'
+    'ageingFactorName'  :  'GCN4'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_008684'  :
+  {
+    'ageingFactorId'  :  'AF_008684'
+    'ageingFactorName'  :  'GCN4'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +48.7%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000291, #19)|gene: TOR1 (AF_008594), Allele type: deletion / null;|gene: GCN4 (AF_008684), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+48.7%"/>
+    <att name="lifespanChange" type="string" value="48.7179"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000291"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000291"/>
+    <att name="nodeNumber" type="string" value="19"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000291"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="48.7179"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="2.01616"/>
+    <att name="y" type="string" value="5.350048"/>
+    <att name="z" type="string" value="7.378078"/>
+  </node>'
+  <node label="OB_000292" id="20">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +56.4%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_000292, #20)|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="+56.4%"/>
+    <att name="lifespanChange" type="string" value="56.4103"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_000292"/>
+    <att name="nodeKey" type="string" value="observationId||OB_000292"/>
+    <att name="nodeNumber" type="string" value="20"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_000292"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="56.4103"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="5.500801"/>
+    <att name="y" type="string" value="3.817174"/>
+    <att name="z" type="string" value="1.5645736"/>
+  </node>'
+  <node label="OB_003701" id="21">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: |Lifespan measure: mean|Saccharomyces cerevisiae|(OB_003701, #21)|gene: TOR1 (AF_008594), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value=""/>
+    <att name="lifespanChange" type="string" value="0"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_003701"/>
+    <att name="nodeKey" type="string" value="observationId||OB_003701"/>
+    <att name="nodeNumber" type="string" value="21"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_003701"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="8.904172"/>
+    <att name="y" type="string" value="0.3994304"/>
+    <att name="z" type="string" value="4.0463543"/>
+  </node>'
+  <node label="OB_003702" id="22">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_008998'  :
+  {
+    'ageingFactorId'  :  'AF_008998'
+    'ageingFactorName'  :  'RPN4'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'deletion / null'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+  'ageingFactorId||AF_008998'  :
+  {
+    'ageingFactorId'  :  'AF_008998'
+    'ageingFactorName'  :  'RPN4'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'unknown'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: -41.9%|Lifespan measure: mean|Saccharomyces cerevisiae|(OB_003702, #22)|gene: TOR1 (AF_008594), Allele type: deletion / null;|gene: RPN4 (AF_008998), Allele type: deletion / null;"/>
+    <att name="labelShort" type="string" value="-41.9%"/>
+    <att name="lifespanChange" type="string" value="-41.8685"/>
+    <att name="lifespanEffectSignificant" type="string" value="decreased"/>
+    <att name="lifespanMeasure" type="string" value="mean"/>
+    <att name="nodeId" type="string" value="OB_003702"/>
+    <att name="nodeKey" type="string" value="observationId||OB_003702"/>
+    <att name="nodeNumber" type="string" value="22"/>
+    <att name="nodeSubType" type="string" value="decreased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_DEC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_003702"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="-41.8685"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="6.8153896"/>
+    <att name="y" type="string" value="3.9329557"/>
+    <att name="z" type="string" value="6.6693554"/>
+  </node>'
+  <node label="OB_006075" id="23">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'Deletion'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'wildtype'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +20.0%|Lifespan measure: maximum|Saccharomyces cerevisiae|(OB_006075, #23)|gene: TOR1 (AF_008594), Allele type: Deletion;"/>
+    <att name="labelShort" type="string" value="+20.0%"/>
+    <att name="lifespanChange" type="string" value="20"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="maximum"/>
+    <att name="nodeId" type="string" value="OB_006075"/>
+    <att name="nodeKey" type="string" value="observationId||OB_006075"/>
+    <att name="nodeNumber" type="string" value="23"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_006075"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="20"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="7.4909396"/>
+    <att name="y" type="string" value="8.865167"/>
+    <att name="z" type="string" value="0.17720878"/>
+  </node>'
+  <node label="OB_006077" id="24">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'Deletion'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'wildtype'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: |Lifespan measure: unknown|Saccharomyces cerevisiae|(OB_006077, #24)|gene: TOR1 (AF_008594), Allele type: Deletion;"/>
+    <att name="labelShort" type="string" value=""/>
+    <att name="lifespanChange" type="string" value="0"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="unknown"/>
+    <att name="nodeId" type="string" value="OB_006077"/>
+    <att name="nodeKey" type="string" value="observationId||OB_006077"/>
+    <att name="nodeNumber" type="string" value="24"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_006077"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="0.7351321"/>
+    <att name="y" type="string" value="5.1591578"/>
+    <att name="z" type="string" value="7.56239"/>
+  </node>'
+  <node label="OB_006078" id="25">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'Deletion'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'wildtype'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: +30.0%|Lifespan measure: unknown|Saccharomyces cerevisiae|(OB_006078, #25)|gene: TOR1 (AF_008594), Allele type: Deletion;"/>
+    <att name="labelShort" type="string" value="+30.0%"/>
+    <att name="lifespanChange" type="string" value="30"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="unknown"/>
+    <att name="nodeId" type="string" value="OB_006078"/>
+    <att name="nodeKey" type="string" value="observationId||OB_006078"/>
+    <att name="nodeNumber" type="string" value="25"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_006078"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="30"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="0.7654035"/>
+    <att name="y" type="string" value="8.050316"/>
+    <att name="z" type="string" value="7.4313965"/>
+  </node>'
+  <node label="OB_006079" id="26">
+    <att name="alleleTypes" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypes'  :  'Deletion'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="alleleTypesBase" type="string" value="{
+  'ageingFactorId||AF_008594'  :
+  {
+    'ageingFactorId'  :  'AF_008594'
+    'ageingFactorName'  :  'TOR1'
+    'ageingFactorType'  :  'gene'
+    'alleleTypesBase'  :  'wildtype'
+    'species'  :
+    {
+      'Saccharomyces cerevisiae'  :  true
+     }
+   }
+ }"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Lifespan change: |Lifespan measure: unknown|Saccharomyces cerevisiae|(OB_006079, #26)|gene: TOR1 (AF_008594), Allele type: Deletion;"/>
+    <att name="labelShort" type="string" value=""/>
+    <att name="lifespanChange" type="string" value="0"/>
+    <att name="lifespanEffectSignificant" type="string" value="increased"/>
+    <att name="lifespanMeasure" type="string" value="unknown"/>
+    <att name="nodeId" type="string" value="OB_006079"/>
+    <att name="nodeKey" type="string" value="observationId||OB_006079"/>
+    <att name="nodeNumber" type="string" value="26"/>
+    <att name="nodeSubType" type="string" value="increased"/>
+    <att name="nodeSubTypeId" type="string" value="OB_INC"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_006079"/>
+    <att name="observationType" type="string" value="phenotype_2"/>
+    <att name="species" type="string" value="{
+  'Saccharomyces cerevisiae'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="S. cerevisiae"/>
+    <att name="subTypeInfoKey" type="string" value="lifespanEffectSignificant"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="7.188155"/>
+    <att name="y" type="string" value="4.8253484"/>
+    <att name="z" type="string" value="7.201653"/>
+  </node>'
+  <node label="OB_009244" id="27">
+    <att name="homologeneId" type="string" value="84756"/>
+    <att name="infoKey" type="string" value="observationId"/>
+    <att name="labelLong" type="string" value="Homology: 84756|(OB_009244, #27)"/>
+    <att name="labelShort" type="string" value="OB_009244 (#27)"/>
+    <att name="nodeId" type="string" value="OB_009244"/>
+    <att name="nodeKey" type="string" value="observationId||OB_009244"/>
+    <att name="nodeNumber" type="string" value="27"/>
+    <att name="nodeSubType" type="string" value="homology_analysis"/>
+    <att name="nodeSubTypeId" type="string" value="OB_HOM"/>
+    <att name="nodeType" type="string" value="observation"/>
+    <att name="nodeTypeId" type="string" value="O"/>
+    <att name="observationId" type="string" value="OB_009244"/>
+    <att name="observationType" type="string" value="homology_analysis"/>
+    <att name="species" type="string" value="{
+  'Magnaporthe oryzae'  :  true
+  'Neurospora crassa'  :  true
+  'Saccharomyces cerevisiae'  :  true
+  'Schizosaccharomyces pombe'  :  true
+ }"/>
+    <att name="speciesShortcut" type="string" value="{
+  'Magnaporthe oryzae'  :  true
+  'Neurospora crassa'  :  true
+  'Saccharomyces cerevisiae'  :  true
+  'Schizosaccharomyces pombe'  :  true
+ }"/>
+    <att name="subTypeInfoKey" type="string" value="observationType"/>
+    <att name="subTypeInfoKeys" type="string" value="lifespanEffectSignificant
+observationType
+"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+    <att name="temperatureInfoKey" type="string" value="lifespanChange"/>
+    <att name="x" type="string" value="3.2152522"/>
+    <att name="y" type="string" value="4.816598"/>
+    <att name="z" type="string" value="6.4307795"/>
+  </node>'
+  <edge label="ageingFactorId||AF_000303%%alleleType||loss of function" source="1" target="2">
+    <att name="edgeNumber" type="string" value="1"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_000303"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="1"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_000303%%alleleType||normal" source="1" target="3">
+    <att name="edgeNumber" type="string" value="2"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_000303"/>
+    <att name="nodeKey2" type="string" value="alleleType||normal"/>
+    <att name="nodeNumber1" type="string" value="1"/>
+    <att name="nodeNumber2" type="string" value="3"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008310%%alleleType||loss of function" source="4" target="2">
+    <att name="edgeNumber" type="string" value="3"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008310"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="4"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008310%%alleleType||overexpression" source="4" target="5">
+    <att name="edgeNumber" type="string" value="4"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008310"/>
+    <att name="nodeKey2" type="string" value="alleleType||overexpression"/>
+    <att name="nodeNumber1" type="string" value="4"/>
+    <att name="nodeNumber2" type="string" value="5"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%alleleType||loss of function" source="6" target="2">
+    <att name="edgeNumber" type="string" value="5"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000064" source="6" target="7">
+    <att name="edgeNumber" type="string" value="6"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000064"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="7"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000065" source="6" target="8">
+    <att name="edgeNumber" type="string" value="7"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000065"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="8"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000066" source="6" target="9">
+    <att name="edgeNumber" type="string" value="8"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000066"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="9"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000080" source="6" target="10">
+    <att name="edgeNumber" type="string" value="9"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000080"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="10"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000084" source="6" target="11">
+    <att name="edgeNumber" type="string" value="10"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000084"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="11"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000085" source="6" target="12">
+    <att name="edgeNumber" type="string" value="11"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000085"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="12"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000088" source="6" target="13">
+    <att name="edgeNumber" type="string" value="12"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000088"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="13"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000089" source="6" target="14">
+    <att name="edgeNumber" type="string" value="13"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000089"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="14"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000094" source="6" target="15">
+    <att name="edgeNumber" type="string" value="14"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000094"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="15"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000096" source="6" target="16">
+    <att name="edgeNumber" type="string" value="15"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000096"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="16"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000179" source="6" target="17">
+    <att name="edgeNumber" type="string" value="16"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000179"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="17"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000211" source="6" target="18">
+    <att name="edgeNumber" type="string" value="17"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000211"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="18"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000291" source="6" target="19">
+    <att name="edgeNumber" type="string" value="18"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000291"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="19"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_000292" source="6" target="20">
+    <att name="edgeNumber" type="string" value="19"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_000292"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="20"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_003701" source="6" target="21">
+    <att name="edgeNumber" type="string" value="20"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_003701"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="21"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_003702" source="6" target="22">
+    <att name="edgeNumber" type="string" value="21"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_003702"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="22"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_DEC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_006075" source="6" target="23">
+    <att name="edgeNumber" type="string" value="22"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_006075"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="23"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_006077" source="6" target="24">
+    <att name="edgeNumber" type="string" value="23"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_006077"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="24"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_006078" source="6" target="25">
+    <att name="edgeNumber" type="string" value="24"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_006078"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="25"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_006079" source="6" target="26">
+    <att name="edgeNumber" type="string" value="25"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_006079"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="26"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_INC"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008594%%observationId||OB_009244" source="6" target="27">
+    <att name="edgeNumber" type="string" value="26"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008594"/>
+    <att name="nodeKey2" type="string" value="observationId||OB_009244"/>
+    <att name="nodeNumber1" type="string" value="6"/>
+    <att name="nodeNumber2" type="string" value="27"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="OB_HOM"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="O"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008684%%alleleType||loss of function" source="28" target="2">
+    <att name="edgeNumber" type="string" value="27"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008684"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="28"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="ageingFactorId||AF_008998%%alleleType||loss of function" source="29" target="2">
+    <att name="edgeNumber" type="string" value="28"/>
+    <att name="nodeKey1" type="string" value="ageingFactorId||AF_008998"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="29"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="AF_GEN"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="F"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000064%%alleleType||loss of function" source="7" target="2">
+    <att name="edgeNumber" type="string" value="29"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000064"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="7"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000064%%citationId||16293764" source="7" target="30">
+    <att name="edgeNumber" type="string" value="30"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000064"/>
+    <att name="nodeKey2" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber1" type="string" value="7"/>
+    <att name="nodeNumber2" type="string" value="30"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000065%%alleleType||loss of function" source="8" target="2">
+    <att name="edgeNumber" type="string" value="31"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000065"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="8"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000065%%citationId||16293764" source="8" target="30">
+    <att name="edgeNumber" type="string" value="32"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000065"/>
+    <att name="nodeKey2" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber1" type="string" value="8"/>
+    <att name="nodeNumber2" type="string" value="30"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000066%%alleleType||loss of function" source="9" target="2">
+    <att name="edgeNumber" type="string" value="33"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000066"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="9"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000066%%citationId||16293764" source="9" target="30">
+    <att name="edgeNumber" type="string" value="34"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000066"/>
+    <att name="nodeKey2" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber1" type="string" value="9"/>
+    <att name="nodeNumber2" type="string" value="30"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000080%%alleleType||loss of function" source="10" target="2">
+    <att name="edgeNumber" type="string" value="35"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000080"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="10"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000080%%citationId||16293764" source="10" target="30">
+    <att name="edgeNumber" type="string" value="36"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000080"/>
+    <att name="nodeKey2" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber1" type="string" value="10"/>
+    <att name="nodeNumber2" type="string" value="30"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000084%%alleleType||loss of function" source="11" target="2">
+    <att name="edgeNumber" type="string" value="37"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000084"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="11"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000084%%citationId||16293764" source="11" target="30">
+    <att name="edgeNumber" type="string" value="38"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000084"/>
+    <att name="nodeKey2" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber1" type="string" value="11"/>
+    <att name="nodeNumber2" type="string" value="30"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000085%%ageingFactorId||AF_009150" source="12" target="31">
+    <att name="edgeNumber" type="string" value="39"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000085"/>
+    <att name="nodeKey2" type="string" value="ageingFactorId||AF_009150"/>
+    <att name="nodeNumber1" type="string" value="12"/>
+    <att name="nodeNumber2" type="string" value="31"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="AF_OTF"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="F"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000085%%alleleType||loss of function" source="12" target="2">
+    <att name="edgeNumber" type="string" value="40"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000085"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="12"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000085%%citationId||16293764" source="12" target="30">
+    <att name="edgeNumber" type="string" value="41"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000085"/>
+    <att name="nodeKey2" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber1" type="string" value="12"/>
+    <att name="nodeNumber2" type="string" value="30"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000088%%alleleType||loss of function" source="13" target="2">
+    <att name="edgeNumber" type="string" value="42"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000088"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="13"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000088%%citationId||16293764" source="13" target="30">
+    <att name="edgeNumber" type="string" value="43"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000088"/>
+    <att name="nodeKey2" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber1" type="string" value="13"/>
+    <att name="nodeNumber2" type="string" value="30"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000089%%ageingFactorId||AF_000303" source="14" target="1">
+    <att name="edgeNumber" type="string" value="44"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000089"/>
+    <att name="nodeKey2" type="string" value="ageingFactorId||AF_000303"/>
+    <att name="nodeNumber1" type="string" value="14"/>
+    <att name="nodeNumber2" type="string" value="1"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="AF_GEN"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="F"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000089%%alleleType||loss of function" source="14" target="2">
+    <att name="edgeNumber" type="string" value="45"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000089"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="14"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000089%%citationId||16293764" source="14" target="30">
+    <att name="edgeNumber" type="string" value="46"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000089"/>
+    <att name="nodeKey2" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber1" type="string" value="14"/>
+    <att name="nodeNumber2" type="string" value="30"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000094%%ageingFactorId||AF_000303" source="15" target="1">
+    <att name="edgeNumber" type="string" value="47"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000094"/>
+    <att name="nodeKey2" type="string" value="ageingFactorId||AF_000303"/>
+    <att name="nodeNumber1" type="string" value="15"/>
+    <att name="nodeNumber2" type="string" value="1"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="AF_GEN"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="F"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000094%%ageingFactorId||AF_008310" source="15" target="4">
+    <att name="edgeNumber" type="string" value="48"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000094"/>
+    <att name="nodeKey2" type="string" value="ageingFactorId||AF_008310"/>
+    <att name="nodeNumber1" type="string" value="15"/>
+    <att name="nodeNumber2" type="string" value="4"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="AF_GEN"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="F"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000094%%alleleType||loss of function" source="15" target="2">
+    <att name="edgeNumber" type="string" value="49"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000094"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="15"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000094%%citationId||16293764" source="15" target="30">
+    <att name="edgeNumber" type="string" value="50"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000094"/>
+    <att name="nodeKey2" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber1" type="string" value="15"/>
+    <att name="nodeNumber2" type="string" value="30"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000096%%alleleType||loss of function" source="16" target="2">
+    <att name="edgeNumber" type="string" value="51"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000096"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="16"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000096%%citationId||16293764" source="16" target="30">
+    <att name="edgeNumber" type="string" value="52"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000096"/>
+    <att name="nodeKey2" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber1" type="string" value="16"/>
+    <att name="nodeNumber2" type="string" value="30"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000179%%alleleType||loss of function" source="17" target="2">
+    <att name="edgeNumber" type="string" value="53"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000179"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="17"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000179%%citationId||18340043" source="17" target="32">
+    <att name="edgeNumber" type="string" value="54"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000179"/>
+    <att name="nodeKey2" type="string" value="citationId||18340043"/>
+    <att name="nodeNumber1" type="string" value="17"/>
+    <att name="nodeNumber2" type="string" value="32"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000211%%alleleType||loss of function" source="18" target="2">
+    <att name="edgeNumber" type="string" value="55"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000211"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="18"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000211%%citationId||18340043" source="18" target="32">
+    <att name="edgeNumber" type="string" value="56"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000211"/>
+    <att name="nodeKey2" type="string" value="citationId||18340043"/>
+    <att name="nodeNumber1" type="string" value="18"/>
+    <att name="nodeNumber2" type="string" value="32"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000291%%ageingFactorId||AF_008684" source="19" target="28">
+    <att name="edgeNumber" type="string" value="57"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000291"/>
+    <att name="nodeKey2" type="string" value="ageingFactorId||AF_008684"/>
+    <att name="nodeNumber1" type="string" value="19"/>
+    <att name="nodeNumber2" type="string" value="28"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="AF_GEN"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="F"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000291%%alleleType||loss of function" source="19" target="2">
+    <att name="edgeNumber" type="string" value="58"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000291"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="19"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000291%%citationId||18423200" source="19" target="33">
+    <att name="edgeNumber" type="string" value="59"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000291"/>
+    <att name="nodeKey2" type="string" value="citationId||18423200"/>
+    <att name="nodeNumber1" type="string" value="19"/>
+    <att name="nodeNumber2" type="string" value="33"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000292%%alleleType||loss of function" source="20" target="2">
+    <att name="edgeNumber" type="string" value="60"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000292"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="20"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_000292%%citationId||18423200" source="20" target="33">
+    <att name="edgeNumber" type="string" value="61"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_000292"/>
+    <att name="nodeKey2" type="string" value="citationId||18423200"/>
+    <att name="nodeNumber1" type="string" value="20"/>
+    <att name="nodeNumber2" type="string" value="33"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_003701%%alleleType||loss of function" source="21" target="2">
+    <att name="edgeNumber" type="string" value="62"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_003701"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="21"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_003701%%citationId||21931558" source="21" target="34">
+    <att name="edgeNumber" type="string" value="63"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_003701"/>
+    <att name="nodeKey2" type="string" value="citationId||21931558"/>
+    <att name="nodeNumber1" type="string" value="21"/>
+    <att name="nodeNumber2" type="string" value="34"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_003702%%ageingFactorId||AF_008998" source="22" target="29">
+    <att name="edgeNumber" type="string" value="64"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_003702"/>
+    <att name="nodeKey2" type="string" value="ageingFactorId||AF_008998"/>
+    <att name="nodeNumber1" type="string" value="22"/>
+    <att name="nodeNumber2" type="string" value="29"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_DEC"/>
+    <att name="nodeSubTypeId2" type="string" value="AF_GEN"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="F"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_003702%%alleleType||loss of function" source="22" target="2">
+    <att name="edgeNumber" type="string" value="65"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_003702"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="22"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_DEC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_003702%%citationId||21931558" source="22" target="34">
+    <att name="edgeNumber" type="string" value="66"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_003702"/>
+    <att name="nodeKey2" type="string" value="citationId||21931558"/>
+    <att name="nodeNumber1" type="string" value="22"/>
+    <att name="nodeNumber2" type="string" value="34"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_DEC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_006075%%alleleType||loss of function" source="23" target="2">
+    <att name="edgeNumber" type="string" value="67"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_006075"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="23"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_006075%%citationId||16293764" source="23" target="30">
+    <att name="edgeNumber" type="string" value="68"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_006075"/>
+    <att name="nodeKey2" type="string" value="citationId||16293764"/>
+    <att name="nodeNumber1" type="string" value="23"/>
+    <att name="nodeNumber2" type="string" value="30"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_006077%%alleleType||loss of function" source="24" target="2">
+    <att name="edgeNumber" type="string" value="69"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_006077"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="24"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_006077%%citationId||17403371" source="24" target="35">
+    <att name="edgeNumber" type="string" value="70"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_006077"/>
+    <att name="nodeKey2" type="string" value="citationId||17403371"/>
+    <att name="nodeNumber1" type="string" value="24"/>
+    <att name="nodeNumber2" type="string" value="35"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_006078%%alleleType||loss of function" source="25" target="2">
+    <att name="edgeNumber" type="string" value="71"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_006078"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="25"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_006078%%citationId||19030232" source="25" target="36">
+    <att name="edgeNumber" type="string" value="72"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_006078"/>
+    <att name="nodeKey2" type="string" value="citationId||19030232"/>
+    <att name="nodeNumber1" type="string" value="25"/>
+    <att name="nodeNumber2" type="string" value="36"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_006079%%alleleType||loss of function" source="26" target="2">
+    <att name="edgeNumber" type="string" value="73"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_006079"/>
+    <att name="nodeKey2" type="string" value="alleleType||loss of function"/>
+    <att name="nodeNumber1" type="string" value="26"/>
+    <att name="nodeNumber2" type="string" value="2"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="ALT_ALT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="Al"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_006079%%citationId||20421943" source="26" target="37">
+    <att name="edgeNumber" type="string" value="74"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_006079"/>
+    <att name="nodeKey2" type="string" value="citationId||20421943"/>
+    <att name="nodeNumber1" type="string" value="26"/>
+    <att name="nodeNumber2" type="string" value="37"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_INC"/>
+    <att name="nodeSubTypeId2" type="string" value="CIT_CIT"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="C"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_009244%%ageingFactorId||AF_002185" source="27" target="38">
+    <att name="edgeNumber" type="string" value="75"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_009244"/>
+    <att name="nodeKey2" type="string" value="ageingFactorId||AF_002185"/>
+    <att name="nodeNumber1" type="string" value="27"/>
+    <att name="nodeNumber2" type="string" value="38"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_HOM"/>
+    <att name="nodeSubTypeId2" type="string" value="AF_GEN"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="F"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_009244%%ageingFactorId||AF_016972" source="27" target="39">
+    <att name="edgeNumber" type="string" value="76"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_009244"/>
+    <att name="nodeKey2" type="string" value="ageingFactorId||AF_016972"/>
+    <att name="nodeNumber1" type="string" value="27"/>
+    <att name="nodeNumber2" type="string" value="39"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_HOM"/>
+    <att name="nodeSubTypeId2" type="string" value="AF_GEN"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="F"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+  <edge label="observationId||OB_009244%%ageingFactorId||AF_016973" source="27" target="40">
+    <att name="edgeNumber" type="string" value="77"/>
+    <att name="nodeKey1" type="string" value="observationId||OB_009244"/>
+    <att name="nodeKey2" type="string" value="ageingFactorId||AF_016973"/>
+    <att name="nodeNumber1" type="string" value="27"/>
+    <att name="nodeNumber2" type="string" value="40"/>
+    <att name="nodeSubTypeId1" type="string" value="OB_HOM"/>
+    <att name="nodeSubTypeId2" type="string" value="AF_GEN"/>
+    <att name="nodeTypeId1" type="string" value="O"/>
+    <att name="nodeTypeId2" type="string" value="F"/>
+    <att name="subnetworkNumber" type="string" value="1"/>
+    <att name="temperature" type="string" value="0.0"/>
+  </edge>'
+</graph>

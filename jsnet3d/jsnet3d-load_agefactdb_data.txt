@@ -1,0 +1,38 @@
+layoutOptions.tiled = true;
+var startTime = now();
+
+# Load network data
+networkData = [mode: "new",
+               networkType: "agefactdb",
+               fileType: "tsv",
+               networkDefinitions: networkDefinitions,
+               ioDefinitions: ioDefinitions,
+#               fileList: ["jsnet3d/agefactdb_network-2015_05_22-ageing_factors-lifespan_only_with_homologs.txt", "jsnet3d/agefactdb_network-2015_05_22-ageing_factor_to_observation-lifespan_only_with_homologs.txt", "jsnet3d/agefactdb_network-2015_05_22-lifespan_observations.txt", "jsnet3d/agefactdb_network-2015_05_22-homology_observations-with_base_af-lifespan_only.txt", "jsnet3d/agefactdb_network-2015_05_22-homology_entry_detail-lifespan_only.txt", "jsnet3d/agefactdb_network-2015_05_22-observation_to_citation-lifespan_homology_only.txt", "jsnet3d/agefactdb-go_mapping-2014_12_18.txt", "jsnet3d/ncbi_gene_2016_01_06-gene_info-agefactdb_lifespan_biosystems-2016_01_12.txt", "jsnet3d/agefactdb_lifespan-biosystems_kegg_info-2016_01_11-unique.txt", "jsnet3d/agefactdb_lifespan-biosystems_kegg-network_data-2016_01_11-unique.txt", "jsnet3d/biosystems_kegg-ncbi_gene-network_data-2016_01_11-unique.txt"],
+               fileList: ["jsnet3d/agefactdb_network-2015_05_22-ageing_factors-lifespan_only_with_homologs-2016_12_20.txt", "jsnet3d/agefactdb_network-2015_05_22-ageing_factor_to_observation-lifespan_only_with_homologs-2016_12_20.txt", "jsnet3d/agefactdb_network-2015_05_22-lifespan_observations.txt", "jsnet3d/agefactdb_network-2015_05_22-homology_observations-with_base_af-lifespan_only.txt", "jsnet3d/agefactdb_network-2015_05_22-homology_entry_detail-lifespan_only.txt", "jsnet3d/agefactdb_network-2015_05_22-observation_to_citation-lifespan_homology_only.txt"],
+               layoutOptions: layoutOptions];
+loadNetworkData(networkData);
+
+## Filter network data for ageing factors with lifespan data
+#networkData..currentSubsetKey = "lifespan";
+#networkData..nodeFilter = [filterExpression: "nodeType='observation'"];
+#networkData..edgeFilter = [maxPathLength: 1,
+#                           filterExpression: "nodeType='ageingFactor'",
+#			   stopConditions: [{"infoKey": "nodeType", "value": "ageingFactor"}]];
+#buildSubset(networkData);
+var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)";
+logMsg([level: "info", msg: "finished loading and parsing network data" + timeMessage]);
+
+# Create JSON data for HTML5 version  ### MUST BE RUN MANUALLY ####
+#x=format("JSON",networkData);
+#write var x "jsnet3d/networkData-2017_01_31.json";
+
+
+
+# Adapt GUI
+if (networkData..standardSubsetManagement.type != "hash") {
+  networkData..standardSubsetManagement = {};
+ }
+if (networkData..standardSubsetManagement..menuNodeFilter == "") {
+  networkData..standardSubsetManagement..menuNodeFilter = "* WHEREIN nodeType='ageingFactor'";
+ }
+updateStandardSubsetManagementMenu(networkData);
