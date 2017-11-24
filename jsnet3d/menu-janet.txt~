@@ -1,0 +1,140 @@
+# popupMenu.mnu Jmol version 14.4.0_2015.11.06 adapted for JSnet3D-AgeFactDB 2017-08-10
+
+# Part I -- Menu Structure
+# ------------------------
+
+@COLOR = black white red orange yellow green cyan blue indigo violet
+@AXESCOLOR = gray salmon maroon olive slateblue gold orchid
+popupMenu = fileMenu - mouseModeMenu selectNodeMenu - showGUI hideGUI beamerModeOff - showConsole JSConsole - aboutMenu
+
+fileMenu | File = SIGNEDloadScript - writeFileTextVARIABLE writeState SIGNEDwriteJmol - SIGNEDJAVAcaptureMenuSPECIAL - SIGNEDJAVAwriteGif SIGNEDNOGLwriteJpg SIGNEDNOGLwritePng SIGNEDNOGLwritePngJmol SIGNEDJAVAwritePovray - SIGNEDJAVAwriteVrml SIGNEDJAVAwriteX3d SIGNEDJAVAwriteIdtf SIGNEDJAVAwriteMaya
+
+mouseModeMenu       | Mouse mode = mouseModeDefault mouseModeCenter mouseModeSelectMenu mouseModeLabel mouseModeMove mouseModeVisibilityMenu mouseModeChangePositionMenu
+mouseModeSelectMenu | Select     = mouseModeSelectByNode mouseModeSelectByNeighbours mouseModeSelectByNeighboursNoOtherNeighbours mouseModeSelectBySubnetwork mouseModeSelectByNodeType mouseModeSelectByWindowRegion
+mouseModeVisibilityMenu | Visibility = mouseModeVisibilityOnly mouseModeVisibilityAdd mouseModeVisibilitySubtract mouseModeVisibilityAnd mouseModeVisibilityNot
+mouseModeChangePositionMenu | Change position = mouseModeChangePositionNode mouseModeChangePositionSelectedNodes
+
+selectNodeMenu | Node selection = selectNodeTypeMenu selectSpeciesMenu selectMiscellaneousMenu
+
+selectNodeTypeMenu      | Node type     = selectAgeingFactor selectAgeingFactorPutative selectAgeingFactorBoth selectAgeingFactorGene selectAgeingFactorCompound selectAgeingFactorOtherFactor - selectObservation selectObservationLifespan selectObservationLifespanIncreased selectObservationLifespanDecreased selectObservationLifespanNone selectObservationHomology - selectSpecies selectAlleleType selectCitation - selectGoTerm selectGoTermProcess selectGoTermFunction selectGoTermCompartment - selectKeggPathway selectKeggPathwayGene
+selectSpeciesMenu       | Species       = select_A_gambiae select_A_stephensi select_A_thaliana select_B_taurus select_C_elegans select_C_remanei select_C_albicans select_C_lupus select_C_capitata select_D_rerio select_D_melanogaster select_D_pseudoobscura select_E_gossypii select_E_coli select_E_postfasciatus select_G_gallus select_H_sapiens select_K_lactis select_L_longipalpis select_M_mulatta select_M_oryzae select_M_auratus select_M_musculus select_N_crassa select_N_furzeri select_O_sativa select_P_troglodytes select_P_anserina select_R_norvegicus select_S_cerevisiae select_S_pombe
+
+selectMiscellaneousMenu | Miscellaneous = selectAll selectNone selectDislayed - selectNeighbour selectSingleneighbour - selectGoi selectGoihom selectGoihomboth
+
+# Part II -- Key Definitions
+# --------------------------
+SIGNEDloadScript | Open script = script ?.spt
+writeFileTextVARIABLE | Save a copy of {0} = if (_applet && !_signedApplet) { console;show file } else { write file "?FILE?"}
+writeState | Save script with state = if (_applet && !_signedApplet) { console;show state } else { write state "?FILEROOT?.spt"}
+SIGNEDwriteJmol | Save all as JMOL file (zip) = write "?FILEROOT?.jmol"
+SIGNEDJAVAcaptureMenuSPECIAL | Capture = SIGNEDJAVAcaptureRock SIGNEDJAVAcaptureSpin - SIGNEDJAVAcaptureBegin SIGNEDJAVAcaptureEnd SIGNEDJAVAcaptureOff SIGNEDJAVAcaptureOn SIGNEDJAVAcaptureFpsSPECIAL SIGNEDJAVAcaptureLoopingSPECIAL
+SIGNEDJAVAwriteGif | Export GIF image = write image "?FILEROOT?.gif"
+SIGNEDNOGLwriteJpg | Export JPG image = write image "?FILEROOT?.jpg"
+SIGNEDNOGLwritePng | Export PNG image = write image "?FILEROOT?.png"
+SIGNEDNOGLwritePngJmol | Export PNG+JMOL image = write PNGJ "?FILEROOT?.png"
+SIGNEDJAVAwritePovray | Export POV-Ray image = write POVRAY "?FILEROOT?.pov"
+SIGNEDJAVAwriteVrml | Export VRML 3D model = write VRML "?FILEROOT?.wrl"
+SIGNEDJAVAwriteX3d | Export X3D 3D model = write X3D "?FILEROOT?.x3d"
+SIGNEDJAVAwriteIdtf | Export IDTF 3D model = write IDTF "?FILEROOT?.idtf"
+SIGNEDJAVAwriteMaya | Export Maya 3D model = write MAYA "?FILEROOT?.ma"
+
+showGUI     | Show JANet Interface = showGui
+hideGUI     | Hide JANet Interface = hideGui
+beamerModeOff | 3D beamer mode off = javascript jaSet3dBeamerMode("off")
+
+mouseModeDefault        | Default         = javascript jaSwitchMouseMode("default")
+mouseModeCenter         | Center          = javascript jaSwitchMouseMode("centerNode")
+mouseModeLabel          | Label           = javascript jaSwitchMouseMode("label")
+mouseModeMove           | Move            = javascript jaSwitchMouseMode("move")
+
+mouseModeSelectByNode                        | Node                        = javascript jaSwitchMouseSubMode("select","node")
+mouseModeSelectByNeighbours                  | Neighbours                  = javascript jaSwitchMouseSubMode("select","neighbours")
+mouseModeSelectByNeighboursNoOtherNeighbours | Single-neighbour neighbours = javascript jaSwitchMouseSubMode("select","neighboursNoOthers")
+mouseModeSelectBySubnetwork                  | Subnetwork                  = javascript jaSwitchMouseSubMode("select","subnetwork")
+mouseModeSelectByNodeType                    | Node type                   = javascript jaSwitchMouseSubMode("select","nodeType")
+mouseModeSelectByWindowRegion                | Window region               = javascript jaSwitchMouseSubMode("select","region")
+
+mouseModeVisibilityOnly     | Only     = javascript jaSwitchMouseSubMode("visibility","only")
+mouseModeVisibilityAdd      | Add      = javascript jaSwitchMouseSubMode("visibility","add")
+mouseModeVisibilitySubtract | Subtract = javascript jaSwitchMouseSubMode("visibility","subtract")
+mouseModeVisibilityAnd      | AND      = javascript jaSwitchMouseSubMode("visibility","and")
+mouseModeVisibilityNot      | NOT      = javascript jaSwitchMouseSubMode("visibility","not")
+
+mouseModeChangePositionNode          | Node                     = javascript jaSwitchMouseMode("changePosition","node")
+mouseModeChangePositionSelectedNodes | Currently selected nodes = javascript jaSwitchMouseMode("changePosition","selectedNodes")
+
+selectAgeingFactor                 | Ageing Factor                           = selectByFilter("nodeType='ageingFactor' AND homologyAnalysisStatus!='added'", "only"); message "Script completed";
+selectAgeingFactorPutative         | Putative Ageing Factor                  = selectByFilter("nodeType='ageingFactor' AND homologyAnalysisStatus='added'", "only"); message "Script completed";
+selectAgeingFactorBoth             | Ageing Factor or Putative Ageing Factor = selectByFilter("nodeType='ageingFactor'", "only"); message "Script completed";
+selectAgeingFactorGene             | Ageing Factor - Gene                    = select [AF_GEN]; message "Script completed";
+selectAgeingFactorCompound         | Ageing Factor - Compound                = select [AF_COM]; message "Script completed";
+selectAgeingFactorOtherFactor      | AgeingFactor - Other Factor             = select [AF_OTF]; message "Script completed";
+selectObservation                  | Observation                             = select [OB_*]; message "Script completed";
+selectObservationLifespan          | Lifespan Observation                    = select ([OB_INC] | [OB_DEC] | [OB_NON]); message "Script completed";
+selectObservationLifespanIncreased | Lifespan Observation - increased        = select [OB_INC]; message "Script completed";
+selectObservationLifespanDecreased | Lifespan Observation - decreased        = select [OB_DEC]; message "Script completed";
+selectObservationLifespanNone      | Lifespan Observation - unchanged        = select [OB_NON]; message "Script completed";
+selectObservationHomology          | Homology Analysis Observation           = select [OB_HOM]; message "Script completed";
+selectSpecies                      | Species 	                             = select [SP_SP]; message "Script completed";
+selectAlleleType                   | Allele Type                             = select [ALT_ALT]; message "Script completed";
+selectCitation                     | Citation	                             = select [CIT_CIT]; message "Script completed";
+selectGoTerm                       | Go Term 	                             = select [GO_*] message "Script completed";
+selectGoTermProcess                | Go Term - Process                       = select [GO_PRO]; message "Script completed";
+selectGoTermFunction               | Go Term - Function                      = select [GO_FUN]; message "Script completed";
+selectGoTermCompartment            | Go Term - Compartment                   = select [GO_CMP]; message "Script completed";
+selectKeggPathway                  | KEGG Pathway                            = select [BS_PW]; message "Script completed";
+selectKeggPathwayGene              | KEGG Pathway Gene                       = select [GEN_GEN]; message "Script completed";
+
+select_A_gambiae       | Anopheles gambiae         = selectByInfoKey("species","Anopheles gambiae","only","select"); message "Script completed";
+select_A_stephensi     | Anopheles stephensi       = selectByInfoKey("species","Anopheles stephensi","only","select"); message "Script completed";
+select_A_thaliana      | Arabidopsis thaliana      = selectByInfoKey("species","Arabidopsis thaliana","only","select"); message "Script completed";
+select_B_taurus        | Bos taurus                = selectByInfoKey("species","Bos taurus","only","select"); message "Script completed";
+select_C_elegans       | Caenorhabditis elegans    = selectByInfoKey("species","Caenorhabditis elegans","only","select"); message "Script completed";
+select_C_remanei       | Caenorhabditis remanei    = selectByInfoKey("species","Caenorhabditis remanei","only","select"); message "Script completed";
+select_C_albicans      | Candida albicans          = selectByInfoKey("species","Candida albicans","only","select"); message "Script completed";
+select_C_lupus         | Canis lupus familiaris    = selectByInfoKey("species","Canis lupus familiaris","only","select"); message "Script completed";
+select_C_capitata      | Ceratitis capitata        = selectByInfoKey("species","Ceratitis capitata","only","select"); message "Script completed";
+select_D_rerio         | Danio rerio               = selectByInfoKey("species","Danio rerio","only","select"); message "Script completed";
+select_D_melanogaster  | Drosophila melanogaster   = selectByInfoKey("species","Drosophila melanogaster","only","select"); message "Script completed";
+select_D_pseudoobscura | Drosophila pseudoobscura  = selectByInfoKey("species","Drosophila pseudoobscura","only","select"); message "Script completed";
+select_E_gossypii      | Eremothecium gossypii     = selectByInfoKey("species","Eremothecium gossypii","only","select"); message "Script completed";
+select_E_coli          | Escherichia coli          = selectByInfoKey("species","Escherichia coli","only","select"); message "Script completed";
+select_E_postfasciatus | Euscepes postfasciatus    = selectByInfoKey("species","Euscepes postfasciatus","only","select"); message "Script completed";
+select_G_gallus        | Gallus gallus             = selectByInfoKey("species","Gallus gallus","only","select"); message "Script completed";
+select_H_sapiens       | Homo sapiens              = selectByInfoKey("species","Homo sapiens","only","select"); message "Script completed";
+select_K_lactis        | Kluyveromyces lactis      = selectByInfoKey("species","Kluyveromyces lactis","only","select"); message "Script completed";
+select_L_longipalpis   | Lutzomyia longipalpis     = selectByInfoKey("species","Lutzomyia longipalpis","only","select"); message "Script completed";
+select_M_mulatta       | Macaca mulatta            = selectByInfoKey("species","Macaca mulatta","only","select"); message "Script completed";
+select_M_oryzae        | Magnaporthe oryzae        = selectByInfoKey("species","Magnaporthe oryzae","only","select"); message "Script completed";
+select_M_auratus       | Mesocricetus auratus      = selectByInfoKey("species","Mesocricetus auratus","only","select"); message "Script completed";
+select_M_musculus      | Mus musculus              = selectByInfoKey("species","Mus musculus","only","select"); message "Script completed";
+select_N_crassa        | Neurospora crassa         = selectByInfoKey("species","Neurospora crassa","only","select"); message "Script completed";
+select_N_furzeri       | Nothobranchius furzeri    = selectByInfoKey("species","Nothobranchius furzeri","only","select"); message "Script completed";
+select_O_sativa        | Oryza sativa              = selectByInfoKey("species","Oryza sativa","only","select"); message "Script completed";
+select_P_troglodytes   | Pan troglodytes           = selectByInfoKey("species","Pan troglodytes","only","select"); message "Script completed";
+select_P_anserina      | Podospora anserina        = selectByInfoKey("species","Podospora anserina","only","select"); message "Script completed";
+select_R_norvegicus    | Rattus norvegicus         = selectByInfoKey("species","Rattus norvegicus","only","select"); message "Script completed";
+select_S_cerevisiae    | Saccharomyces cerevisiae  = selectByInfoKey("species","Saccharomyces cerevisiae","only","select"); message "Script completed";
+select_S_pombe         | Schizosaccharomyces pombe = selectByInfoKey("species","Schizosaccharomyces pombe","only","select"); message "Script completed";
+
+selectAll             | All Nodes                         = select all; message "Script completed";
+selectNone            | No Node                           = select none; message "Script completed";
+selectDislayed        | Displayed Nodes                   = select displayed; message "Script completed";
+selectNeighbour       | Neighbours of Selected Nodes      = pickedNodeSet = getNeighbours({selected}, 1, 'replace'); select @pickedNodeSet AND NOT selected; message "Script completed";
+selectSingleneighbour | Single-neighbour Nodes            = select bondcount=1; message "Script completed";
+selectGoi             | Gene of Interest                  = selectByInfoKey('nodeId',networkData..subsets..full..genesOfInterest..nodeIds, 'only'); message "Script completed";
+selectGoihom          | Gene of Interest Homology Base    = selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedHomologyBaseNodeKeys.keys, 'only'); message "Script completed";
+selectGoihomboth      | Gene of Interest or Homology Base = selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedHomologyBaseNodeKeys.keys, 'only'); message "Script completed";
+
+
+
+# Part III -- Word Translations
+# -----------------------------
+model | subset
+models | subsets
+frame | subset
+frames | subsets
+atom | node
+atoms | nodes
+bond | edge
+bonds | edges

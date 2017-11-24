@@ -1,0 +1,2387 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <meta charset="UTF-8">
+    <meta http-equiv="EXPIRES" content="Wed, 01 Jun 2016 11:12:01 GMT">    <title>JSnet3D-AgeFactDB</title>
+    <style>
+      #jena3d_status_info { top:0px; left:0px; padding:1em; position:absolute; background-color:yellow; opacity: 0.9; z-index: 2000; }
+    </style>
+    <script src="jmol-14.18.1/jsmol/JSmol.min.js" type="text/javascript"></script> <!-- REQUIRED -->
+    <link rel="stylesheet" href="jsnet3d_agefactdb.css" type="text/css" media="all">
+    <link rel="SHORTCUT ICON" type="image/x-icon" href="favicon.ico">
+
+  </head>
+  <body class="jmol" bgcolor="white">
+      <script type="text/javascript">
+        /* ### Jmol interface, developed for the "JenaLib/Jena3D Viewer" and adapted to "AgeFactDB/JSnet3D Viewer" by Rolf Huehne ### */
+        $.ajaxSetup({ mimeType: "text/plain" });   /* needed to avoid Javascript error messages in Firefox while loading local files */
+
+        history.pushState(null, document.title, location.href);
+        window.addEventListener('popstate', function (event) {
+          history.pushState(null, document.title, location.href);
+        });
+
+        /* ### define global variables ### */
+        var hiddenControls = idbExpandAll("show", "hidden");   /* for adjustment all sections must be visible to get correct width */
+
+        /* define arrays */
+        var ja_help             = [];
+        var show_action          = [];
+        var custom_label         = [];
+        var custom_label1        = [];
+        var custom_label2        = [];
+        var menu_state           = [];
+        var script_base          = [];
+        var color_script         = [];
+        var rendering_types_most = [];
+        var rendering_types_all  = [];
+        var rendering_menu_array = [];
+        var command_history      = [];
+        var all_control_names    = [];
+        var log_monitor          = [];
+        var expanded_info_names  = [];
+        var vertices             = [];
+        var subset_names         = [];
+
+        /* define scalars */
+        var interface_type             = "";
+        var color_chooser_action       = "";
+        var color_chooser_type         = "";
+        var store_selection            = "";
+        var restore_selection          = "";
+        var first_model                = 0;
+        var last_model                 = 0;
+        var command_position           = 0;
+        var custom_molecule_color      = "";
+        var rendering_types_all_off    = "";
+        var rendering_types_color_none = ""; 
+        var unify_colors               = "";
+        var render_color_type          = "";
+        var restrict                   = "";
+        var default_rendering          = "";
+        var color_by_atom              = "";
+        var color_trace_chain          = "";
+        var restriction                = "";
+        var restriction2               = "";
+        var jmol_width_default         = "";
+        var jmol_height_default        = "";
+
+        /* create XMLHttpRequest variable (still undefined) */
+        var xhr;
+
+        /* ### set initial values for global variables ### */
+
+        /* initialize scalars */
+        interface_type        = "basic";
+        color_chooser_action  = "show";
+        color_chooser_type    = "molecule";
+        custom_molecule_color = "burlywood";
+        default_rendering     = "Spacefill";
+        first_model           = 1;
+        last_model            = 1;
+        command_position      = 0;
+        Jmol_Script_Mode      = "message";
+
+        /* initialize arrays */
+        expanded_info_names.push();
+rendering_types_most.push("Cartoon","Rockets","Ribbon","Meshribbon","Strands","Backbone","Trace","Spacefill","Dots","Halo"); /* also sets order for rendering menu */
+        rendering_types_all = rendering_types_most.concat("Wireframe");  /* no color command for wireframe in jmol allowed */
+all_control_names.push("select","visibility","rendering","coloring","coloring_node","coloring_background","stereo","graphics","miscellaneous","script","log","genesofinterest", "networkdata","subset","layout");   /* shown/hidden by expand/collapse */
+
+        /* initialize hashes */
+        ja_help["static"]   = [];
+        ja_help["basic"]    = [];
+        ja_help["advanced"] = [];
+
+        /* Info table action (info initially hidden => action="show", otherwise action="hide") */
+        show_action["script_info"]          = "show";
+        show_action["description_info"]     = "show";
+        show_action["genesofinterest_info"] = "show";
+        show_action["networkdata_info"]     = "show";
+        show_action["susbet_info"]          = "show";
+        show_action["layout_info"]          = "show";
+
+        menu_state["displaysubset_menu"]  = "default";
+        menu_state["standardsubset_menu"] = "undefined";
+        menu_state["select_menu"]         = "select_all";          /* default select type         */
+        menu_state["nodevisibility_menu"] = "nodevisibility_selected";    /* default visibility type         */
+        menu_state["edgevisibility_menu"] = "edgevisibility_selected";    /* default visibility type         */
+        menu_state["color_menu"]          = "color_molecule";         /* default color type          */
+        menu_state["render_menu"]         = "render_Cartoon";      /* default render type         */
+        menu_state["render_color_menu"]   = "all";                 /* default color_render type   */
+
+
+        /* ### initialize stucture dependent global variables ### */
+
+        /* # color trace by chain # */
+
+        /* # custom labels # */
+
+        /* ### Jmol script definition ### */
+
+        /*   general independent scripts */
+        init_idb_sets = 'define observation [OB_*]; define ageingfactor [AF_*]; define goterm [GO_*]; define alleletype [ALT_*]; define citation [CIT_*]; define species [SP_*]; define biosystem [BS_*];';
+
+        /*   initial definitions for interface type specific scripts (or scripts needed by those) */
+        rendering_types_all_off    = rendering_types_all.join(" off; ") + " off;";
+        rendering_types_all_off    =  rendering_types_all_off.replace(/Atom/g, "Spacefill"); /* no 'Atom' off in Jmol, use 'Spacefill off' instead */
+        rendering_types_color_none = "color " + rendering_types_most.join(" none; color ") + " none;"; 
+        rendering_types_color_none = rendering_types_color_none.replace(/Spacefill/g, "Atom"); /* no 'color Spacefill none' in Jmol, use 'color Atom none' instead */
+        unify_colors               = rendering_types_color_none; /* 'rendering_types_color_none' for basic int., "" for advanced */
+        render_color_type          = "";  /* needed for rendering-type specific coloring in advanced interface,""=all */
+        restore_selection          = "";  /* set to "select ~prev; " for advanced interface, "" for basic interface */
+        /*   other Jmol scripts */
+        idbBuildScriptbase();
+
+        /* ### initalize Jmol javascript library ### */
+
+
+        /* determine applet type (Jmol/JSmol) */
+        function jaAppletReady() {
+          var applet_info = Jmol.getPropertyAsArray(jmolJSnet3D, "appletInfo");
+          var applet_type_shown = "(using Jmol [Java applet])";
+          if (applet_info.javaVendor) {
+            if (applet_info.javaVendor == "j2s") {
+              applet_type_shown = "(using JSmol [Javascript])";
+            }
+          }
+          if (document.getElementById("applet_type_shown")) {
+            document.getElementById("applet_type_shown").innerHTML = applet_type_shown;
+          }
+          jaGuiInitialization();
+          jaSwitchMouseMode("default");
+        };
+
+        /* ### set Jmol-JSO options (start script set later) ### */
+        var jmolBaseDir = "jmol-14.18.1/jsmol/"
+        Info = {
+	        use: "JAVA HTML5",
+	        width: "600",
+	        height: "600",
+	        debug: false,
+	        color: 'black',
+                j2sPath: jmolBaseDir + "j2s",
+                jarPath: jmolBaseDir + "java",
+                jarFile: "JmolAppletSigned.jar",
+                isSigned: "true",
+                disableJ2SLoadMonitor: false,
+                disableInitialConsole: false,
+	        addSelectionOptions: false,
+	        serverURL: jmolBaseDir + "php/jsmol.php",
+	        script: "",
+                messagecallback: "_jmolMessageCallback",
+                allowjavascript: true,
+                memoryLimit: "6536Mb",
+                deferApplet: true,
+                coverImage: "jsnet3d/jsnet3d-cover_image.jpg"
+               };
+
+        function idbGetApplet(applet_type) {
+          Info.use = applet_type;
+          $("#jmol_location").html(Jmol.getAppletHtml("jmolJSnet3D", Info));
+        }
+
+        function idbHideElement(element_id) {
+          if (document.getElementById(element_id)) {
+            document.getElementById(element_id).style.display = "none";
+          }
+        }
+  
+        function idbShowElement(element_id) {
+          if (document.getElementById(element_id)) {
+            document.getElementById(element_id).style.display = "inline";
+          }
+        }
+
+
+        /* ### define functions ###*/
+
+        function idbGetSelected(menu_object) {         /* return value of selected menu entry */
+          for (i=0;i<menu_object.length; ++i) {
+            if(menu_object.options[i].selected == true) {
+              return menu_object.options[i].value;
+            }
+          }
+          return "";
+        }
+
+        function idbSetSelected(menu_object,value) {   /* set selected menu entry to entry with supplied value */
+          var selectedValue = "";
+          if (menu_object) {
+            for (i=0;i<menu_object.length; ++i) {
+              if(menu_object.options[i].value == value) {
+                menu_object.options[i].selected = true;
+                selectedValue = value;
+              } else {
+                menu_object.options[i].selected = false;
+              }
+            }
+          }
+          return selectedValue;
+        }
+
+        function idbSetSelectedPrev(menu_object,value) {  /* set selected menu entry to entry before entry with supplied value */
+          var selectedValue = value;
+          for (i=0;i<menu_object.length; ++i) {
+            if(menu_object.options[i].value == value) {
+              if (i > 0) {
+                menu_object.options[i - 1].selected = true;
+                menu_object.options[i].selected     = false;
+                selectedValue = menu_object.options[i - 1].value;
+              }
+	    }
+          }
+          return selectedValue;
+        }
+
+        function idbSetSelectedNext(menu_object,value) {  /* set selected menu entry to entry after entry with supplied value */
+          var selectedValue = value;
+          for (i=0;i<menu_object.length; ++i) {
+            if(menu_object.options[i].value == value) {
+              if (i < menu_object.length - 1) {
+                menu_object.options[i + 1].selected = true;
+                menu_object.options[i].selected     = false;
+                selectedValue = menu_object.options[i + 1].value;
+              }
+            }
+          }
+          return selectedValue;
+        }
+
+        function idbGetHeight(user_height) {
+          var new_height = 0;
+          var minimum_height = 100;
+          if (user_height) {
+            new_height = user_height;
+          } else {
+            if (window.innerHeight) {   /* Firefox,Mozilla */
+              new_height = window.innerHeight;
+            } else {
+              new_height = document.body.clientHeight;
+            }
+
+            if (new_height < minimum_height) {
+              new_height = minimum_height;
+            }
+          }
+          return new_height - 20;
+        }
+
+        function idbGetWidth(user_width) {
+          var new_width = 0;
+          var minimum_width = 100;
+          if (user_width) {
+            new_width = user_width;
+          } else {
+            if (window.innerWidth) {   /* Firefox,Mozilla */
+              new_width = window.innerWidth;
+            } else {
+              new_width = document.body.clientWidth;
+            }
+
+            if (new_width < minimum_width) {
+              new_width = minimum_width;
+            }
+          }
+          return new_width - 20;
+        }
+
+        function jaSwitchInterface(type) {            /* switch interface type to 'basic' or 'advanced' */
+          var typeToStyle = new Array ();
+
+          typeToStyle["basic"] = new Array(
+            { cssClass: "advanced_inline",       style: "none"},
+            { cssClass: "advanced_block",        style: "none"},
+            { cssClass: "advanced_inline_block", style: "none"}
+          );
+          typeToStyle["advanced"] = new Array(
+            { cssClass: "advanced_inline",       style: "inline"},
+            { cssClass: "advanced_block",        style: "block"},
+            { cssClass: "advanced_inline_block", style: "inline-block"}
+          );
+
+
+          if (type == "advanced") {
+             /* adapt variables */
+	     interface_type    = "advanced";         /* set interface type to "advanced" */
+             restore_selection = "select ~prev; ";    /* restore selection, needed for uncoupling selection */
+             restore_selection2 = "select ~prev2; ";    /* restore selection2, needed for uncoupling selection */
+             unify_colors      = "";                 /* all rendering-types are colored individually (="") */
+             render_color_type = (menu_state["render_color_menu"] == "all") ? "" : menu_state["render_color_menu"]; /* set rendering-type for type-specific coloring, according to current menu state */
+             /* adapt HTML tag properties */
+             document.control.selection_only.value                    = "only";    /* change name of first selection button */
+             document.getElementById("advanced_note").style.display   = "inline";  /* show note about advanced interface */
+             document.getElementById("basic_note").style.display      = "none";    /* hide note about basic interface */
+          } else {
+             /* adapt variables */
+	     interface_type    = "basic";            /* set interface type to "basic" */
+             restore_selection = "";                 /* don't restore selection, needed for coupling selection */
+             restore_selection2 = "";                 /* don't restore selection2, needed for coupling selection */
+             unify_colors      = rendering_types_color_none;   /* all rendering-types are colored identical at once */
+             render_color_type = "";                 /* allow rendering-type-specific coloring */
+             /* adapt HTML tag properties */
+             document.control.selection_only.value                    = "select";  /* change name of first selection button */
+             document.getElementById("advanced_note").style.display   = "none";    /* hide note about advanced interface */
+             document.getElementById("basic_note").style.display      = "inline";  /* show note about basic interface */
+          }
+
+          /* adapt Jmol scripts */ 
+          idbBuildScriptbase();
+
+          /* adapt help messages */
+          idbInitHelp("rebuild");
+
+          /* adapt display style of advanced controls */
+          typeToStyle[type].forEach(function(classObject) {
+            var cssClass     = "." + classObject.cssClass;
+            var displayStyle = classObject.style;
+            $(cssClass).each(function() {
+              $(this).css('display', displayStyle);
+            });
+          });
+        }
+
+        function jaSwitchMouseMode(mode, commandMode) {
+          var mouseModeClass = ".mouseMode"; 
+          var modeToStyle    = new Array ();
+
+          modeToStyle["default"]        = { cssClass: ".mouseDefault",      style: "block"};
+          modeToStyle["label"]          = { cssClass: ".mouseLabel",        style: "block"};
+          modeToStyle["centerNode"]     = { cssClass: ".mouseCenterNode",   style: "block"};
+          modeToStyle["select"]         = { cssClass: ".mouseSelect",       style: "block"};
+          modeToStyle["move"]           = { cssClass: ".mouseMove",         style: "block"};
+          modeToStyle["changePosition"] = { cssClass: ".mouseChangePosition", style: "block"};
+
+          if (modeToStyle[mode]) {
+            $(mouseModeClass).css('display', "none");
+            $(modeToStyle[mode].cssClass).css('display', modeToStyle[mode].style);
+          }
+
+          jaAdjustOptionLabelWidth(".mouseactionGroup");
+          jaAdjustOptionLabelWidth(modeToStyle[mode].cssClass + "2");
+
+          var mouseSelectModeDomName = "mouseaction_mouse_select_mode";
+          var selectModeToCommand    = new Array ();
+
+          selectModeToCommand["node"]       = "set picking ATOM;";
+          selectModeToCommand["subnetwork"] = "set picking MOLECULE;";
+          selectModeToCommand["nodeType"]   = "set picking ELEMENT;";
+          selectModeToCommand["neighbours"] = "set picking ATOM; pickRange='neighbours'; initPick('select');";
+          selectModeToCommand["neighboursNoOthers"] = "set picking ATOM; pickRange='neighboursNoOthers'; initPick('select');";
+          selectModeToCommand["region"]     = "set picking ATOM; set pickingStyle SELECT drag;";
+
+          var selectMode        = jaGetRadioGroupValue(mouseSelectModeDomName);
+          var selectModeCommand = selectModeToCommand["node"];
+          if (selectModeToCommand[selectMode]) {
+            selectModeCommand = selectModeToCommand[selectMode];
+          }
+
+          var mouseChangePositionModeDomName = "mouseaction_mouse_change_position_mode";
+          var changePositionModeToCommand    = new Array ();
+
+          changePositionModeToCommand["node"]          = "set dragSelected on; set picking dragAtom;";
+          changePositionModeToCommand["selectedNodes"] = "set dragSelected on; set picking dragSelected;set allowRotateSelected on;";
+
+          var changePositionMode        = jaGetRadioGroupValue(mouseChangePositionModeDomName);
+          var changePositionModeCommand = changePositionModeToCommand["node"];
+          if (changePositionModeToCommand[changePositionMode]) {
+            changePositionModeCommand = changePositionModeToCommand[changePositionMode];
+          }
+
+          var jmolCommands = new Array ();
+
+          jmolCommands["reset"]        = 'set picking off; set pickCallback ""; set pickingStyle SELECT NONE; set dragselected off; set allowMoveAtoms off; set allowRotateSelected off; unbind; bind "MIDDLE-drag" "_translate";';
+          jmolCommands["default"]      = jmolCommands["reset"] + " set picking on;  pickRange='node'; initPick('info');";
+          jmolCommands["centerNode"]   = jmolCommands["reset"] + ' set picking center;';
+          jmolCommands["select"]       = jmolCommands["reset"] + ' set pickingStyle SELECT extendedSelect;' + selectModeCommand;
+          /* jmolCommands["label"]        = jmolCommands["reset"] + " set picking on;  pickRange='node'; initPick('label');"; */
+          jmolCommands["label"]        = jmolCommands["reset"] + " set picking label;  pickRange='node'; initPick('label');";
+          jmolCommands["move"]         = jmolCommands["reset"] + ' bind "LEFT-drag" "_translate";';
+          jmolCommands["changePosition"] = jmolCommands["reset"] + ' set allowMoveAtoms on; ' + changePositionModeCommand;
+
+          if (jmolCommands[mode]) {
+            if (commandMode != "noCommands") {
+              Jmol.script(jmolJSnet3D, jmolCommands[mode]);
+            }
+          }
+        }
+
+        function idbInitHelp(mode) {                   /* define interactive help messages (interface type specific) */
+          if (mode == "init") {    /* define all help messages */
+            /* define help text hash with 3 subhashes: 'static' (interface type independent), 'basic' (basic interface only), 'advanced' (advanced interface only) */
+            ja_help["static"]["advanced_link"]     = "Switch to 'Advanced' JSnet3D-AgeFactDB Interface";
+            ja_help["static"]["basic_link"]        = "Switch to 'Basic' JSnet3D-AgeFactDB Interface";
+            ja_help["static"]["help_link"]         = "Show JSnet3D-AgeFactDB help page";
+            ja_help["static"]["spin_checkbox"]     = "Rotate automatically around the Y-axis (on/off)";
+            ja_help["static"]["selected_checkbox"] = "Mark selected nodes by a yellow halo (on/off)";
+            ja_help["static"]["autozoom_checkbox"] = "Zoom and center selected nodes automatically (after using a control element)";
+
+            ja_help["static"]["view_default"]      = "Default view";
+
+               ja_help["basic"]["selection_only"]              = "Select chosen node set and unselect other nodes";
+            ja_help["advanced"]["selection_only"]              = "Select chosen node set and unselect other nodes";
+               ja_help["basic"]["select_menu"]                 = "Choose node set for selection, select chosen nodes and unselect others";
+            ja_help["advanced"]["select_menu"]                 = "Choose node set as target for selection control buttons";
+            ja_help["static"]["selection_add"]      = "Add chosen node set to current selection";
+            ja_help["static"]["selection_subtract"] = "Remove chosen node set from current selection";
+            ja_help["static"]["selection_and"]      = "Select intersection between chosen node set and current selection";
+            ja_help["static"]["selection_not"]      = "Select everything except chosen node set";
+
+               ja_help["basic"]["render_on"]                  = "Render selected nodes by chosen rendering type";
+            ja_help["advanced"]["render_on"]                  = "Render selected nodes by chosen rendering type";
+               ja_help["basic"]["render_menu"]                = "Choose rendering type and render selected nodes";
+            ja_help["advanced"]["render_menu"]                = "Choose rendering type as target for rendering control buttons";
+            ja_help["static"]["render_off"]        = "Switch off chosen rendering type for selected nodes";
+            ja_help["static"]["render_only"]       = "Render selected nodes by chosen rendering type and switch off other types";
+            ja_help["static"]["render_trans"]      = "Render selected nodes transparently by chosen rendering type";
+
+               ja_help["basic"]["color_menu"]                 = "Choose color scheme and color selected nodes (all rendering types)";
+            ja_help["advanced"]["color_menu"]                 = "Choose color scheme as target for molecule coloring controls";
+               ja_help["basic"]["color_chooser_molecule"]     = "Choose custom molecule color and color selected nodes with it (all rendering types)";
+            ja_help["advanced"]["color_chooser_molecule"]     = "Choose custom molecule color for  selected rendering types";
+               ja_help["basic"]["color_on"]                   = "Color selected nodes by chosen color scheme (all rendering types)";
+            ja_help["advanced"]["color_on"]                   = "Color selected nodes by chosen color scheme (selected rendering types)";
+            ja_help["static"]["render_color_menu"] = "Choose rendering type as target for coloring controls";
+
+
+               ja_help["basic"]["color_chooser_background"]     = "Choose background color and use it";
+            ja_help["advanced"]["color_chooser_background"]     = "Choose background color as target for 'other' button";
+            ja_help["static"]["background_black"]    = "Set background color to 'black'";
+            ja_help["static"]["background_white"]    = "Set background color to 'white'";
+            ja_help["static"]["background_color_on"] = "Set background color to chosen color";
+
+            ja_help["static"]["stereo_side_by_side"] = "Activate 'side by side' stereo view";
+            ja_help["static"]["stereo_cross_eyed"]   = "Activate 'cross eyed' stereo view";
+            ja_help["static"]["stereo_redblue"]      = "Activate 'red/blue' stereo view";
+            ja_help["static"]["stereo_redcyan"]      = "Activate 'red/cyan' stereo view";
+            ja_help["static"]["stereo_redgreen"]     = "Activate 'red/green' stereo view";
+            ja_help["static"]["stereo_off"]          = "Switch off stereo view";
+
+            ja_help["static"]["applet_width"]        = "Choose the 'width' of the graphics window";
+            ja_help["static"]["applet_height"]       = "Choose the 'height' of the graphics window";
+            ja_help["static"]["resize"]              = "Resize the graphics window to the chosen 'width' and 'height'";
+            ja_help["static"]["maximize"]            = "Maximize the graphics window size according to the current browser window size";
+            ja_help["static"]["default_size"]        = "Set the graphics window size to the default size";
+            ja_help["static"]["snapshot"]            = "Create a snapshot image of the graphics window in JPEG format";
+
+            ja_help["static"]["dna_on"]              = "Switch special 'DNA/RNA' rendering on";
+            ja_help["static"]["dna_off"]             = "Switch special 'DNA/RNA' rendering off";
+            ja_help["static"]["label_off"]           = "Switch all labels off";
+            ja_help["static"]["zoom_selected"]       = "Zoom and center on the currently selected nodes";
+            ja_help["static"]["high_quality"]        = "Activate high quality rendering (slow, needs more memory)";
+            ja_help["static"]["medium_quality"]      = "Activate medium quality rendering (fast, needs less memory)";
+
+            ja_help["static"]["jmol_command"]        = "Enter Jmol scripting command (browse history with cursor 'up/down' keys)";
+            ja_help["static"]["run_jmol_command"]    = "Run scripting command (submit it to Jmol)";
+
+            ja_help["static"]["jmol_monitor"]        = "Jmol message log for status and error messages";
+
+            ja_help["static"]["mouseaction_mouse_mode_default"] = "Default mode";
+            ja_help["static"]["mouseaction_mouse_mode_select_node"] = "Node selection mode";
+            ja_help["static"]["mouseaction_mouse_mode_label"] = "Label mode; toggle lables of individual nodes, move individual node labels";
+            ja_help["static"]["mouseaction_mouse_mode_translate_selected"] = "Node translation mode; translate individual nodes relativ to all other nodes";
+
+            /* install all interface type independent help texts */
+            for (var id in ja_help["static"]) {
+              if (document.getElementById(id)) {
+                document.getElementById(id).title = ja_help["static"][id];
+              }
+            }
+
+            /* install all interface type specific help texts */
+            for (var id in ja_help[interface_type]) {
+              if (document.getElementById(id)) {
+                document.getElementById(id).title = ja_help[interface_type][id];
+              }
+            }
+          } else {
+            /* reinstall all interface type specific help texts according to the current interface type */
+            for (var id in ja_help[interface_type]) {
+              if (document.getElementById(id)) {
+                document.getElementById(id).title = ja_help[interface_type][id];
+              }
+            }
+          }
+        }
+
+        function jaShowControl(sectionName,action) {      /* show or hide control elements */
+          var controlDomId = sectionName + "_controls";
+          var showDomId    = sectionName + "_show";
+          var hideDomId    = sectionName + "_hide";
+
+          if (document.getElementById(controlDomId)) {
+            if (document.getElementById(showDomId)) {
+              if (document.getElementById(hideDomId)) {
+                switch(action) {
+                  case "show":
+                    document.getElementById(controlDomId).style.display = "block";
+                    document.getElementById(showDomId).style.display    = "none";
+                    document.getElementById(hideDomId).style.display    = "inline";
+                    break;
+                  case "hide":
+                    document.getElementById(controlDomId).style.display = "none";
+                    document.getElementById(showDomId).style.display    = "inline";
+                   document.getElementById(hideDomId).style.display    = "none";
+                    break;
+                  case "toggle":
+                    if (document.getElementById(controlDomId).style.display == "none") {
+                      document.getElementById(controlDomId).style.display = "block";
+                      document.getElementById(showDomId).style.display    = "none";
+                      document.getElementById(hideDomId).style.display    = "inline";
+                    } else {
+                      document.getElementById(controlDomId).style.display = "none";
+                      document.getElementById(showDomId).style.display    = "inline";
+                      document.getElementById(hideDomId).style.display    = "none";
+                    }
+                    break;
+                }
+              } else {
+                console.log("ERROR: DOM node with ID '" + hideDomId + "' NOT FOUND in method 'jaShowControl'");
+              }
+            } else {
+              console.log("ERROR: DOM node with ID '" + showDomId + "' NOT FOUND in method 'jaShowControl'");
+            }
+          } else {
+            console.log("ERROR: DOM node with ID '" + controlDomId + "' NOT FOUND in method 'jaShowControl'");
+          }
+        }
+
+        function idbExpandAll(action, mode, domNodes)  {               /* show or hide all control elements (no info tables) in Jmol viewer */
+          if (!mode) {
+            mode = "all";
+          }
+          if (!domNodes) {
+            if (mode == "hidden") {
+              domNodes = $("div[id$='_controls']:hidden");
+            } else {
+              domNodes = $("div[id$='_controls']");
+            }
+          }
+          domNodes.each(function() {
+            var regexp = /(.*)_controls$/;
+            var section = this.id.replace(regexp, "$1");
+            jaShowControl(section,action);
+          });
+          return domNodes;
+        }
+
+        function jsnet3dSubsetControl(action) {             /* subset display control backend */
+          var menuDomId = "displaysubset_menu";
+          if (document.getElementById(menuDomId)) {
+            var menuObject = document.getElementById(menuDomId);
+          var current_subset = menu_state["displaysubset_menu"];
+          var start_script  = false;
+          var new_subset = "";
+          if (current_subset != "") {
+            switch(action) {
+              case "prev":
+                new_subset = idbSetSelectedPrev(menuObject, current_subset);
+                if (new_subset != current_subset && new_subset != "") {
+                  start_script = true;
+                }
+                break;
+              case "next":
+                new_subset = idbSetSelectedNext(menuObject, current_subset);
+                if (new_subset != current_subset && new_subset != "") {
+                  start_script = true;
+                }
+                break;
+              case "menu":
+                new_subset = idbGetSelected(menuObject);
+                if (new_subset != current_subset && new_subset != "") {
+                  start_script = true;
+                }
+                break;
+            }
+
+            if (start_script == true) {
+              menu_state["displaysubset_menu"] = new_subset;
+              idbSetSelected(menuObject, menu_state["displaysubset_menu"]);
+              var jmolCommands = [];
+              jmolCommands.push("print 'NOTE: changing subset from \"" + current_subset + "\" to \"" + new_subset + "\"...'");
+              jmolCommands.push("networkData..subsets.[\"" + current_subset + "\"]..storedOrientation = script(\"show orientation\").split(\"#\").[1];");
+              jmolCommands.push("networkData..subsets.[\"" + current_subset + "\"]..storedSelection = {selected}");
+              jmolCommands.push("frame \"" + new_subset + "\"; networkData..currentSubsetKey=\"" + new_subset + "\"");
+	      jmolCommands.push("javascriptCommand = \"$('#page_name').text('\" + networkData..subsets.[newSubset]..subsetName + \"');\";");
+              jmolCommands.push("dummy = script(networkData..subsets.[\"" + new_subset + "\"]..storedOrientation)");
+              jmolCommands.push("var storedSelection = networkData..subsets.[\"" + new_subset + "\"]..storedSelection; if (storedSelection.type == \"bitset\") { select @storedSelection }");
+              var jmolCommandString = jmolCommands.join("; ") + ";";
+              return jmolCommandString;
+            } else {
+              return "print 'NOTE: subset unchanged (current=" + current_subset + "; new=" + new_subset + ")';";
+            }
+          }
+          }
+        }
+
+        function idbMenuBrowser(action,type) {         /* browse forward/backwoard through menu entries */
+          var menu_name      = type + "_menu";
+          var old_menu_state = menu_state[menu_name];
+
+          switch(action) {
+            case "previous":
+              idbSetSelectedPrev(document.getElementById(menu_name),menu_state[menu_name]);
+              menu_state[menu_name] = idbGetSelected(document.getElementById(menu_name));
+              if (menu_state[menu_name] != old_menu_state) {
+                Jmol.script(jmolJSnet3D, script_base[menu_state[menu_name]]["menu"]);
+              }
+              idbSetLabelText(type);
+              break;
+           case "next":
+              idbSetSelectedNext(document.getElementById(menu_name),menu_state[menu_name]);
+              menu_state[menu_name] = idbGetSelected(document.getElementById(menu_name));
+              if (menu_state[menu_name] != old_menu_state) {
+                Jmol.script(jmolJSnet3D, script_base[menu_state[menu_name]]["menu"]);
+              }
+              idbSetLabelText(type);
+              break;
+          }
+        }
+
+        function idbColorChooser(action,type) {        /* color chooser backend */
+          set_background_color = "";   /* must be a global variable because use of 'setTimeout' function */
+          if (typeof type != "undefined") {
+            color_chooser_type = type;
+          };
+          if (type == "molecule") {
+            document.getElementById("molecule_color").style.display   = "inline";
+            document.getElementById("background_color").style.display = "none";
+          }
+          if (type == "background") {
+            document.getElementById("molecule_color").style.display   = "none";
+            document.getElementById("background_color").style.display = "inline";
+          }
+          var element_id = "color_chooser_" + color_chooser_type;
+          switch(action) {
+            case "show":
+              document.getElementById("color_chooser").style.display = "inline";
+              color_chooser_action = "hide";
+              break;
+            case "hide":
+              document.getElementById("color_chooser").style.display = "none";
+              color_chooser_action = "show";
+              break;
+            default:
+              document.getElementById("color_chooser").style.display = "none";
+              document.getElementById(element_id).value              = action;
+              document.getElementById(element_id).style.background   = action;
+              color_chooser_action = "show";
+              if (color_chooser_type == "molecule") {
+                custom_molecule_color = action;
+                idbBuildScriptbase();
+                menu_state["color_menu"] = "color_custom";
+                idbSetSelected(document.getElementById("color_menu"),"color_custom");
+                if (interface_type == "basic" && menu_state["color_menu"] == "color_custom") {
+        	  setTimeout('Jmol.script(jmolJSnet3D, color_script["custom"])',10);
+                  /* timeout needed to avoid java-vm hangups that would occur in some constellations without it */
+                }
+              } else {
+                if (interface_type == "basic") {
+                  set_background_color = "background " + action + ";"
+                  setTimeout("Jmol.script(jmolJSnet3D, set_background_color)",10);
+                  /* timeout needed to avoid java-vm hangups that would occur in some constellations without it */
+                }
+              }
+          }
+        }
+
+        function idbCustomLabel(element,type) {        /* check custom label, adapt jmol scripts and send script to jmol */
+          var label_list = element.value.split("||");
+          var menu_id    = "";
+          var prosite    = "";
+          if (type.match(/prosite/)) {    /* prosite has 2 labels (prosite1,prosite2) but only 1 menu */
+            menu_id = "prosite" + "_menu";
+            prosite = "true";
+          } else {
+            menu_id = type + "_menu";
+            prosite = "false";
+          }
+          var menu_value   = menu_state[menu_id];
+          var expression   = "^" + type + "_(.*)$";
+          var reg_exp      = /(.*)/;
+          var option_count = document.getElementById(menu_id).options.length - 1;
+          var menu_key     = "";
+          var label_key    = "label_custom";
+
+          if (menu_value.match(/_all/)) {
+            if (label_list.length != option_count) {
+              error_message = "Only " + label_list.length + " labels detected instead of " + option_count + "\nPlease check if all labels are separated by '||'.";
+              alert(error_message);
+            } else {
+              for (i=0; i < label_list.length; i++) {
+                menu_key = document.getElementById(menu_id).options[i + 1].value;
+                /* menu_key = menu_key.replace(/^prosite/,type); */
+                switch(type) {
+                  case "prosite1":
+                    custom_label1[menu_key] = label_list[i];
+                    label_key = "label1_custom";
+                    break;
+                  case "prosite2":
+                    custom_label2[menu_key] = label_list[i];
+                    label_key = "label2_custom";
+                    break;
+                  default:
+                    custom_label[menu_key] = label_list[i];
+                    label_key = "label_custom";
+                    break;
+                }
+              }
+              custom_label[menu_value] = element.value;
+              idbBuildScriptbase();
+              Jmol.script(jmolJSnet3D, script_base[menu_state[menu_id]][label_key])
+            }
+          } else {
+           /* menu_key = menu_value.replace(/^prosite/,type);  */
+           switch(type) {
+             case "prosite1":
+               custom_label1[menu_value] = element.value;
+               label_key = "label1_custom";
+               break;
+             case "prosite2":
+               custom_label2[menu_value] = element.value;
+               label_key = "label2_custom";
+               break;
+             default:
+               custom_label[menu_value] = element.value;
+               label_key = "label_custom";
+               break;
+           }
+           idbBuildScriptbase();
+           Jmol.script(jmolJSnet3D, script_base[menu_state[menu_id]][label_key])
+          }
+        }
+
+        function idbSetLabelText(type) {               /* replace label text in label input field according to menu selection */
+          var menu_id = "";
+          var prosite = "";
+          if (type.match(/prosite/)) {    /* prosite has 2 labels (prosite1,prosite2) but only 1 menu */
+            menu_id = "prosite" + "_menu";
+            prosite = "true";
+          } else {
+            menu_id = type + "_menu";
+            prosite = "false";
+          }
+          var input_id     = "custom_label_" + type;
+          var input_id1    = "custom_label_" + type + "1";
+          var input_id2    = "custom_label_" + type + "2";
+          var menu_value   = menu_state[menu_id];
+          var option_count = document.getElementById(menu_id).options.length;
+          var label_text   = "";
+          var label_text1  = "";
+          var label_text2  = "";
+
+          if (prosite == "true") {
+            if (menu_value.match(/_all/)) {
+              for (i=1; i < option_count; i++) {
+                if (label_text1 == "") {
+                  label_text1 = custom_label1[document.getElementById(menu_id).options[i].value];
+                } else {
+                  label_text1 = label_text1 + "||" + custom_label1[document.getElementById(menu_id).options[i].value];
+                }
+                if (label_text2 == "") {
+                  label_text2 = custom_label2[document.getElementById(menu_id).options[i].value];
+                } else {
+                  label_text2 = label_text2 + "||" + custom_label2[document.getElementById(menu_id).options[i].value];
+                }
+              }
+              document.getElementById(input_id1).value = label_text1;
+	      document.getElementById(input_id1).title = "Set custom labels (separated by '||', same order as in the menu)";
+              document.getElementById(input_id2).value = label_text2;
+	      document.getElementById(input_id2).title = "Set custom end labels (separated by '||', same order as in the menu)";
+            } else {
+              document.getElementById(input_id1).value = custom_label1[menu_value];
+              document.getElementById(input_id1).title = "Set custom label (Chain='%c',ResNo='%r',ResName=%n)";
+              document.getElementById(input_id2).value = custom_label2[menu_value];
+              document.getElementById(input_id2).title = "Set custom end label (Chain='%c',ResNo='%r',ResName=%n)";
+            }
+          } else {
+            if (menu_value.match(/_all/)) {
+              for (i=1; i < option_count; i++) {
+                if (label_text == "") {
+                  label_text = custom_label[document.getElementById(menu_id).options[i].value];
+                } else {
+                  label_text = label_text + "||" + custom_label[document.getElementById(menu_id).options[i].value];
+                }
+              }
+              document.getElementById(input_id).value = label_text;
+	      document.getElementById(input_id).title = "Set custom labels (separated by '||', same order as in the menu)";
+            } else {
+              document.getElementById(input_id).value = custom_label[menu_value];
+              document.getElementById(input_id).title = "Set custom label (Chain='%c',ResNo='%r',ResName=%n)";
+            }
+          }
+        }
+
+        function idbSetRenderColorType(element) {      /* adapt jmol scripts to rendering-type for molecule coloring in advanced interface */
+          menu_state["render_color_menu"] = idbGetSelected(element);
+          if (interface_type == "advanced") {
+            if (menu_state["render_color_menu"] == "all") {       /* no individual colors*/
+              unify_colors      = rendering_types_color_none;
+              render_color_type = "";
+            } else {                                              /* individual colors*/
+              unify_colors      = "";
+              render_color_type = menu_state["render_color_menu"];
+            }
+            idbBuildScriptbase();
+          }
+	}
+
+        function idbShow(element, style) {                    /* toggle display of 'element' */
+          if (style != "block") {
+            style = "inline";
+	  }
+          switch(show_action[element]) {
+            case "show":
+              document.getElementById(element).style.display = style;
+              show_action[element] = "hide";
+              break;
+            case "hide":
+              document.getElementById(element).style.display="none";
+              show_action[element] = "show";
+              break;
+          }
+        }
+
+        function idbSubmitScript () {                  /* submit manually entered script to Jmol and add to history */
+          if (document.control.jmol_command.value.substr(-1,1) != ";") {
+            Jmol.script(jmolJSnet3D, document.control.jmol_command.value + ";");
+          } else {
+            Jmol.script(jmolJSnet3D, document.control.jmol_command.value);
+          }
+          command_history.push(document.control.jmol_command.value);
+          document.control.jmol_command.value="";
+          command_position = command_history.length;
+        }
+
+        function idbCommandHistory (keycode) {         /* command history browse control backend */
+          if (keycode == "38" || keycode == "up") {
+            if (command_position > 0) {
+              command_position--;
+              document.control.jmol_command.value = command_history[command_position];
+            }
+          }
+          if (keycode == "40" || keycode == "down") {
+            if (command_position < command_history.length - 1) {
+              command_position++;
+              document.control.jmol_command.value = command_history[command_position];
+            } else {
+              document.control.jmol_command.value = "";
+              command_position = command_history.length;
+            }
+          }
+        }
+
+        function _jmolMessageCallback(app,msg) {      /* jmol message callback, reverse logging into textarea */
+          msg = "" + msg;    /* convert callback message into string (recommended by other Jmol users) */
+          log_monitor.unshift(msg);
+          if (document.getElementById("jmol_monitor").value.length > 8000) {
+            log_monitor.pop();
+          }
+          document.getElementById("jmol_monitor").value = log_monitor.join("\n");
+
+          if (msg.match(/ScriptException/)) {
+            alert("=== Jmol SCRIPT ERROR ===\n" + msg);
+          }
+
+          if (msg.match(/([\d,]+) atoms selected/)) {   /*  */
+            var selection_count_tag = document.getElementById("selection_count");
+            selection_count_tag.replaceChild(document.createTextNode(RegExp.$1),  selection_count_tag.childNodes[0]);
+            document.getElementById("selection_count").innerHtml=RegExp.$1;
+          }
+
+          if (msg.match(/java\.security\.AccessControlException/)) {
+            var returnValue = confirm("=== Java Error ===\nA Java error prevented loading of the structure");
+          }
+        }
+
+        function idbBuildScriptbase() {                /* define Jmol scripts */
+
+          /* ### miscellaneous structure independent scripts */
+
+          store_selection = "define ~prev selected; ";
+          store_selection2 = "define ~prev2 selected; ";
+          restrict        = 'restrict selected;';  /* automatic restrict, currently used */
+          /* restrict     = 'define restrictprev selected; select NOT restrictprev;' + rendering_types_all_off + 'label off; select restrictprev;';  */ /* 'restrict' by hand, currently not used  */
+
+          /* ### color scripts ### */
+          color_script["custom"]     = unify_colors + ' color ' + render_color_type + ' ' + custom_molecule_color + ';';
+          color_script["nodetype"]    = 'setNodeProperty("color","nodeType")';
+          color_script["lifespanchangequalitative"]    = 'setNodeProperty("color","lifespanChangeQualitative")';
+
+          /* ### general structure independent control scripts ### */
+
+          /* Hover Mode */
+          script_base["hover_mode"]             = [];
+          script_base["hover_mode"]["enhance"]  = "hoverMode = 'enhance';";
+          script_base["hover_mode"]["only"]     = "hoverMode = 'only';";
+
+          /* Hover Range */
+          script_base["hover_range"]                = [];
+          script_base["hover_range"]["neighbours"]  = "hoverRange = 'neighbours';";
+          script_base["hover_range"]["subnetwork"]  = "hoverRange = 'network';";
+
+          /* Node Selection */
+          script_base["select_ageingfactor"]             = [];
+          script_base["select_ageingfactor"]["only"]     = "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus!='added'\", \"only\");";
+          script_base["select_ageingfactor"]["add"]      = "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus!='added'\", \"add\");";
+          script_base["select_ageingfactor"]["subtract"] = "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus!='added'\", \"subtract\");";
+          script_base["select_ageingfactor"]["and"]      = "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus!='added'\", \"and\");";
+          script_base["select_ageingfactor"]["not"]      = "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus!='added'\", \"not\");";
+          script_base["select_ageingfactor"]["menu"]     = (interface_type == "basic") ? "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus!='added'\", \"only\");" : "";
+
+          script_base["select_ageingfactorputative"]             = [];
+          script_base["select_ageingfactorputative"]["only"]     = "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus='added'\", \"only\");";
+          script_base["select_ageingfactorputative"]["add"]      = "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus='added'\", \"add\");";
+          script_base["select_ageingfactorputative"]["subtract"] = "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus='added'\", \"subtract\");";
+          script_base["select_ageingfactorputative"]["and"]      = "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus='added'\", \"and\");";
+          script_base["select_ageingfactorputative"]["not"]      = "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus='added'\", \"not\");";
+          script_base["select_ageingfactorputative"]["menu"]     = (interface_type == "basic") ? "selectByFilter(\"nodeType='ageingFactor' AND homologyAnalysisStatus='added'\", \"only\");" : "";
+
+          script_base["select_ageingfactorboth"]             = [];
+          script_base["select_ageingfactorboth"]["only"]     = "selectByFilter(\"nodeType='ageingFactor'\", \"only\");";
+          script_base["select_ageingfactorboth"]["add"]      = "selectByFilter(\"nodeType='ageingFactor'\", \"add\");";
+          script_base["select_ageingfactorboth"]["subtract"] = "selectByFilter(\"nodeType='ageingFactor'\", \"subtract\");";
+          script_base["select_ageingfactorboth"]["and"]      = "selectByFilter(\"nodeType='ageingFactor'\", \"and\");";
+          script_base["select_ageingfactorboth"]["not"]      = "selectByFilter(\"nodeType='ageingFactor'\", \"not\");";
+          script_base["select_ageingfactorboth"]["menu"]     = (interface_type == "basic") ? "selectByFilter(\"nodeType='ageingFactor'\", \"only\");" : "";
+
+
+          script_base["select_gene"]             = [];
+          script_base["select_gene"]["only"]     = "select [AF_GEN];";
+          script_base["select_gene"]["add"]      = "select selected | [AF_GEN];";
+          script_base["select_gene"]["subtract"] = "select selected & NOT [AF_GEN];";
+          script_base["select_gene"]["and"]      = "select selected & [AF_GEN];";
+          script_base["select_gene"]["not"]      = "select NOT [AF_GEN];";
+          script_base["select_gene"]["menu"]     = (interface_type == "basic") ? "select [AF_GEN];" : "";
+
+          script_base["select_compound"]             = [];
+          script_base["select_compound"]["only"]     = "select [AF_COM];";
+          script_base["select_compound"]["add"]      = "select selected | [AF_COM];";
+          script_base["select_compound"]["subtract"] = "select selected & NOT [AF_COM];";
+          script_base["select_compound"]["and"]      = "select selected & [AF_COM];";
+          script_base["select_compound"]["not"]      = "select NOT [AF_COM];";
+          script_base["select_compound"]["menu"]     = (interface_type == "basic") ? "select [AF_COM];" : "";
+
+          script_base["select_otherfactor"]             = [];
+          script_base["select_otherfactor"]["only"]     = "select [AF_OTF];";
+          script_base["select_otherfactor"]["add"]      = "select selected | [AF_OTF];";
+          script_base["select_otherfactor"]["subtract"] = "select selected & NOT [AF_OTF];";
+          script_base["select_otherfactor"]["and"]      = "select selected & [AF_OTF];";
+          script_base["select_otherfactor"]["not"]      = "select NOT [AF_OTF];";
+          script_base["select_otherfactor"]["menu"]     = (interface_type == "basic") ? "select [AF_OTF];" : "";
+
+          script_base["select_observation"]             = [];
+          script_base["select_observation"]["only"]     = "select [OB_*];";
+          script_base["select_observation"]["add"]      = "select selected | [OB_*];";
+          script_base["select_observation"]["subtract"] = "select selected & NOT [OB_*];";
+          script_base["select_observation"]["and"]      = "select selected & [OB_*];";
+          script_base["select_observation"]["not"]      = "select NOT [OB_*];";
+          script_base["select_observation"]["menu"]     = (interface_type == "basic") ? "select [OB_*];" : "";
+
+          script_base["select_observationlifespan"]             = [];
+          script_base["select_observationlifespan"]["only"]     = "select ([OB_INC] | [OB_DEC] | [OB_NON]);";
+          script_base["select_observationlifespan"]["add"]      = "select selected | ([OB_INC] | [OB_DEC] | [OB_NON]);";
+          script_base["select_observationlifespan"]["subtract"] = "select selected & NOT ([OB_INC] | [OB_DEC] | [OB_NON]);";
+          script_base["select_observationlifespan"]["and"]      = "select selected & ([OB_INC] | [OB_DEC] | [OB_NON]);";
+          script_base["select_observationlifespan"]["not"]      = "select NOT ([OB_INC] | [OB_DEC] | [OB_NON]);";
+          script_base["select_observationlifespan"]["menu"]     = (interface_type == "basic") ? "select ([OB_INC] | [OB_DEC] | [OB_NON]);" : "";
+
+          script_base["select_observationincreased"]             = [];
+          script_base["select_observationincreased"]["only"]     = "select [OB_INC];";
+          script_base["select_observationincreased"]["add"]      = "select selected | [OB_INC];";
+          script_base["select_observationincreased"]["subtract"] = "select selected & NOT [OB_INC];";
+          script_base["select_observationincreased"]["and"]      = "select selected & [OB_INC];";
+          script_base["select_observationincreased"]["not"]      = "select NOT [OB_INC];";
+          script_base["select_observationincreased"]["menu"]     = (interface_type == "basic") ? "select [OB_INC];" : "";
+
+          script_base["select_observationdecreased"]             = [];
+          script_base["select_observationdecreased"]["only"]     = "select [OB_DEC];";
+          script_base["select_observationdecreased"]["add"]      = "select selected | [OB_DEC];";
+          script_base["select_observationdecreased"]["subtract"] = "select selected & NOT [OB_DEC];";
+          script_base["select_observationdecreased"]["and"]      = "select selected & [OB_DEC];";
+          script_base["select_observationdecreased"]["not"]      = "select NOT [OB_DEC];";
+          script_base["select_observationdecreased"]["menu"]     = (interface_type == "basic") ? "select [OB_DEC];" : "";
+
+          script_base["select_observationnone"]             = [];
+          script_base["select_observationnone"]["only"]     = "select [OB_NON];";
+          script_base["select_observationnone"]["add"]      = "select selected | [OB_NON];";
+          script_base["select_observationnone"]["subtract"] = "select selected & NOT [OB_NON];";
+          script_base["select_observationnone"]["and"]      = "select selected & [OB_NON];";
+          script_base["select_observationnone"]["not"]      = "select NOT [OB_NON];";
+          script_base["select_observationnone"]["menu"]     = (interface_type == "basic") ? "select [OB_NON];" : "";
+
+          script_base["select_observationhomology"]             = [];
+          script_base["select_observationhomology"]["only"]     = "select [OB_HOM];";
+          script_base["select_observationhomology"]["add"]      = "select selected | [OB_HOM];";
+          script_base["select_observationhomology"]["subtract"] = "select selected & NOT [OB_HOM];";
+          script_base["select_observationhomology"]["and"]      = "select selected & [OB_HOM];";
+          script_base["select_observationhomology"]["not"]      = "select NOT [OB_HOM];";
+          script_base["select_observationhomology"]["menu"]     = (interface_type == "basic") ? "select [OB_HOM];" : "";
+
+          script_base["select_species"]             = [];
+          script_base["select_species"]["only"]     = "select [SP_SP];";
+          script_base["select_species"]["add"]      = "select selected | [SP_SP];";
+          script_base["select_species"]["subtract"] = "select selected & NOT [SP_SP];";
+          script_base["select_species"]["and"]      = "select selected & [SP_SP];";
+          script_base["select_species"]["not"]      = "select NOT [SP_SP];";
+          script_base["select_species"]["menu"]     = (interface_type == "basic") ? "select [SP_SP];" : "";
+
+          script_base["select_alleletype"]             = [];
+          script_base["select_alleletype"]["only"]     = "select [ALT_ALT];";
+          script_base["select_alleletype"]["add"]      = "select selected | [ALT_ALT];";
+          script_base["select_alleletype"]["subtract"] = "select selected & NOT [ALT_ALT];";
+          script_base["select_alleletype"]["and"]      = "select selected & [ALT_ALT];";
+          script_base["select_alleletype"]["not"]      = "select NOT [ALT_ALT];";
+          script_base["select_alleletype"]["menu"]     = (interface_type == "basic") ? "select [ALT_ALT];" : "";
+
+          script_base["select_citation"]             = [];
+          script_base["select_citation"]["only"]     = "select [CIT_CIT];";
+          script_base["select_citation"]["add"]      = "select selected | [CIT_CIT];";
+          script_base["select_citation"]["subtract"] = "select selected & NOT [CIT_CIT];";
+          script_base["select_citation"]["and"]      = "select selected & [CIT_CIT];";
+          script_base["select_citation"]["not"]      = "select NOT [CIT_CIT];";
+          script_base["select_citation"]["menu"]     = (interface_type == "basic") ? "select [CIT_CIT];" : "";
+
+          script_base["select_goi"]             = [];
+          script_base["select_goi"]["only"]     = "selectByInfoKey('nodeId',networkData..subsets..full..genesOfInterest..nodeIds, 'only');";
+          script_base["select_goi"]["add"]      = "selectByInfoKey('nodeId',networkData..subsets..full..genesOfInterest..nodeIds, 'add');";
+          script_base["select_goi"]["subtract"] = "selectByInfoKey('nodeId',networkData..subsets..full..genesOfInterest..nodeIds, 'subtract')";
+          script_base["select_goi"]["and"]      = "selectByInfoKey('nodeId',networkData..subsets..full..genesOfInterest..nodeIds, 'and')";
+          script_base["select_goi"]["not"]      = "selectByInfoKey('nodeId',networkData..subsets..full..genesOfInterest..nodeIds, 'not');";
+          script_base["select_goi"]["menu"]     = (interface_type == "basic") ? "selectByInfoKey('nodeId',networkData..subsets..full..genesOfInterest..nodeIds, 'only');" : "";
+
+          script_base["select_goihom"]             = [];
+          script_base["select_goihom"]["only"]     = "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedHomologyBaseNodeKeys.keys, 'only');";
+          script_base["select_goihom"]["add"]      = "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedHomologyBaseNodeKeys.keys, 'add');";
+          script_base["select_goihom"]["subtract"] = "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedHomologyBaseNodeKeys.keys, 'subtract');";
+          script_base["select_goihom"]["and"]      = "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedHomologyBaseNodeKeys.keys, 'and');";
+          script_base["select_goihom"]["not"]      = "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedHomologyBaseNodeKeys.keys, 'not');";
+          script_base["select_goihom"]["menu"]     = (interface_type == "basic") ? "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedHomologyBaseNodeKeys.keys, 'only');" : "";
+
+          script_base["select_goihomboth"]             = [];
+          script_base["select_goihomboth"]["only"]     = "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedNodeKeys.keys, 'only');";
+          script_base["select_goihomboth"]["add"]      = "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedNodeKeys.keys, 'add');";
+          script_base["select_goihomboth"]["subtract"] = "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedNodeKeys.keys, 'subtract');";
+          script_base["select_goihomboth"]["and"]      = "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedNodeKeys.keys, 'and');";
+          script_base["select_goihomboth"]["not"]      = "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedNodeKeys.keys, 'not');";
+          script_base["select_goihomboth"]["menu"]     = (interface_type == "basic") ? "selectByInfoKey('nodeKey',networkData..subsets..full..genesOfInterest..matchedNodeKeys.keys, 'only');" : "";
+
+          script_base["select_goterm"]             = [];
+          script_base["select_goterm"]["only"]     = "select [GO_*]";
+          script_base["select_goterm"]["add"]      = "select selected | [GO_*];";
+          script_base["select_goterm"]["subtract"] = "select selected & NOT [GO_*];";
+          script_base["select_goterm"]["and"]      = "select selected & [GO_*];";
+          script_base["select_goterm"]["not"]      = "select NOT [GO_*];";
+          script_base["select_goterm"]["menu"]     = (interface_type == "basic") ? "select [GO_*];" : "";
+
+          script_base["select_gotermprocess"]             = [];
+          script_base["select_gotermprocess"]["only"]     = "select [GO_PRO]";
+          script_base["select_gotermprocess"]["add"]      = "select selected | [GO_PRO];";
+          script_base["select_gotermprocess"]["subtract"] = "select selected & NOT [GO_PRO];";
+          script_base["select_gotermprocess"]["and"]      = "select selected & [GO_PRO];";
+          script_base["select_gotermprocess"]["not"]      = "select NOT [GO_PRO];";
+          script_base["select_gotermprocess"]["menu"]     = (interface_type == "basic") ? "select [GO_PRO];" : "";
+
+          script_base["select_gotermfunction"]             = [];
+          script_base["select_gotermfunction"]["only"]     = "select [GO_FUN]";
+          script_base["select_gotermfunction"]["add"]      = "select selected | [GO_FUN];";
+          script_base["select_gotermfunction"]["subtract"] = "select selected & NOT [GO_FUN];";
+          script_base["select_gotermfunction"]["and"]      = "select selected & [GO_FUN];";
+          script_base["select_gotermfunction"]["not"]      = "select NOT [GO_FUN];";
+          script_base["select_gotermfunction"]["menu"]     = (interface_type == "basic") ? "select [GO_FUN];" : "";
+
+          script_base["select_gotermcompartment"]             = [];
+          script_base["select_gotermcompartment"]["only"]     = "select [GO_CMP]";
+          script_base["select_gotermcompartment"]["add"]      = "select selected | [GO_CMP];";
+          script_base["select_gotermcompartment"]["subtract"] = "select selected & NOT [GO_CMP];";
+          script_base["select_gotermcompartment"]["and"]      = "select selected & [GO_CMP];";
+          script_base["select_gotermcompartment"]["not"]      = "select NOT [GO_CMP];";
+          script_base["select_gotermcompartment"]["menu"]     = (interface_type == "basic") ? "select [GO_CMP];" : "";
+
+          script_base["select_neighbour"]             = [];
+          script_base["select_neighbour"]["only"]     = "pickedNodeSet = getNeighbours({selected}, 1, 'replace'); select @pickedNodeSet AND NOT selected;";
+          script_base["select_neighbour"]["add"]      = "pickedNodeSet = getNeighbours({selected}, 1, 'replace'); select @pickedNodeSet OR selected;";
+          script_base["select_neighbour"]["subtract"] = "pickedNodeSet = getNeighbours({selected}, 1, 'replace'); select selected AND NOT @pickedNodeSet;";
+          script_base["select_neighbour"]["and"]      = "pickedNodeSet = getNeighbours({selected}, 1, 'replace'); select selected OR @pickedNodeSet;";
+          script_base["select_neighbour"]["not"]      = "pickedNodeSet = getNeighbours({selected}, 1, 'replace'); select NOT @pickedNodeSet;";
+          script_base["select_neighbour"]["menu"]     = (interface_type == "basic") ? "pickedNodeSet = getNeighbours({selected}, 1, 'replace'); select @pickedNodeSet AND NOT selected;" : "";
+
+          script_base["select_singleneighbour"]             = [];
+          script_base["select_singleneighbour"]["only"]     = "select bondcount=1";
+          script_base["select_singleneighbour"]["add"]      = "select selected | bondcount=1;";
+          script_base["select_singleneighbour"]["subtract"] = "select selected & NOT bondcount=1;";
+          script_base["select_singleneighbour"]["and"]      = "select selected & bondcount=1;";
+          script_base["select_singleneighbour"]["not"]      = "select NOT bondcount=1;";
+          script_base["select_singleneighbour"]["menu"]     = (interface_type == "basic") ? "select bondcount=1;" : "";
+
+          script_base["select_displayed"]             = [];
+          script_base["select_displayed"]["only"]     = "select displayed;";
+          script_base["select_displayed"]["add"]      = "select displayed OR selected;";
+          script_base["select_displayed"]["subtract"] = "select selected AND NOT displayed";
+          script_base["select_displayed"]["and"]      = "select displayed and selected;";
+          script_base["select_displayed"]["not"]      = "select hidden;";
+          script_base["select_displayed"]["menu"]     = (interface_type == "basic") ? "select displayed;" : "";
+
+          script_base["select_none"]             = [];
+          script_base["select_none"]["only"]     = "select none;";
+          script_base["select_none"]["add"]      = "select selected;";
+          script_base["select_none"]["subtract"] = "select selected";
+          script_base["select_none"]["and"]      = "select none;";
+          script_base["select_none"]["not"]      = "select all;";
+          script_base["select_none"]["menu"]     = (interface_type == "basic") ? "select none;" : "";
+
+          script_base["select_all"]             = [];
+          script_base["select_all"]["only"]     = "select all;";
+          script_base["select_all"]["add"]      = "select all;";
+          script_base["select_all"]["subtract"] = "select NOT all;";
+          script_base["select_all"]["and"]      = "select selected & all;";
+          script_base["select_all"]["not"]      = "select NOT all;";
+          script_base["select_all"]["menu"]     = (interface_type == "basic") ? "select all;" : "";
+
+          /* Node Visibility */
+          script_base["nodevisibility_selected"]                     = [];
+          script_base["nodevisibility_selected"]["display_only"]     = "display selected;";
+          script_base["nodevisibility_selected"]["display_add"]      = "display ADD selected;";
+          script_base["nodevisibility_selected"]["display_subtract"] = "display REMOVE selected;";
+          script_base["nodevisibility_selected"]["display_and"]      = "display displayed & selected;";
+          script_base["nodevisibility_selected"]["display_not"]      = "display NOT selected;";
+          script_base["nodevisibility_selected"]["hide_only"]     = "hide selected;";
+          script_base["nodevisibility_selected"]["hide_add"]      = "hide ADD selected;";
+          script_base["nodevisibility_selected"]["hide_subtract"] = "hide REMOVE selected;";
+          script_base["nodevisibility_selected"]["hide_and"]      = "hide hidden & selected;";
+          script_base["nodevisibility_selected"]["hide_not"]      = "hide NOT selected;";
+          script_base["nodevisibility_selected"]["menu"]     = (interface_type == "basic") ? "display selected;" : "";
+
+          /* Edge Visibility */
+          script_base["edgevisibility_selected"]                     = [];
+          script_base["edgevisibility_selected"]["display_only"]     = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={not selected}.bonds; hide bondSet; bondSet={selected}.bonds; display bondSet; set bondModeOr savedMode;";
+          script_base["edgevisibility_selected"]["display_add"]      = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; display bondSet; set bondModeOr savedMode;";
+          script_base["edgevisibility_selected"]["display_subtract"] = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; hide bonds; set bondModeOr savedMode;";
+          script_base["edgevisibility_selected"]["hide_only"]     = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={not selected}.bonds; display bondSet; bondSet={selected}.bonds; hide bondSet; set bondModeOr savedMode;";
+          script_base["edgevisibility_selected"]["hide_add"]      = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; hide bondSet; set bondModeOr savedMode;";
+          script_base["edgevisibility_selected"]["hide_subtract"] = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; display bondSet; set bondModeOr savedMode;";
+          script_base["edgevisibility_selected"]["menu"]     = (interface_type == "basic") ? "display selected;" : "";
+
+          /* Rendering */
+          script_base["render_Trace_thin"] = [];    /* IDB defined render type */
+          for (i=0; i < rendering_types_all.length; ++i) {
+            var render_type = "render_" + rendering_types_all[i];
+            script_base[render_type] = [];
+            script_base[render_type]["only"] = rendering_types_all_off + rendering_types_all[i] + " on;";
+            switch(rendering_types_all[i]) {
+              case "Wireframe":    /* no color command available for wireframe */
+                script_base[render_type]["on"]          = rendering_types_all[i] + " on; color bonds opaque;";
+                script_base[render_type]["transparent"] = rendering_types_all[i] + " on; color bonds translucent;";
+                break;
+              case "Spacefill":    /* no color command available for spacefill */
+                script_base[render_type]["on"]          = rendering_types_all[i] + " on; layoutOptions..scaleSelectedNodesOnly = true; layoutOptions..scaleRenderingType = 'spacefill'; applyNodeScalingFactor; color atoms opaque;";
+                script_base[render_type]["transparent"] = rendering_types_all[i] + " on; layoutOptions..scaleSelectedNodesOnly = true; layoutOptions..scaleRenderingType = 'spacefill'; applyNodeScalingFactor; color atoms translucent;";
+                break;
+              case "Dots":    /* no color command available for dots */
+                script_base[render_type]["on"]          = rendering_types_all[i] + " on; layoutOptions..scaleSelectedNodesOnly = true; layoutOptions..scaleRenderingType = 'dots'; applyNodeScalingFactor; color dots opaque;";
+                script_base[render_type]["transparent"] = rendering_types_all[i] + " on; layoutOptions..scaleSelectedNodesOnly = true; layoutOptions..scaleRenderingType = 'dots'; applyNodeScalingFactor; color dots translucent;";
+                break;
+              case "Trace":
+                script_base[render_type]["on"]          = rendering_types_all[i] + " on; color atoms opaque;";
+                script_base[render_type]["transparent"] = rendering_types_all[i] + " on; color atoms translucent;";
+                /* plus special type 'Trace - thin' */
+                script_base[render_type + "_thin"]["on"]          = rendering_types_all[i] + " 30; color " + rendering_types_all[i] + " opaque;";
+                script_base[render_type + "_thin"]["transparent"] = rendering_types_all[i] + " 30; color " + rendering_types_all[i] + " translucent;";
+                script_base[render_type + "_thin"]["only"]        = rendering_types_all_off + rendering_types_all[i] + " 30;";
+                script_base[render_type + "_thin"]["off"]         = rendering_types_all[i] + " off;";
+                script_base[render_type + "_thin"]["menu"]        = (interface_type == "basic") ? script_base[render_type + "_thin"]["on"] : "";
+                break;
+              default:
+                script_base[render_type]["on"]          = rendering_types_all[i] + " on; color " + rendering_types_all[i] + " opaque;";
+                script_base[render_type]["transparent"] = rendering_types_all[i] + " on; color " + rendering_types_all[i] + " translucent;";
+                break;
+            }
+            script_base[render_type]["off"]  = rendering_types_all[i] + " off;";
+            script_base[render_type]["menu"] = (interface_type == "basic") ? script_base[render_type]["on"] : "";
+  
+          }
+          script_base["render_none"]                = [];
+          script_base["render_none"]["on"]          = rendering_types_all_off;
+          script_base["render_none"]["only"]        = rendering_types_all_off;
+          script_base["render_none"]["transparent"] = rendering_types_all_off;
+          script_base["render_none"]["menu"]        = (interface_type == "basic") ? rendering_types_all_off : "";
+
+          /* Coloring */
+          script_base["color_subnetwork"]         = [];
+          script_base["color_subnetwork"]["on"]   = color_script["subnetwork"];
+          script_base["color_subnetwork"]["off"]  = rendering_types_color_none;
+          script_base["color_subnetwork"]["menu"] = (interface_type == "basic") ? color_script["subnetwork"] : "";
+
+          script_base["color_nodetype"]         = [];
+          script_base["color_nodetype"]["on"]   = color_script["nodetype"];
+          script_base["color_nodetype"]["off"]  = rendering_types_color_none;
+          script_base["color_nodetype"]["menu"] = (interface_type == "basic") ? color_script["nodetype"] : "";
+
+          script_base["color_chain"]         = [];
+          script_base["color_chain"]["on"]   = color_script["chain"];
+          script_base["color_chain"]["off"]  = rendering_types_color_none;
+          script_base["color_chain"]["menu"] = (interface_type == "basic") ? color_script["chain"] : "";
+
+          script_base["color_chain2"]         = [];
+          script_base["color_chain2"]["on"]   = color_script["chain2"];
+          script_base["color_chain2"]["off"]  = rendering_types_color_none;
+          script_base["color_chain2"]["menu"] = (interface_type == "basic") ? color_script["chain2"] : "";
+
+          script_base["color_temp"]         = [];
+          script_base["color_temp"]["on"]   = color_script["temp"];
+          script_base["color_temp"]["off"]  = rendering_types_color_none;
+          script_base["color_temp"]["menu"] = (interface_type == "basic") ? color_script["temp"] : "";
+
+          script_base["color_lifespanchangequalitative"]         = [];
+          script_base["color_lifespanchangequalitative"]["on"]   = color_script["lifespanchangequalitative"];
+          script_base["color_lifespanchangequalitative"]["off"]  = rendering_types_color_none;
+          script_base["color_lifespanchangequalitative"]["menu"] = (interface_type == "basic") ? color_script["lifespanchangequalitative"] : "";
+
+          script_base["color_charge"]         = [];
+          script_base["color_charge"]["on"]   = color_script["charge"];
+          script_base["color_charge"]["off"]  = rendering_types_color_none;
+          script_base["color_charge"]["menu"] = (interface_type == "basic") ? color_script["charge"] : "";
+
+          script_base["color_group"]         = [];
+          script_base["color_group"]["on"]   = color_script["group"];
+          script_base["color_group"]["off"]  = rendering_types_color_none;
+          script_base["color_group"]["menu"] = (interface_type == "basic") ? color_script["group"] : "";
+
+          script_base["color_custom"]         = [];
+          script_base["color_custom"]["on"]   = color_script["custom"];
+          script_base["color_custom"]["off"]  = rendering_types_color_none;
+          script_base["color_custom"]["menu"] = (interface_type == "basic") ? color_script["custom"] : "";
+
+          /* ### structure independent type specific scripts ### */
+
+          restrict_not_selected = 'define restrictprev selected; restrict NOT selected; select restrictprev;';
+          script_base['default_view_default'] = 'var currentSelection = selected; select all; label hide; initDisplay(layoutOptions); var subsetType = networkData..subsets.[networkData..currentSubsetKey]..subsetType; setSizeByChange("node", 0.05, {[OB_INC] OR [OB_DEC] OR [OB_NON]}); if (subsetType == "standard") { var centralNode = centralNodeInfo..nodeNumber; select atomno=@centralNode; label display; select ([OB_INC] OR [OB_DEC] OR [OB_NON]) and temperature=0; halo on; label "n/a"; label hide; } elseif (subsetType == "full") { select all; color bonds opaque; } select @currentSelection;';
+          script_base['default_view_labelled'] = 'var currentSelection = selected; select all; label hide; initDisplay(layoutOptions); select [ALT_ALT]; label display; var centralNodeInfo = networkData..subsets.[networkData..currentSubsetKey]..centralNodeInfo; var subsetType = networkData..subsets.[networkData..currentSubsetKey]..subsetType; if (subsetType == "standard") { var centralNode = centralNodeInfo..nodeNumber; select atomno=@centralNode; label display; ' + script_base["select_observationlifespan"]["only"] + ' label display; select ([OB_INC] OR [OB_DEC] OR [OB_NON]) AND temperature=0; label "n/a"; setSizeByChange("node", 0.05, {[OB_INC] OR [OB_DEC] OR [OB_NON]}); } select @currentSelection;';
+          script_base['default_view_gene_of_interest'] = 'var currentSelection = selected; select all; label hide; initDisplay(layoutOptions);  select [ALT_ALT]; label display; var centralNodeInfo = networkData..subsets.[networkData..currentSubsetKey]..centralNodeInfo; selectByInfoKey("nodeKey",networkData..subsets..full..genesOfInterest..matchedExperimentalNodeKeys.keys); define set1 selected; selectByInfoKey("nodeKey",networkData..subsets..full..genesOfInterest..matchedHomologyBaseNodeKeys.keys); define set2 selected; selectByInfoKey("nodeId",networkData..subsets..full..genesOfInterest..nodeIds); define set3 selected; var subsetType = networkData..subsets.[networkData..currentSubsetKey]..subsetType; if (subsetType == "standard") { var centralNode = centralNodeInfo..nodeNumber; select atomno=@centralNode; label display; ' + script_base["select_observationlifespan"]["only"] + ' label display; select ([OB_INC] OR [OB_DEC] OR [OB_NON]) and temperature=0; halo on; label "n/a"; select set1,set2,set3; set label display; } elseif (subsetType == "goi_overview") { select set1,set2; set label display; } select set3; color cyan; color label dodgerblue; set fontSize 8; select @currentSelection;';
+
+          /* ### structure dependent general scripts ### */
+
+
+          /* ### structure dependent type specific scripts ### */
+
+
+        }    /* end function 'idbBuildScriptbase' */
+
+      function jaGuiInitialization() {
+        /* ### final initializations, should be called after applet is ready in jaAppletReady function ### */
+
+        reload_jmol_script = "";
+
+
+        /* initialize help messages */
+        idbInitHelp("init");
+        /* switch to initial interface type */
+        jaSwitchInterface("basic");
+
+        /* set all menu selections to default entries (needed to avoid discrepancies with jmol scripts after reload in some browsers) */
+        idbSetSelected(document.getElementById("hetero_menu"),menu_state["hetero_menu"]);
+        idbSetSelected(document.getElementById("site_menu"),menu_state["site_menu"]);
+        idbSetSelected(document.getElementById("variant_menu"),menu_state["variant_menu"]);
+        idbSetSelected(document.getElementById("prosite_menu"),menu_state["prosite_menu"]);
+        idbSetSelected(document.getElementById("exon_menu"),menu_state["exon_menu"]);
+        idbSetSelected(document.getElementById("exonb_menu"),menu_state["exonb_menu"]);
+        idbSetSelected(document.getElementById("scop_menu"),menu_state["scop_menu"]);
+        idbSetSelected(document.getElementById("cath_menu"),menu_state["cath_menu"]);
+        idbSetSelected(document.getElementById("select_menu"),menu_state["select_menu"]);
+        idbSetSelected(document.getElementById("render_menu"),menu_state["render_menu"]);
+        idbSetSelected(document.getElementById("render_color_menu"),menu_state["render_color_menu"]);
+        idbSetSelected(document.getElementById("color_menu"),menu_state["color_menu"]);
+        idbSetSelected(document.getElementById("displaysubset_menu"),menu_state["displaysubset_menu"]);
+
+        /* set all checkboxes to default settings (needed to avoid discrepancies with jmol scripts after reload in some browsers) */
+        document.getElementById('spin_checkbox').value="on";
+        document.getElementById('spin_checkbox').checked=false;
+        document.getElementById('selected_checkbox').value="selected";
+        document.getElementById('selected_checkbox').checked=false;
+        document.getElementById('autozoom_checkbox').value="on";
+        document.getElementById('autozoom_checkbox').checked=false;
+        document.getElementById('perspective_depth_checkbox').value="off";
+        document.getElementById('perspective_depth_checkbox').checked=true;
+        document.getElementById('interface_type_advanced').checked=false;
+        document.getElementById('interface_type_basic').checked=true;
+        document.getElementById('hover_mode_only').checked=false;
+        document.getElementById('hover_mode_enhance').checked=true;
+        document.getElementById('hover_range_subnetwork').checked=false;
+        document.getElementById('hover_range_neighbour').checked=true;
+        document.getElementById('hover_depth').value="1";
+        document.getElementById('standardsubset_node_type_alleleType').checked=true;
+        document.getElementById('standardsubset_node_type_citation').checked=true;
+        document.getElementById('standardsubset_node_type_homology_analysis').checked=true;
+        document.getElementById('standardsubset_node_type_species').checked=false;
+        document.getElementById('standardsubset_node_type_keggPathway').checked=false;
+        document.getElementById('standardsubset_node_type_keggPathwayGene').checked=false;
+        document.getElementById('standardsubset_node_type_go_process').checked=false;
+        document.getElementById('standardsubset_node_type_go_function').checked=false;
+        document.getElementById('standardsubset_node_type_go_component').checked=false;
+        document.getElementById('layout_export_format_biolayout').checked=true;
+        document.getElementById('layout_import_format_biolayout').checked=true;
+        document.getElementById('rendering_node_size_type').checked=true;
+        document.getElementById('rendering_edge_size_uniform').checked=true;
+        document.getElementById('edgevisibility_selection_mode_or').checked=true;
+        document.getElementById('mouseaction_mouse_mode_default').checked=true;
+        document.getElementById('mouseaction_mouse_select_mode_node').checked=true;
+        document.getElementById('mouseaction_mouse_change_position_mode_node').checked=true;
+
+        jaSwitchMouseMode("default", "noCommands");
+
+        /* align labels of label groups */
+        idbExpandAll("show");   /* for adjustment all sections must be visible to get correct width */
+        jaAdjustOptionLabelWidth(".generalOptionGroup");
+        jaAdjustOptionLabelWidth(".layoutGroup");
+        jaAdjustOptionLabelWidth(".renderingGroup");
+        jaAdjustOptionLabelWidth(".nodevisibilityGroup");
+        jaAdjustOptionLabelWidth(".edgevisibilityGroup");
+        jaAdjustOptionLabelWidth(".mouseactionGroup");
+
+        idbExpandAll("hide");
+        jaShowControl("genesofinterest","hide");
+        idbShow("genesofinterest_info","hide");
+        jaShowControl("networkdata","hide");
+        jaShowControl("subset","show");
+        jaShowControl("select","show");
+        jaShowControl("graphics","show");
+        jaShowControl("script","show");
+        jaShowControl("log","show");
+        jaShowControl("mouseaction","show");
+        jaShowControl("coloring_node","show");
+        jaShowControl("coloring_background","show");
+        jaShowControl("coloring_label","show");
+        jaShowControl("visibility_node","show");
+        jaShowControl("visibility_edge","show");
+        jaShowControl("displaysubset","show");
+        jaShowControl("managesubset","show");
+
+      } 
+
+        function jaManageStandardSubset(action) {
+          var extraNodeTypes     = [];
+          var domIdBaseName      = "standardsubset_";
+          var menuDomId          = domIdBaseName + "menu";
+          var subsetTypeDomId    = domIdBaseName + "type_radio_complete";
+          var extraNodeTypeList  = ["alleleType", "citation", "homology_analysis", "species", "go_process", "go_function", "go_component", "keggPathway", "keggPathwayGene"];
+          var nodeTypeDomNodeIds = [];
+
+          for (var i=0; i<extraNodeTypeList.length; i++) {
+            var domId = domIdBaseName + "node_type_" + extraNodeTypeList[i];
+            nodeTypeDomNodeIds.push(domId);
+          }
+
+          if (document.getElementById(menuDomId)) {
+            var menuObject    = document.getElementById(menuDomId);
+            var selectedValue = idbGetSelected(menuObject);
+            var subsetType    = "direct";
+            if (document.getElementById(subsetTypeDomId).checked) {
+              subsetType = "complete";
+            }
+            for (var i=0; i<nodeTypeDomNodeIds.length; i++) {
+              if (document.getElementById(nodeTypeDomNodeIds[i])) {
+                if (document.getElementById(nodeTypeDomNodeIds[i]).checked) {
+                  extraNodeTypes.push(document.getElementById(nodeTypeDomNodeIds[i]).value);
+                }
+              }
+            }
+            var jmolCommand = 'manageStandardSubset("' + action + '", "' + selectedValue + '", "' + subsetType + '", "' + extraNodeTypes.join("||") + '");';
+            Jmol.script(jmolJSnet3D, jmolCommand);
+          }
+          
+        }
+
+        function jaManageGenesOfInterest(action) {
+          var domIdBaseName     = "genesofinterest_";
+          var listDomId         = domIdBaseName + "list";
+          var subsetFilterDomId = domIdBaseName + "filtersubset";
+          var geneIdList        = [];
+          var geneNameList      = [];
+          var speciesList       = {};
+          var subsetFilter      = "false";
+          var errorMessage      = "";
+
+          if (action == "clear") {
+            if (document.getElementById(listDomId)) {
+              document.getElementById(listDomId).value = "";
+            }
+          } else {
+            if (document.getElementById(subsetFilterDomId)) {
+              if (document.getElementById(subsetFilterDomId).checked) {
+                subsetFilter = "true";
+              }
+            }
+            if (action == "activate") {
+              if (document.getElementById(listDomId)) {
+                var listData = document.getElementById(listDomId).value;
+                var lines    = listData.split(/[\n\r]/);
+                var lineCount = lines.length;
+                for (var i=0; i<lineCount; i++) {
+                  if (/^\s*$/.test(lines[i])) {
+                  } else {
+                    if (/^ *(\d+) *$/.test(lines[i])) {
+                      geneIdList.push(RegExp.$1);
+                    } else {
+                      if (/^ *(.*?) *\t *(.*?) *$/.test(lines[i])) {
+                        geneNameList.push(RegExp.$1 + "||" + RegExp.$2);
+                        speciesList[RegExp.$2]++;
+                      } else {
+                        if (/^ *(.*)\s+(\S+? \S+?) *$/.test(lines[i])) {
+                          geneNameList.push(RegExp.$1 + "||" + RegExp.$2);
+                          speciesList[RegExp.$2]++;
+                        } else {
+                          errorMessage += "WARNING: unknown line format in line '" + lines[i] + "' - SKIPPED";
+                        }
+                      }
+                    }
+                  }
+                }
+                if (errorMessage != "") {
+                  alert(errorMessage);
+                }
+                /* alert("GeneIDs: " + geneIdList + "\nGeneNames: " + geneNameList + "\nSpecies: " + Object.keys(speciesList)); */
+                var scriptCommand = 'genesOfInterest = [action: "' + action + '", parsed: false, subsetFilter: ' + subsetFilter + ']; genesOfInterest..ncbiGeneIds = "' + geneIdList.join("##") + '"; genesOfInterest..geneKeys = "' + geneNameList.join("##") + '"; genesOfInterest..speciesList = "' + Object.keys(speciesList).join("##") + '"; manageGenesOfInterest(genesOfInterest);';
+                Jmol.script(jmolJSnet3D, scriptCommand);
+                if (document.getElementById("genesofinterest_build_overview")) {
+                  document.getElementById("genesofinterest_build_overview").disabled = false;
+                }
+              }
+            } else {
+              if (action == "deactivate") {
+                alert("Sorry, not implemented yet");
+                if (document.getElementById("genesofinterest_build_overview")) {
+                  document.getElementById("genesofinterest_build_overview").disabled = true;
+                }
+
+              } else {
+                if (action == "overview") {
+                  var scriptCommand = 'manageGenesOfInterest("' + action + '");';
+                  Jmol.script(jmolJSnet3D, scriptCommand);
+                }
+              }
+            }
+          }
+        }
+
+        function jaManageNetworkData(action) {
+          var domIdBaseName     = "networkdata_type_";
+          var typeList      = ["lifespan", "go", "kegg", "keggGene"];
+          var fileList      = [];
+          var typeToFiles   = [];
+
+          typeToFiles["lifespan"]  = ["jsnet3d/agefactdb_network-2015_05_22-ageing_factors-lifespan_only_with_homologs-2016_12_20.txt", "jsnet3d/agefactdb_network-2015_05_22-ageing_factor_to_observation-lifespan_only_with_homologs-2016_12_20.txt", "jsnet3d/agefactdb_network-2015_05_22-lifespan_observations.txt", "jsnet3d/agefactdb_network-2015_05_22-homology_observations-with_base_af-lifespan_only.txt", "jsnet3d/agefactdb_network-2015_05_22-homology_entry_detail-lifespan_only.txt", "jsnet3d/agefactdb_network-2015_05_22-observation_to_citation-lifespan_homology_only.txt"];
+          typeToFiles["go"]        = ["jsnet3d/agefactdb-go_mapping-2014_12_18.txt"];
+          typeToFiles["kegg"]      = ["jsnet3d/agefactdb_lifespan-biosystems_kegg_info-2016_01_11-revised_2017_05_31.txt", "jsnet3d/agefactdb_lifespan-biosystems_kegg-network_data-2016_01_11.txt"];
+          typeToFiles["keggGene"] = ["jsnet3d/ncbi_gene_2016_01_06-gene_info-agefactdb_lifespan_biosystems-2016_01_12-revised_2017_05_31.txt", "jsnet3d/biosystems_kegg-ncbi_gene-network_data-2016_01_11-revised_2017_05_31.txt"];
+
+          var typeToNodeTypes = [];
+          var nodeTypeDomIdBaseName = "standardsubset_node_type_";
+
+          typeToNodeTypes["lifespan"]  = ["alleleType", "citation", "homology_analysis", "species"];
+          typeToNodeTypes["go"]        = ["go_process", "go_function", "go_component"];
+          typeToNodeTypes["kegg"]      = ["keggPathway"];
+          typeToNodeTypes["keggGene"]  = ["keggPathwayGene"];
+
+          if (action == "load") {
+            for (var i=0; i<typeList.length; i++) {
+              var type  = typeList[i];
+              var domId = domIdBaseName + type;
+              var nodeTypeAction = "hide";
+              if (document.getElementById(domId)) {
+                if (document.getElementById(domId).checked) {
+                  for (var j=0; j<typeToFiles[type].length; j++) {
+                    var file = typeToFiles[type][j];
+                    fileList.push(file);
+                  }
+                  nodeTypeAction = "show";
+                }
+              }
+
+              for (var j=0; j<typeToNodeTypes[type].length; j++) {
+                var nodeType           = typeToNodeTypes[type][j];
+                var nodeTypeDomId      = nodeTypeDomIdBaseName + nodeType;
+                var nodeTypeLabelDomId = nodeTypeDomId + "_label";
+                if (document.getElementById(nodeTypeDomId)) {
+                  document.getElementById(nodeTypeDomId).checked = false;
+                  if (nodeTypeAction == "hide") {
+                    idbHideElement(nodeTypeLabelDomId);
+                  } else {
+                    idbShowElement(nodeTypeLabelDomId);
+                  }
+                }
+              }
+            }
+            if (fileList.length > 0) {
+              var fileString = '"' + fileList.join('", "') + '"';
+              var jmolCommand = 'var startTime = now(); networkData..mode="new"; networkData..networkType="agefactdb"; networkData..fileType="tsv"; networkData..fileList = [' + fileString + ']; loadNetworkData(networkData); var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)"; logMsg([level: "info", msg: "finished loading and parsing network data" + timeMessage]); updateStandardSubsetManagementMenu(networkData);';
+console.log(jmolCommand);
+              Jmol.script(jmolJSnet3D, jmolCommand);
+              Jmol.script(jmolJSnet3D, "resetGuiAfterLoadNetworkData;");
+            } else {
+              alert("No network data selected - network data unchanged");
+            }
+          }
+        }
+
+        function jaManageLayout(action) {
+          var domIdBaseName       = "layout_";
+          var exportFormatDomName = domIdBaseName + "export_format";
+          var importFormatDomName = domIdBaseName + "import_format";
+          var importFormat        = "";
+          var exportFormat        = "";
+          var importFile          = "";
+          var exportFile          = "";
+          var jqueryExpression    = "";
+          var jmolCommand         = "";
+          var jmolCommands        = [];
+
+          jqueryExpression = 'input[name=' + exportFormatDomName + ']:checked';
+          exportFormat     = $(jqueryExpression).val();
+          jqueryExpression = 'input[name=' + importFormatDomName + ']:checked';
+          importFormat     = $(jqueryExpression).val();
+
+          switch(action) {
+            case "build":
+              jqueryExpression = 'input[name=' + domIdBaseName + 'start_coordinate_mode]:checked';
+              var startCoordinateMode    = $(jqueryExpression).val();
+              var iterationCount    = $("#layout_iteration_count").val();
+              jqueryExpression = 'input[name=' + domIdBaseName + 'tile_subnetworks]:checked';
+              var tileSubnetworks    = $(jqueryExpression).val();
+              jqueryExpression = 'input[name=' + domIdBaseName + 'display_intermediates]:checked';
+              var displayIntermediates    = $(jqueryExpression).val();
+              jmolCommand = 'layoutOptions.fr.startCoordinateMode="' + startCoordinateMode + '";';
+              jmolCommands.push(jmolCommand);
+              if (iterationCount != "") {
+                jmolCommand = 'layoutOptions.fr.iterationCount=' + iterationCount + ';';
+                jmolCommands.push(jmolCommand);
+              }
+              if (tileSubnetworks == "yes") {
+                jmolCommand = 'layoutOptions.tiled=true;';
+              } else {
+                jmolCommand = 'layoutOptions.tiled=false;';
+              }
+              jmolCommands.push(jmolCommand);
+              if (displayIntermediates == "yes") {
+                jmolCommand = 'layoutOptions.fr.displayIntermediates=true;';
+              } else {
+                jmolCommand = 'layoutOptions.fr.displayIntermediates=false;';
+              }
+              jmolCommands.push(jmolCommand);
+              jmolCommand = 'buildLayout({all}, layoutOptions);';
+              jmolCommands.push(jmolCommand);
+              jmolCommand = jmolCommands.join(" ");
+              Jmol.script(jmolJSnet3D, jmolCommand);
+              break;
+            case "export":
+              if (exportFormat != "undefined") {
+                exportFile = document.getElementById("layout_export_file").value;
+                jmolCommand = 'networkData..exportSubset=networkData..currentSubsetKey; networkData..exportFormat="' + exportFormat + '"; networkData..exportFilename="' + exportFile + '"; exportSubset(networkData);'
+                Jmol.script(jmolJSnet3D, jmolCommand);
+              } else {
+                alert("ERROR: export format not defined");
+              }
+              break;
+            case "import":
+              if (importFormat != "undefined") {
+                importFile = document.getElementById("layout_import_file").value;
+                jmolCommand = 'networkData..importSubsetKey=networkData..currentSubsetKey; networkData..importFormat="' + importFormat + '"; networkData..importFilename="' + importFile + '"; importSubsetCoordinates(networkData);'
+              } else {
+                alert("ERROR: import format not defined");
+              }
+              break;
+            default:          
+              console.log("Layout default action - UNDEFINED");
+              break;
+          }
+        }
+
+        function jaGetRadioGroupValue(groupName) {
+          var groupQuery = "input[name='" + groupName + "']:checked";
+          var groupValue = $(groupQuery).val();
+          return groupValue;
+        }
+
+        function jaAdjustOptionLabelWidth(cssClass, mode) {
+          var maxWidth = 0;
+          if (!mode) {
+            mode = "changeDisplay";
+          }
+          if (mode == "changeDisplay") {
+            $(cssClass).css('display', 'inline');
+          }
+          $(cssClass).each(function() {
+             var currentWidth = $(this).outerWidth(true);
+             maxWidth = Math.max(maxWidth, currentWidth);
+            });
+          $(cssClass).css('width', maxWidth);
+          if (mode == "changeDisplay") {
+            $(cssClass).css('display', 'inline-block');
+          }
+        }
+
+   </script>
+
+
+    <table width="100%" cellpadding="0" cellspacing="0">
+     <tbody><tr>
+      <td id="dependant_interface" valign="top">
+
+        
+<table class="Menu" style="margin-top:0px;" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td class="menuBarLeft" id="menuBarLeft" style="padding-top:2px; padding-bottom:2px; color: white;"><nobr>&nbsp;<span id="page_name"></span></nobr></td>
+      <td class="menuBarCenter" id="menuBarCenter" style="padding-top:2px; padding-bottom:2px; color: white;"><nobr></nobr></td>
+      <td class="menuBarRight" id="menuBarRight" style="padding-top:2px; padding-bottom:2px; color: white;"><nobr><b>JSnet3D-AgeFactDB</b></nobr></td>
+    </tr>
+ </tbody>
+</table>
+
+        
+	<form style="margin-top:0px;margin-left:0px;margin-right:0px;margin-bottom:0px; display:inline;" name="control" action="javascript:">
+        <div style="margin-top:0.5ex; margin-bottom:0.3ex;">
+      <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Interface type:</label>
+          <label class="jsnet3d"><input type="radio" name="interface_type" id="interface_type_basic" value="basic" onClick='interfaceType=jaGetRadioGroupValue("interface_type"); jaSwitchInterface(interfaceType)'> basic</label>
+          <label class="jsnet3d"><input type="radio" name="interface_type" id="interface_type_advanced" value="advanced" onClick='interfaceType=jaGetRadioGroupValue("interface_type"); jaSwitchInterface(interfaceType)'>advanced</label>
+        <a title="Show Jena3D help page" id="help_link" class="help" href="http://jena3d.fli-leibniz.de/doc/Jena3D_help.html" target="_blank" style="display: none;">Help</a>
+       </div>
+       <div>
+       <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Standard views:</label>
+            <ul class="jsnet3d">
+              <li style="text-align:left"><input title="" class="jmol" id="view_default" value="Default" onclick='Jmol.script(jmolJSnet3D, script_base["default_view_default"])' style="display:inline" type="button"></li>
+              <li><input class="jmol" id="view_gene_of_interest" value="Genes of interest" onclick='Jmol.script(jmolJSnet3D, script_base["default_view_gene_of_interest"])' type="button"></li>
+              <li><input class="jmol" id="view_labelled" value="Labelled" onclick='Jmol.script(jmolJSnet3D, script_base["default_view_labelled"])' type="button"></li>
+          </ul>
+       </div>
+       <div>
+       <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Hover mode:</label>
+         <label class="jsnet3d"><input type="radio" name="hover_mode" id="hover_mode_enhance" value="enhance" checked="checked" onClick='hoverMode=jaGetRadioGroupValue("hover_mode"); Jmol.script(jmolJSnet3D, script_base["hover_mode"][hoverMode])'> enhance connected nodes</label>
+         <label class="jsnet3d"><input type="radio" name="hover_mode" id="hover_mode_only" value="only" onClick='hoverMode=jaGetRadioGroupValue("hover_mode"); Jmol.script(jmolJSnet3D, script_base["hover_mode"][hoverMode])'> show only connected nodes</label>
+       </div>
+       <div>
+       <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Hover range:</label>
+         <label class="jsnet3d"><input type="radio" name="hover_range" id="hover_range_neighbour" value="neighbours" checked="checked" onClick='hoverRange=jaGetRadioGroupValue("hover_range"); Jmol.script(jmolJSnet3D, script_base["hover_range"][hoverRange])'> neighbours</label>
+         <label class="jsnet3d"><input type="radio" name="hover_range" id="hover_range_subnetwork" value="subnetwork" onClick='hoverRange=jaGetRadioGroupValue("hover_range"); Jmol.script(jmolJSnet3D, script_base["hover_range"][hoverRange])'> subnetwork</label>
+          <label class="jsnet3d advanced_inline">- neighbour depth: <input type="text" id="hover_depth" size="1" value="1" onChange='Jmol.script(jmolJSnet3D, "hoverRangeNeighbourDistance=" + document.getElementById("hover_depth").value + ";");'></label>
+         <input type="button" title="Set neighbour depth for hover range 'neighbour'" class="jmol advanced_inline" id="hover_depth_set" value="set depth" onclick='Jmol.script(jmolJSnet3D, "hoverRangeNeighbourDistance=" + document.getElementById("hover_depth").value + ";");'>
+       </div>
+       <div>
+         <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Miscellaneous:</label>
+       <label><input title="Rotate automatically around Y-axis (on/off)" class="jmol" id="spin_checkbox" value="on" onclick='if (this.value=="on") { this.value="off"; Jmol.script(jmolJSnet3D, "spin on") } else { this.value="on"; Jmol.script(jmolJSnet3D, "spin off") }' type="checkbox">spin</label>
+        <label><input title="Mark selected atoms by a yellow halo (on/off)" class="jmol" id="selected_checkbox" value="selected" onclick='if (this.value=="selected") { this.value="normal"; Jmol.script(jmolJSnet3D, "set selectionHalos on;") } else { this.value="selected"; Jmol.script(jmolJSnet3D, "set selectionHalos off;") }' type="checkbox">mark&nbsp;selected&nbsp;part</label>
+        <label><input title="Zoom and center selected atoms automatically (after using a control)" class="jmol" id="autozoom_checkbox" value="on" onclick='if (this.value=="on") { this.value="off"; auto_zoom_script="zoomto 0.7 (selected) 0;"; Jmol.script(jmolJSnet3D, auto_zoom_script); } else { this.value="on"; auto_zoom_script=""; }' type="checkbox">auto&nbsp;zoom/center</label>
+        <label><input title="Set perspective depth (on/off); should be off when node/edge sizes represent values" class="jmol" id="perspective_depth_checkbox" value="off" onclick='if (this.value=="off") { this.value="on"; Jmol.script(jmolJSnet3D, "set perspectiveDepth off;") } else { this.value="off"; Jmol.script(jmolJSnet3D, "set perspectiveDepth on;") }' type="checkbox">perspective&nbsp;depth</label>
+
+   <span id="description_info" style="display:none"><p>
+</p><table class="atlasNormal" valign="left" style="font-size:100%;" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr><th class="atlasNormalSide">Uploaded file</th><th class="atlasNormalSide">&nbsp;:&nbsp;&nbsp;</th><td class="atlasNormalSide"></td><td>&nbsp;</td></tr>
+
+</tbody></table><p></p>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;<i>[&nbsp;<a href="javascript:idbShow('description_info')" target="_self">close entry info</a>&nbsp;]</i>
+        </span>
+       </div>
+<hr class="separator">
+        <h4><span class="expander" onClick='jaShowControl("genesofinterest","toggle")'><img class="expander" id="genesofinterest_show" src="plus.gif" style="display: none;"><img class="expander" id="genesofinterest_hide" src="minus.gif"> Genes of Interest</span>  <a title="Show or hide 'Genes of Interest' information" id="genesofinterest_info_link" href="javascript:idbShow('genesofinterest_info', 'block')" target="_self" style="display:inline; margin-left: 2em;">Info</a></h4>
+        <div  id="genesofinterest_controls" style="margin-left: 1em;">
+	    <label>Enter a Gene list, e.g. differentially expressed genes:<br><textarea id="genesofinterest_list" style="width:32em; height:10em; margin-left: 1.0ex; margin-top: 0.6ex; margin-bottom:0.7ex;"></textarea></label>
+	    <br><span class="atlasComment">Format: <b>one gene per line;</b> NCBI Gene ID or gene symbol + species (separated by a <i>Tab</i> or <i>Space</i> character)</span>
+            <br><label style="margin-left: 2em;"><input type="checkbox" id="genesofinterest_filtersubset" value="filter_subset" checked="checked"> filter subsets</label>
+            <br><span style="margin-left: 1em; font-weight: bold;">Action:</span>
+            <input title="Read gene list and activate it"  class="jmol" id="genesofinterest_activate"     value="activate list"     onclick='jaManageGenesOfInterest("activate")'     type="button">
+            <input title="Deactivate gene list"  class="jmol" id="genesofinterest_deactivate"     value="deactivate list"     onclick='jaManageGenesOfInterest("deactivate")'     type="button">
+            <input title="Clear gene list (activation status is not changed)"  class="jmol" id="genesofinterest_clear"     value="clear list"     onclick='jaManageGenesOfInterest("clear")'     type="button">
+            <input title="Build overview subset"  class="jmol" id="genesofinterest_build_overview"     value="build overview subset"     onclick='jaManageGenesOfInterest("overview")'     type="button" disabled="disabled">
+        </div>
+        <div id="genesofinterest_info" style="display:none;">
+           <div id="genesofinterest_info_content" class="jmolComment" style="margin-top: 0.6em; margin-bottom: 0.4em; margin-left: 1em;font-style: italic; overflow:auto; max-height: 500px;">Currently no genes of interest are defined.</div>
+           <i>[&nbsp;<a href="javascript:idbShow('genesofinterest_info', 'block')" target="_self">close Genes of Interest info</a>&nbsp;]</i>
+        </div>
+        <h4><span class="expander" onClick='jaShowControl("networkdata","toggle")'><img class="expander" id="networkdata_show" src="plus.gif" style="display: none;"><img class="expander" id="networkdata_hide" src="minus.gif"> Network Data</span></h4>
+        <div  id="networkdata_controls" style="margin-left: 1em;">
+           <label><input type="checkbox" class="jmol" id="networkdata_type_lifespan" value="lifespan" checked="checked" disabled="disabled">AgeFactDB lifespan</label>
+	   <label><input type="checkbox" class="jmol" id="networkdata_type_go" value="go">Gene Ontology (GO)</label>
+           <label><input type="checkbox" class="jmol" id="networkdata_type_kegg" value="kegg">KEGG  pathways</label>
+           <label><input type="checkbox" class="jmol" id="networkdata_type_keggGene" value="keggGene">KEGG  pathway genes</label>
+           <br><span style="margin-left: 1em; font-weight: bold;">Action:</span>
+              <input title="Load selected network data (resets all subsets!)"             class="jmol" id="networkdata_load"     value="load"     onclick='jaManageNetworkData("load")' type="button">
+        </div>
+
+        <h4><span class="expander" onClick='jaShowControl("subset","toggle")'><img class="expander" id="subset_show" src="plus.gif" style="display: none;"><img class="expander" id="subset_hide" src="minus.gif"> Subsets<span class="atlasComment">(<span id="subset_count">0</span>)</span></span></h4>
+        <div id="subset_controls" style="margin-left: 1.4em;">
+          <h4><span class="expander" onClick='jaShowControl("displaysubset","toggle")'><img class="expander"id="displaysubset_show"  src="plus.gif" style="display: none;"><img class="expander" id="displaysubset_hide" src="minus.gif"> Display</span></h4>
+          <div id="displaysubset_controls" style="margin-left: 1.0em;">
+            <select class="jmol" id="displaysubset_menu" onchange=' Jmol.script(jmolJSnet3D, jsnet3dSubsetControl("menu"))'>
+              <option value="full">Full</option>
+              <option value="default" selected="selected">Default</option>
+            </select>
+            <input class="jmol" id="displaysubset_prev" value="show" title="Show selected subset" onclick='Jmol.script(jmolJSnet3D, jsnet3dSubsetControl("menu"))' type="button"><input class="jmol" id="displaysubset_prev" value="&lt;" title="Show previous subset" onclick='Jmol.script(jmolJSnet3D, jsnet3dSubsetControl("prev"))' type="button"><input title="Show next susbset" class="jmol" id="displaysubset_next" value="&gt;" onclick='Jmol.script(jmolJSnet3D, jsnet3dSubsetControl("next"))' type="button">
+            <span id="displaysubset_controls_adv" class="advanced_inline" style="display:none; margin-left: 1em;"></span>
+          </div>
+
+          <h4><span class="expander" onClick='jaShowControl("managesubset","toggle")'><img class="expander" id="managesubset_show" src="plus.gif"style="display: none;"><img class="expander" id="managesubset_hide" src="minus.gif"> Management</span></h4>
+          <div id="managesubset_controls" style="margin-left: 1.0em;">
+            <div style="margin-left: 1em; margin-top: 0.2em;">
+            <h4>Standard subset</h4>
+              <select class="jmol" id="standardsubset_menu" onchange='menu_state["standardsubset_menu"] = idbGetSelected(this);' style="margin-left: 1em;">
+                <option value="undefined">NO SUBSET DEFINED YET</option>
+              </select>
+            <input class="jmol" id="standardsubset_prev" value="&lt;" title="Previous standard subset" onclick='Jmol.script(jmolJSnet3D, idbMenuBrowser("previous","standardsubset"))' type="button"><input title="Next standard susbset" class="jmol" id="standardsubset_next" value="&gt;" onclick='Jmol.script(jmolJSnet3D, idbMenuBrowser("next","standardsubset"))' type="button">
+
+	    <br><span style="margin-left: 2em;">Neighbourhood:</span> <label><input type="radio" class="jmol" name="standardsubset_type" id="standardsubset_type_radio_direct" value="direct" checked="checked">direct</label>
+              <label><input type="radio" class="jmol" name="standardsubset_type" id="standardsubset_type_radio_complete" value="complete">complete</label>
+              <br><span style="margin-left: 2em;">Additional node types:</span>
+              <label id="standardsubset_node_type_alleleType_label"><input type="checkbox" class="jmol" id="standardsubset_node_type_alleleType" value="alleleType" checked="checked">alleleType</label>
+              <label id="standardsubset_node_type_citation_label"><input type="checkbox" class="jmol" id="standardsubset_node_type_citation" value="citation" checked="checked">citation</label>
+              <label id="standardsubset_node_type_homology_analysis_label"><input type="checkbox" class="jmol" id="standardsubset_node_type_homology_analysis" value="homology_analysis" checked="checked">homology analysis observation</label>
+              <label id="standardsubset_node_type_species"><input type="checkbox" class="jmol" id="standardsubset_node_type_species" value="species">species</label>
+              <label id="standardsubset_node_type_keggPathway_label" style="display: none;"><input type="checkbox" class="jmol" id="standardsubset_node_type_keggPathway" value="keggPathway">KEGG pathway</label>
+              <label id="standardsubset_node_type_keggPathwayGene_label" style="display: none;"><input type="checkbox" class="jmol" id="standardsubset_node_type_keggPathwayGene" value="keggPathwayGene">KEGG pathway gene</label>
+              <label id="standardsubset_node_type_go_process_label" style="display: none;"><input type="checkbox" class="jmol" id="standardsubset_node_type_go_process" value="go_process">GO process term</label>
+              <label id="standardsubset_node_type_go_function_label" style="display: none;"><input type="checkbox" class="jmol" id="standardsubset_node_type_go_function" value="go_function">GO function term</label>
+              <label id="standardsubset_node_type_go_component_label" style="display: none;"><input type="checkbox" class="jmol" id="standardsubset_node_type_go_component" value="go_component">GO component term</label>
+              <br><span style="margin-left: 1em; font-weight: bold;">Action:</span>
+              <input title="Add a standard subset "               class="jmol" id="standardsubset_add"     value="add"     onclick='jaManageStandardSubset("add")'     type="button">
+              <input style="display: none;" title="Delete the current standard subset "  class="jmol" id="standardsubset_delete"  value="delete"  onclick='jaManageStandardSubset("delete")'  type="button">
+            </div>
+            <div style="margin-left: 1em; margin-top: 0.5em; display: none">
+              <h5>Custom subset</h5>
+              <span style="margin-left: 1em; font-weight: bold;">Action:</span>
+              <input title="Add the custom subset "             class="jmol" id="customsubset_add"     value="add"     onclick='Jmol.script(jmolJSnet3D, "print \"Sorry, not implemented yet\";")' type="button">
+              <input title="Delete the current custom subset "  class="jmol" id="customsubset_delete"  value="delete"  onclick='Jmol.script(jmolJSnet3D, "print \"Sorry, not implemented yet\";")' type="button">
+            </div>
+          </div>
+
+        </div>
+
+        <h4><span class="expander" onClick='jaShowControl("layout","toggle")'><img class="expander" id="layout_show" src="plus.gif" style="display: none;"><img class="expander" id="layout_hide" src="minus.gif"> Layout</span></h4>
+        <div id="layout_controls" style="margin-left: 1em;">
+          <div class=jsnet3d" style="margin-left: 1em; margin-top: 0.2em;">
+            <h4>Options</h4>
+        <div class="jsnet3d">
+          <label class="jsnet3d layoutGroup">Start coordinates:</label>
+            <label class="jsnet3d"><input type="radio" name="layout_start_coordinate_mode" id="layout_start_coordinate_mode_random" value="random" checked="checked"> random</label>
+            <label class="jsnet3d"><input type="radio" name="layout_start_coordinate_mode" id="layout_start_coordinate_mode_current" value="current"> current</label>
+        </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d layoutGroup">Iteration count:</label>
+            <label class="jsnet3d"><input type="text" id="layout_iteration_count" size="6" value="100"></label>
+         </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d layoutGroup">Tile subnetworks:</label>
+            <label class="jsnet3d"><input type="radio" name="layout_tile_subnetworks" id="layout_tile_subnetworks_yes" value="yes"> yes</label>
+            <label class="jsnet3d"><input type="radio" name="layout_tile_subnetworks" id="layout_tile_subnetworks_no" value="no" checked="checked"> no</label>
+        </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d layoutGroup">Display intermediates:</label>
+            <label class="jsnet3d"><input type="radio" name="layout_display_intermediates" id="layout_display_intermediates_yes" value="yes" checked="checked"> yes</label>
+            <label class="jsnet3d"><input type="radio" name="layout_display_intermediates" id="layout_display_intermediates_no" value="no"> no</label>
+        </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d layoutGroup">Export format:</label>
+            <label class="jsnet3d"><input type="radio" name="layout_export_format" id="layout_export_format_biolayout" value="pairTSV" checked="checked"> BiolayoutExpress 3D <span class="i">(node key pairs)</span></label>
+            <label class="jsnet3d"><input type="radio" name="layout_export_format" id="layout_export_format_tsv" value="coordinateTSV"'> tab-separated values <span class="i">(node keys + coordinates)</span></label>
+        </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d layoutGroup">Export file:</label>
+            <label class="jsnet3d"><input type="text" id="layout_export_file" size="60" value="default-pairTSV.txt"> <span class="i">(including path)</span></label>
+         </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d layoutGroup">Import format:</label>
+            <label class="jsnet3d"><input type="radio" name="layout_import_format" id="layout_import_format_biolayout" value="biolayout3d" checked="checked"> BiolayoutExpress 3D layout</label>
+            <label class="jsnet3d"><input type="radio" name="layout_import_format" id="layout_import_format_tsv" value="coordinateTSV"> tab-separated values <span class="i">(node keys + coordinates)</span></label>
+         </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d layoutGroup">Import file:</label>
+            <label class="jsnet3d"><input type="text" id="layout_import_file" size="60" value="default-biolayout.layout"> <span class="i">(including path)</span></label>
+         </div>
+          <span style="margin-left: 1em; font-weight: bold;">Action:</span>
+              <input title="Build layout "             class="jmol" id="layout_build"     value="build"     onclick='jaManageLayout("build");' type="button">
+              <input title="Export "  class="jmol" id="layout_export"  value="export"  onclick='jaManageLayout("export");' type="button">
+              <input title="Export "  class="jmol" id="layout_import"  value="import"  onclick='jaManageLayout("import");' type="button">
+          </div>
+        </div>
+
+<hr class="separator">
+
+        <h4><span class="expander" onClick='jaShowControl("nodeinfo","toggle")'><img class="expander"id="nodeinfo_show" s src="plus.gif" style="display: none;"><img class="expander" id="nodeinfo_hide" src="minus.gif"> Node Info</span></h4>
+        <div id="nodeinfo_controls" style="margin-left: 1em;">
+          <div id="nodeinfo_content" style="margin-top: 0.5em;">
+             <span class="atlasCommentItalic">Left-click at a node in mouse mode 'default' to see it's info here</span>
+          </div>
+        </div>
+
+<hr class="separator">
+
+        <h4><span class="expander" onClick='jaShowControl("select","toggle")'><img class="expander"id="select_show" s src="plus.gif" style="display: none;"><img class="expander" id="select_hide" src="minus.gif"> Node Selection<span class="atlasCommentItalic">(currently selected nodes: <span id="selection_count" style="white-space: pre;">all</span>&nbsp;)</span></span></h4>
+        <div id="select_controls" style="margin-left: 1em;">
+	  <select class="jmol" id="select_menu" onchange="menu_state[&quot;select_menu&quot;] = idbGetSelected(this); Jmol.script(jmolJSnet3D, script_base[menu_state[&quot;select_menu&quot;]][&quot;menu&quot;])">
+	    <option value="select_ageingfactor">Ageing Factor</option>
+	    <option value="select_ageingfactor">Putative Ageing Factor</option>
+	    <option value="select_ageingfactor">Ageing Factor or Putative Ageing Factor</option>
+	    <option value="select_gene">Gene</option>
+	    <option value="select_compound">Compound</option>
+	    <option value="select_otherfactor">Other Factor</option>
+	    <option value="select_observation">Observation</option>
+	    <option value="select_observationlifespan">Lifespan Observation</option>
+	    <option value="select_observationincreased">Lifespan Observation - increased</option>
+            <option value="select_observationdecreased">Lifespan Observation - decreased</option>
+            <option value="select_observationnone">Lifespan Observation - unchanged</option>
+            <option value="select_observationhomology">Homology Analysis Observation</option>
+            <option value="select_species">Species</option>
+            <option value="select_alleletype">Allele type</option>
+            <option value="select_citation">Citation</option>
+	    <option value="select_goi">Gene of Interest</option>
+	    <option value="select_goihom">Gene of Interest Homology Base</option>
+	    <option value="select_goihomboth">Gene of Interest or Homology Base</option>
+            <option value="select_goterm">GO term</option>
+            <option value="select_gotermprocess">GO Process Term</option>
+            <option value="select_gotermfunction">GO Function Term</option>
+            <option value="select_gotermcompartment">GO Compartment Term</option>
+            <option value="select_neighbour">Neighbour Node of Selected Nodes</option>
+            <option value="select_singleneighbour">Node with a single Neighbour Node</option>
+            <option value="select_displayed">Displayed Node</option>
+            <option value="select_none">No Node</option>
+            <option value="select_all" selected="selected">All Nodes</option>
+          </select>
+        &nbsp;<input class="jmol" id="selection_only" value="select" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["select_menu"]]["only"])' type="button"><span id="selection_controls_adv" class="advanced_inline" style="display:none"><input class="jmol" id="selection_add" value="&nbsp;+&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["select_menu"]]["add"])' type="button"><input class="jmol" id="selection_subtract" value="&nbsp;-&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["select_menu"]]["subtract"])' type="button"><input class="jmol" id="selection_and" value="&nbsp;&amp;&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["select_menu"]]["and"])' type="button"><input class="jmol" id="selection_not" value="not" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["select_menu"]]["not"])' type="button"></span>
+        </div>
+
+        <h4><span class="expander" onClick='jaShowControl("rendering","toggle")'><img class="expander" id="rendering_show" src="plus.gif" style="display: none;"><img class="expander" id="rendering_hide" src="minus.gif"> Rendering</span></h4>
+        <div id="rendering_controls" style="margin-left: 1em;">
+        <div class="jsnet3d">
+          <label class="jsnet3d renderingGroup">Shape <span class="i">(selected nodes)</span> :</label>
+          <select class="jmol" id="render_menu" onchange='menu_state["render_menu"] = idbGetSelected(this); Jmol.script(jmolJSnet3D, script_base[menu_state["render_menu"]]["menu"])'><option selected="selected" value="render_Spacefill">Sphere</option><option value="render_Dots">Dotted sphere</option><option value="render_Halo">Halo</option><option value="render_Wireframe">Edges</option><option value="render_none">None</option></select>
+
+       &nbsp;&nbsp;<input class="jmol" id="render_on" value="on" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["render_menu"]]["on"])' type="button"><input class="jmol" id="render_only" value="only" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["render_menu"]]["only"])' type="button"><input class="jmol" id="render_trans" value="transparent" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["render_menu"]]["transparent"])' type="button"><input class="jmol" id="render_off" value="off" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["render_menu"]]["off"])' type="button">
+         </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d renderingGroup">Node size <span class="i">(selected nodes)</span> :</label>
+          <label class="jsnet3d"><input type="radio" name="rendering_node_size" id="rendering_node_size_type" value="type" checked="checked" onclick='var sf=document.getElementById("rendering_node_scaling_factor").value; if (sf != "") { var jmolCommand="setScale([node: " + sf + "]);"; Jmol.script(jmolJSnet3D, jmolCommand) }'> by node type</label>
+          <label class="jsnet3d"><input type="radio" name="rendering_node_size" id="rendering_node_size_lifespan" value="lifespan" onclick='var sf=document.getElementById("rendering_node_size_scaling_factor").value; if (sf != "") { var jmolCommand="setSizeByChange(\"node\"," + sf + ");"; Jmol.script(jmolJSnet3D, jmolCommand) }'> by lifespan change</label>
+          <label class="jsnet3d"><input type="radio" name="rendering_node_size" id="rendering_node_size_degree" value="degree" onclick='var sf=document.getElementById("rendering_node_size_scaling_factor").value; if (sf != "") { var jmolCommand="setSizeByDegree(\"node\"," + sf + ");"; Jmol.script(jmolJSnet3D, jmolCommand) }'> by edge count</label>
+            <label class="jsnet3d advanced_inline"> <span class="i">scaling factor</span> <input type="text" id="rendering_node_size_scaling_factor" size="6" value="0.3"></label>
+         </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d renderingGroup">Edge size <span class="i">(selected nodes)</span> :</label>
+          <label class="jsnet3d"><input type="radio" name="rendering_edge_size" id="rendering_edge_size_uniform" value="uniform" checked="checked" onclick='var sf=document.getElementById("rendering_edge_scaling_factor").value; if (sf != "") { var jmolCommand="setScale([edge: " + sf + "]);"; Jmol.script(jmolJSnet3D, jmolCommand) }'> uniform</label>
+          <label class="jsnet3d"><input type="radio" name="rendering_edge_size" id="rendering_edge_size_lifespan" value="lifespan" onclick='var sf=document.getElementById("rendering_edge_size_scaling_factor").value; if (sf != "") { var jmolCommand="setSizeByChange(\"edge\"," + sf + ");"; Jmol.script(jmolJSnet3D, jmolCommand) }'> by lifespan change</label>
+          <label class="jsnet3d"><input type="radio" name="rendering_edge_size" id="rendering_edge_size_edge_count" value="edge_count" onclick='var sf=document.getElementById("rendering_edge_size_scaling_factor").value; if (sf != "") { var jmolCommand="setSizeByDegree(\"edge\"," + sf + ");"; Jmol.script(jmolJSnet3D, jmolCommand) }'> by edge count</label>
+            <label class="jsnet3d advanced_inline"> <span class="i">scaling factor</span> <input type="text" id="rendering_edge_size_scaling_factor" size="6" value="0.5"></label>
+         </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d renderingGroup">Node scaling factor <span class="i">(all nodes)</span> :</label>
+            <label class="jsnet3d"><input type="text" id="rendering_node_scaling_factor" size="6" value="3.0"></label>
+            <input class="jmol" id="rendering_node_scaling_factor_apply" value="apply" onclick='var sf=document.getElementById("rendering_node_scaling_factor").value; if (sf != "") { var jmolCommand="setScale([node: " + sf + "]);"; Jmol.script(jmolJSnet3D, jmolCommand) }' type="button">
+         </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d renderingGroup">Edge scaling factor <span class="i">(all edges)</span> :</label>
+            <label class="jsnet3d"><input type="text" id="rendering_edge_scaling_factor" size="6" value="0.05"></label>
+            <input class="jmol" id="rendering_edge_scaling_factor_apply" value="apply" onclick='var sf=document.getElementById("rendering_edge_scaling_factor").value; if (sf != "") { var jmolCommand="setScale([edge: " + sf + "]);"; Jmol.script(jmolJSnet3D, jmolCommand) }' type="button">
+         </div>
+        </div>
+
+       <h4><span class="expander" onClick='jaShowControl("coloring","toggle")'><img class="expander" id="coloring_show" src="plus.gif" style="display: none;"><img class="expander" id="coloring_hide" src="minus.gif"> Coloring<span class="atlasCommentItalic">(selected nodes)</span></span></h4>
+       <div id="coloring_controls" style="margin-left: 1em;">
+       <h4><span class="expander" onClick='jaShowControl("coloring_node","toggle")'><img class="expander" id="coloring_node_show" src="plus.gif" style="display: none;"><img class="expander" id="coloring_node_hide" src="minus.gif"> Node/Edge<span class="atlasCommentItalic">(selected nodes)</span></span></h4>
+       <div id="coloring_node_controls" style="margin-left: 1em;">
+       <span id="coloring_controls_adv" class="advanced_inline" style="display:none"><select class="jmol" id="render_color_menu" onchange="idbSetRenderColorType(this)"><option value="">Sphere/Edge</option><option value="Dots">Dotted sphere</option><option value="render_Halo">Halo</option><option selected="selected" value="all">All rendering types</option></select>
+</span>
+       <select class="jmol" id="color_menu" onchange='menu_state["color_menu"] = idbGetSelected(this); Jmol.script(jmolJSnet3D, script_base[menu_state["color_menu"]]["menu"])'>
+         <option selected="selected" value="color_subnetwork">by Subnetwork </option>
+
+         <option value="color_nodetype">by Node type         </option>
+         <option value="color_lifespanchangequalitative">by Lifespan change - qualitative      </option>
+         <option value="color_custom">by Custom color        </option>
+       </select>
+       <input class="jmol" id="color_on" value="on" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["color_menu"]]["on"])' type="button">
+       <input class="jmol" id="color_chooser_molecule" size="16" value="burlywood" onclick='javascript:idbColorChooser(color_chooser_action,"molecule")' style="background-color:burlywood" readonly="readonly" type="text">
+</div>
+
+        <h4><span class="expander" onClick='jaShowControl("coloring_background","toggle")'><img class="expander" id="coloring_background_show" src="plus.gif" style="display: none;"><img class="expander" id="coloring_background_hide" src="minus.gif"> Background</span></h4>
+        <div id="coloring_background_controls" style="margin-left: 1em;">
+       <input class="jmol" id="background_default"  value="default" onclick='Jmol.script(jmolJSnet3D, "background [240,240,240];")' type="button">
+       <input class="jmol" id="background_black"    value="black"   onclick='Jmol.script(jmolJSnet3D, "background black;")' type="button">
+       <input class="jmol" id="background_white"    value="white"   onclick='Jmol.script(jmolJSnet3D, "background white;")' type="button">
+       <input class="jmol" id="background_color_on" value="other"   onclick='Jmol.script(jmolJSnet3D, "background " + document.getElementById("color_chooser_background").value + ";")' type="button">
+       <input class="jmol" id="color_chooser_background" size="16" value="mediumseagreen" onclick='javascript:idbColorChooser(color_chooser_action,"background")' style="background-color:mediumseagreen" readonly="readonly" type="text">
+        </div>
+        </div>
+
+        <span id="color_chooser" style="display:none">
+         <br>
+        <table>
+          <tbody><tr>
+            <td colspan="20" align="left"><i><b>&nbsp;&nbsp;Choose <span id="molecule_color" style="display:inline">node/edge</span><span id="background_color" style="display:none">background</span> color...</b> &nbsp;&nbsp;[&nbsp;<a href="javascript:idbColorChooser('hide')" title="Close color chooser" target="_self">close</a>&nbsp;]</i></td>
+          </tr>
+          <tr>
+            <td bgcolor="#F0F8FF"><a href="javascript:idbColorChooser('aliceblue')" title="aliceblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FAEBD7"><a href="javascript:idbColorChooser('antiquewhite')" title="antiquewhite" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#00FFFF"><a href="javascript:idbColorChooser('aqua')" title="aqua" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#7FFFD4"><a href="javascript:idbColorChooser('aquamarine')" title="aquamarine" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#F0FFFF"><a href="javascript:idbColorChooser('azure')" title="azure" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#F5F5DC"><a href="javascript:idbColorChooser('beige')" title="beige" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFE4C4"><a href="javascript:idbColorChooser('bisque')" title="bisque" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#000000"><a href="javascript:idbColorChooser('black')" title="black" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFEBCD"><a href="javascript:idbColorChooser('blanchedalmond')" title="blanchedalmond" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#0000FF"><a href="javascript:idbColorChooser('blue')" title="blue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#8A2BE2"><a href="javascript:idbColorChooser('blueviolet')" title="blueviolet" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#A52A2A"><a href="javascript:idbColorChooser('brown')" title="brown" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#DEB887"><a href="javascript:idbColorChooser('burlywood')" title="burlywood" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#5F9EA0"><a href="javascript:idbColorChooser('cadetblue')" title="cadetblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#7FFF00"><a href="javascript:idbColorChooser('chartreuse')" title="chartreuse" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#D2691E"><a href="javascript:idbColorChooser('chocolate')" title="chocolate" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FF7F50"><a href="javascript:idbColorChooser('coral')" title="coral" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#6495ED"><a href="javascript:idbColorChooser('cornflowerblue')" title="cornflowerblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFF8DC"><a href="javascript:idbColorChooser('cornsilk')" title="cornsilk" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#DC143C"><a href="javascript:idbColorChooser('crimson')" title="crimson" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+          </tr>
+          <tr>
+            <td bgcolor="#00FFFF"><a href="javascript:idbColorChooser('cyan')" title="cyan" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#00008B"><a href="javascript:idbColorChooser('darkblue')" title="darkblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#008B8B"><a href="javascript:idbColorChooser('darkcyan')" title="darkcyan" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#B8860B"><a href="javascript:idbColorChooser('darkgoldenrod')" title="darkgoldenrod" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#A9A9A9"><a href="javascript:idbColorChooser('darkgray')" title="darkgray" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#006400"><a href="javascript:idbColorChooser('darkgreen')" title="darkgreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#BDB76B"><a href="javascript:idbColorChooser('darkkhaki')" title="darkkhaki" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#8B008B"><a href="javascript:idbColorChooser('darkmagenta')" title="darkmagenta" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#556B2F"><a href="javascript:idbColorChooser('darkolivegreen')" title="darkolivegreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FF8C00"><a href="javascript:idbColorChooser('darkorange')" title="darkorange" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#9932CC"><a href="javascript:idbColorChooser('darkorchid')" title="darkorchid" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#8B0000"><a href="javascript:idbColorChooser('darkred')" title="darkred" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#E9967A"><a href="javascript:idbColorChooser('darksalmon')" title="darksalmon" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#8FBC8F"><a href="javascript:idbColorChooser('darkseagreen')" title="darkseagreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#483D8B"><a href="javascript:idbColorChooser('darkslateblue')" title="darkslateblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#2F4F4F"><a href="javascript:idbColorChooser('darkslategray')" title="darkslategray" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#00CED1"><a href="javascript:idbColorChooser('darkturquoise')" title="darkturquoise" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#9400D3"><a href="javascript:idbColorChooser('darkviolet')" title="darkviolet" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FF1493"><a href="javascript:idbColorChooser('deeppink')" title="deeppink" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#00BFFF"><a href="javascript:idbColorChooser('deepskyblue')" title="deepskyblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+          </tr>
+          <tr>
+            <td bgcolor="#696969"><a href="javascript:idbColorChooser('dimgray')" title="dimgray" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#1E90FF"><a href="javascript:idbColorChooser('dodgerblue')" title="dodgerblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#B22222"><a href="javascript:idbColorChooser('firebrick')" title="firebrick" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFFAF0"><a href="javascript:idbColorChooser('floralwhite')" title="floralwhite" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#228B22"><a href="javascript:idbColorChooser('forestgreen')" title="forestgreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FF00FF"><a href="javascript:idbColorChooser('fuchsia')" title="fuchsia" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#DCDCDC"><a href="javascript:idbColorChooser('gainsboro')" title="gainsboro" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#F8F8FF"><a href="javascript:idbColorChooser('ghostwhite')" title="ghostwhite" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFD700"><a href="javascript:idbColorChooser('gold')" title="gold" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#DAA520"><a href="javascript:idbColorChooser('goldenrod')" title="goldenrod" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#808080"><a href="javascript:idbColorChooser('gray')" title="gray" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#008000"><a href="javascript:idbColorChooser('green')" title="green" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#ADFF2F"><a href="javascript:idbColorChooser('greenyellow')" title="greenyellow" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#F0FFF0"><a href="javascript:idbColorChooser('honeydew')" title="honeydew" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FF69B4"><a href="javascript:idbColorChooser('hotpink')" title="hotpink" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#CD5C5C"><a href="javascript:idbColorChooser('indianred')" title="indianred" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#4B0082"><a href="javascript:idbColorChooser('indigo')" title="indigo" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFFFF0"><a href="javascript:idbColorChooser('ivory')" title="ivory" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#F0E68C"><a href="javascript:idbColorChooser('khaki')" title="khaki" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#E6E6FA"><a href="javascript:idbColorChooser('lavender')" title="lavender" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+          </tr>
+          <tr>
+            <td bgcolor="#FFF0F5"><a href="javascript:idbColorChooser('lavenderblush')" title="lavenderblush" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#7CFC00"><a href="javascript:idbColorChooser('lawngreen')" title="lawngreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFFACD"><a href="javascript:idbColorChooser('lemonchiffon')" title="lemonchiffon" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#ADD8E6"><a href="javascript:idbColorChooser('lightblue')" title="lightblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#F08080"><a href="javascript:idbColorChooser('lightcoral')" title="lightcoral" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#E0FFFF"><a href="javascript:idbColorChooser('lightcyan')" title="lightcyan" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FAFAD2"><a href="javascript:idbColorChooser('lightgoldenrodyellow')" title="lightgoldenrodyellow" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#90EE90"><a href="javascript:idbColorChooser('lightgreen')" title="lightgreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#D3D3D3"><a href="javascript:idbColorChooser('lightgrey')" title="lightgrey" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFB6C1"><a href="javascript:idbColorChooser('lightpink')" title="lightpink" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFA07A"><a href="javascript:idbColorChooser('lightsalmon')" title="lightsalmon" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#20B2AA"><a href="javascript:idbColorChooser('lightseagreen')" title="lightseagreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#87CEFA"><a href="javascript:idbColorChooser('lightskyblue')" title="lightskyblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#778899"><a href="javascript:idbColorChooser('lightslategray')" title="lightslategray" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#B0C4DE"><a href="javascript:idbColorChooser('lightsteelblue')" title="lightsteelblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFFFE0"><a href="javascript:idbColorChooser('lightyellow')" title="lightyellow" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#00FF00"><a href="javascript:idbColorChooser('lime')" title="lime" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#32CD32"><a href="javascript:idbColorChooser('limegreen')" title="limegreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FAF0E6"><a href="javascript:idbColorChooser('linen')" title="linen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FF00FF"><a href="javascript:idbColorChooser('magenta')" title="magenta" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+          </tr>
+          <tr>
+            <td bgcolor="#800000"><a href="javascript:idbColorChooser('maroon')" title="maroon" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#66CDAA"><a href="javascript:idbColorChooser('mediumaquamarine')" title="mediumaquamarine" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#0000CD"><a href="javascript:idbColorChooser('mediumblue')" title="mediumblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#BA55D3"><a href="javascript:idbColorChooser('mediumorchid')" title="mediumorchid" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#9370DB"><a href="javascript:idbColorChooser('mediumpurple')" title="mediumpurple" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#3CB371"><a href="javascript:idbColorChooser('mediumseagreen')" title="mediumseagreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#7B68EE"><a href="javascript:idbColorChooser('mediumslateblue')" title="mediumslateblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#00FA9A"><a href="javascript:idbColorChooser('mediumspringgreen')" title="mediumspringgreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#48D1CC"><a href="javascript:idbColorChooser('mediumturquoise')" title="mediumturquoise" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#C71585"><a href="javascript:idbColorChooser('mediumvioletred')" title="mediumvioletred" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#191970"><a href="javascript:idbColorChooser('midnightblue')" title="midnightblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#F5FFFA"><a href="javascript:idbColorChooser('mintcream')" title="mintcream" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFE4E1"><a href="javascript:idbColorChooser('mistyrose')" title="mistyrose" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFE4B5"><a href="javascript:idbColorChooser('moccasin')" title="moccasin" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFDEAD"><a href="javascript:idbColorChooser('navajowhite')" title="navajowhite" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#000080"><a href="javascript:idbColorChooser('navy')" title="navy" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FDF5E6"><a href="javascript:idbColorChooser('oldlace')" title="oldlace" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#808000"><a href="javascript:idbColorChooser('olive')" title="olive" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#6B8E23"><a href="javascript:idbColorChooser('olivedrab')" title="olivedrab" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFA500"><a href="javascript:idbColorChooser('orange')" title="orange" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+          </tr>
+          <tr>
+            <td bgcolor="#FF4500"><a href="javascript:idbColorChooser('orangered')" title="orangered" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#DA70D6"><a href="javascript:idbColorChooser('orchid')" title="orchid" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#EEE8AA"><a href="javascript:idbColorChooser('palegoldenrod')" title="palegoldenrod" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#98FB98"><a href="javascript:idbColorChooser('palegreen')" title="palegreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#AFEEEE"><a href="javascript:idbColorChooser('paleturquoise')" title="paleturquoise" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#DB7093"><a href="javascript:idbColorChooser('palevioletred')" title="palevioletred" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFEFD5"><a href="javascript:idbColorChooser('papayawhip')" title="papayawhip" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFDAB9"><a href="javascript:idbColorChooser('peachpuff')" title="peachpuff" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#CD853F"><a href="javascript:idbColorChooser('peru')" title="peru" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFC0CB"><a href="javascript:idbColorChooser('pink')" title="pink" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#DDA0DD"><a href="javascript:idbColorChooser('plum')" title="plum" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#B0E0E6"><a href="javascript:idbColorChooser('powderblue')" title="powderblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#800080"><a href="javascript:idbColorChooser('purple')" title="purple" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FF0000"><a href="javascript:idbColorChooser('red')" title="red" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#BC8F8F"><a href="javascript:idbColorChooser('rosybrown')" title="rosybrown" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#4169E1"><a href="javascript:idbColorChooser('royalblue')" title="royalblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#8B4513"><a href="javascript:idbColorChooser('saddlebrown')" title="saddlebrown" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FA8072"><a href="javascript:idbColorChooser('salmon')" title="salmon" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#F4A460"><a href="javascript:idbColorChooser('sandybrown')" title="sandybrown" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#2E8B57"><a href="javascript:idbColorChooser('seagreen')" title="seagreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+          </tr>
+          <tr>
+            <td bgcolor="#FFF5EE"><a href="javascript:idbColorChooser('seashell')" title="seashell" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#A0522D"><a href="javascript:idbColorChooser('sienna')" title="sienna" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#C0C0C0"><a href="javascript:idbColorChooser('silver')" title="silver" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#87CEEB"><a href="javascript:idbColorChooser('skyblue')" title="skyblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#6A5ACD"><a href="javascript:idbColorChooser('slateblue')" title="slateblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#708090"><a href="javascript:idbColorChooser('slategray')" title="slategray" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFFAFA"><a href="javascript:idbColorChooser('snow')" title="snow" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#00FF7F"><a href="javascript:idbColorChooser('springgreen')" title="springgreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#4682B4"><a href="javascript:idbColorChooser('steelblue')" title="steelblue" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#D2B48C"><a href="javascript:idbColorChooser('tan')" title="tan" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#008080"><a href="javascript:idbColorChooser('teal')" title="teal" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#D8BFD8"><a href="javascript:idbColorChooser('thistle')" title="thistle" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FF6347"><a href="javascript:idbColorChooser('tomato')" title="tomato" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#40E0D0"><a href="javascript:idbColorChooser('turquoise')" title="turquoise" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#EE82EE"><a href="javascript:idbColorChooser('violet')" title="violet" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#F5DEB3"><a href="javascript:idbColorChooser('wheat')" title="wheat" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFFFFF"><a href="javascript:idbColorChooser('white')" title="white" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#F5F5F5"><a href="javascript:idbColorChooser('whitesmoke')" title="whitesmoke" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#FFFF00"><a href="javascript:idbColorChooser('yellow')" title="yellow" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+            <td bgcolor="#9ACD32"><a href="javascript:idbColorChooser('yellowgreen')" title="yellowgreen" style="text-decoration:none" target="_self">&nbsp;&nbsp;&nbsp;</a></td>
+          </tr>
+          <tr style="display: none">
+            <td colspan="20" align="left">&nbsp;RGB&nbsp;value&nbsp;<input class="jmol" id="rgb_red" size="12" maxlength="12" value="#3cb371" type="text">&nbsp;&nbsp; <input class="jmol" value="set as other color" onclick='' type="button"></td>
+          </tr>
+          <tr style="display: none">
+            <td colspan="20" align="left"><span style="margin-left:3ex; font-style: italic;">(e.g.: "#3cb371" or "60,179,113")</span></td>
+          </tr>
+        </tbody></table>
+        </span>
+        
+        <h4><span class="expander" onClick='jaShowControl("visibility","toggle")'><img class="expander" id="visibility_show" src="plus.gif" style="display: none;"><img class="expander" id="visibility_hide" src="minus.gif"> Visibility</span></h4>
+       <div id="visibility_controls" style="margin-left: 1em;">
+          <h4><span class="expander" onClick='jaShowControl("visibility_node","toggle")'><img class="expander" id="visibility_node_show" src="plus.gif" style="display: none;"><img class="expander" id="visibility_node_hide" src="minus.gif">  Node</span></h4>
+        <div id="visibility_node_controls" style="margin-left: 1em;">
+        <div class="jsnet3d">
+          <label class="jsnet3d nodevisibilityGroup">Display selected:</label>
+        &nbsp;<input class="jmol" id="nodevisibility_display_only" value="only" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["display_only"])' type="button"><span id="nodevisibility_controls_adv" class="advanced_inline" style="display:none"><input class="jmol" id="nodevisibility_display_add" value="&nbsp;+&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["display_add"])' type="button"><input class="jmol" id="nodevisibility_display_subtract" value="&nbsp;-&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["display_subtract"])' type="button"><input class="jmol" id="nodevisibility_display_and" value="&nbsp;&amp;&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["display_and"])' type="button"><input class="jmol" id="nodevisibility_display_not" value="not" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["display_not"])' type="button"></span>
+         </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d nodevisibilityGroup">Hide selected:</label>
+        &nbsp;<input class="jmol" id="nodevisibility_hide_only" value="only" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["hide_only"])' type="button"><span id="nodevisibility_controls_adv" class="advanced_inline" style="display:none"><input class="jmol" id="nodevisibility_hide_add" value="&nbsp;+&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["hide_add"])' type="button"><input class="jmol" id="nodevisibility_hide_subtract" value="&nbsp;-&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["hide_subtract"])' type="button"><input class="jmol" id="nodevisibility_hide_and" value="&nbsp;&amp;&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["hide_and"])' type="button"><input class="jmol" id="node_visibility_hide_not" value="not" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["hide_not"])' type="button"></span>
+        </div>
+        </div>
+
+
+          <h4><span class="expander" onClick='jaShowControl("visibility_edge","toggle")'><img class="expander" id="visibility_edge_show" src="plus.gif" style="display: none;"><img class="expander" id="visibility_edge_hide" src="minus.gif"> Edge</span></h4>
+        <div id="visibility_edge_controls" style="margin-left: 1em;">
+        <div class="jsnet3d">
+          <label class="jsnet3d edgevisibilityGroup">Selection mode:</label>
+          <label class="jsnet3d"><input type="radio" name="edgevisibility_selection_mode" id="edgevisibility_selection_mode_and" value="and" onclick='Jmol.script(jmolJSnet3D, "edgevisibilitySelectionModeOr=false;")'> both nodes</label>
+          <label class="jsnet3d"><input type="radio" name="edgevisibility_selection_mode" id="edgevisibility_selection_mode_or" value="or" checked="checked" onclick='Jmol.script(jmolJSnet3D, "edgevisibilitySelectionModeOr=true;")'> one or both nodes</label>
+         </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d edgevisibilityGroup">Display selected:</label>
+        &nbsp;<input class="jmol" id="edgevisibility_display_only" value="only" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["display_only"])' type="button"><span id="edgevisibility_controls_adv" class="advanced_inline" style="display:none"><input class="jmol" id="edgevisibility_display_add" value="&nbsp;+&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["display_add"])' type="button"><input class="jmol" id="edgevisibility_display_subtract" value="&nbsp;-&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["display_subtract"])' type="button"></span>
+         </div>
+        <div class="jsnet3d">
+          <label class="jsnet3d edgevisibilityGroup">Hide selected:</label>
+        &nbsp;<input class="jmol" id="edgevisibility_hide_only" value="only" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["hide_only"])' type="button"><span id="edgevisibility_controls_adv" class="advanced_inline" style="display:none"><input class="jmol" id="edgevisibility_hide_add" value="&nbsp;+&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["hide_add"])' type="button"><input class="jmol" id="edgevisibility_hide_subtract" value="&nbsp;-&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["hide_subtract"])' type="button"></span>
+        </div>
+        </div>
+
+
+
+        </div>
+
+        <h4><span class="expander" onClick='jaShowControl("graphics","toggle")'><img class="expander" id="graphics_show" src="plus.gif" style="display: none;"><img class="expander" id="graphics_hide" src="minus.gif"> Graphics&nbsp;Window</span></h4>
+       <div id="graphics_controls" style="margin-left: 1em;">
+        <input class="jmol" id="applet_width" size="4" maxlength="5" value="600" type="text">&nbsp;x&nbsp;<input class="jmol" id="applet_height" size="4" maxlength="5" value="600" type="text">&nbsp;pixel&nbsp;
+        &nbsp;&nbsp;<input class="jmol" id="resize" value="resize" onclick='Jmol.resizeApplet(jmolJSnet3D,[document.getElementById("applet_width").value, document.getElementById("applet_height").value]); Jmol.script(jmolJSnet3D, "refresh;");' type="button">
+        &nbsp;&nbsp;<input class="jmol" id="maximize" value="maximize" onclick='document.getElementById("applet_width").value = idbGetWidth(); document.getElementById("applet_height").value = idbGetHeight(); Jmol.resizeApplet(jmolJSnet3D,[document.getElementById("applet_width").value, document.getElementById("applet_height").value]); Jmol.script(jmolJSnet3D, "refresh;");' type="button">
+        <input class="jmol" id="default_size" value="default size" onclick='document.getElementById("applet_width").value = jmol_width_default; document.getElementById("applet_height").value = jmol_height_default; Jmol.resizeApplet(jmolJSnet3D,[document.getElementById("applet_width").value, document.getElementById("applet_height").value]); Jmol.script(jmolJSnet3D, "refresh;");' type="button">
+        &nbsp;&nbsp;<input class="jmol" id="snapshot" value="snapshot" onclick='snapshot_command="set echo waitmessage hidden; image id snapshot_" + Math.ceil(Math.random() * 100000) + " " + document.getElementById("applet_width").value + " " + document.getElementById("applet_height").value; Jmol.script(jmolJSnet3D, snapshot_command)' type="button">
+        <h4 style="margin-top: 0.3em; "><span class="expander" onClick='jaShowControl("stereo","toggle")'><img class="expander" id="stereo_show" src="plus.gif" style="display: none;"><img class="expander" id="stereo_hide" src="minus.gif"> Stereo</span></h4>
+        <div id="stereo_controls" style="margin-left: 1em;">
+        <input class="jmol" id="stereo_side_by_side" value="side by side" onclick='Jmol.script(jmolJSnet3D, "stereo 5;")' type="button"><input class="jmol" id="stereo_cross_eyed" value="cross eyed" onclick='Jmol.script(jmolJSnet3D, "stereo -5;")' type="button"><input class="jmol" id="stereo_redblue" value="red/blue" onclick='Jmol.script(jmolJSnet3D, "stereo 3 redblue; color hover white; background silver; color hover white; color hover white;")' type="button"><input class="jmol" id="stereo_redcyan" value="red/cyan" onclick='Jmol.script(jmolJSnet3D, "stereo 3 redcyan; background silver; color hover white; color hover white;")' type="button"><input class="jmol" id="stereo_redgreen" value="red/green" onclick='Jmol.script(jmolJSnet3D, "stereo 3 redgreen; background silver; color hover white; color hover white;")' type="button"><input class="jmol" id="stereo_off" value="off" onclick='Jmol.script(jmolJSnet3D, "stereo off;color hover black;")' type="button">
+        </div>
+
+        </div>
+
+        <h4><span class="expander" onClick='jaShowControl("miscellaneous","toggle")'><img class="expander" id="miscellaneous_show" src="plus.gif" style="display: none;"><img class="expander" id="miscellaneous_hide" src="minus.gif"> Miscellaneous</span></h4>
+        <div id="miscellaneous_controls" style="margin-left: 1em;">
+         <input class="jmol" id="label_off" value="all labels off" onclick='Jmol.script(jmolJSnet3D, "define ~prev selected; select all; label hide; select ~prev;")' type="button">
+         <input class="jmol" id="label_on" value="show labels" onclick='Jmol.script(jmolJSnet3D, "label display;")' type="button">
+         &nbsp;&nbsp;<input class="jmol" id="label_off" value="hide labels" onclick='Jmol.script(jmolJSnet3D, "label hide;")' type="button">
+         &nbsp;&nbsp;<input class="jmol" id="zoom_selected" value="zoom selected atoms" onclick='Jmol.script(jmolJSnet3D, "zoomto (selected) 0;")' type="button">
+         &nbsp;&nbsp;<input class="jmol" id="high_quality" value="high quality rendering (slow)" onclick='Jmol.script(jmolJSnet3D, "set antialiasDisplay on;")' type="button"><input class="jmol" id="medium_quality" value="medium quality rendering (fast)" onclick='Jmol.script(jmolJSnet3D, "set antialiasDisplay off;")' type="button">
+         </div>
+
+        <h4><span class="expander" onClick='jaShowControl("script","toggle")'><img class="expander" id="script_show" src="plus.gif" style="display: none;"><img class="expander" id="script_hide" src="minus.gif"> Script<span class="atlasComment"><a id="script_info_link" href='javascript:idbShow("script_info")' target="_self" style="display:inline">Example Commands</a></span></span></h4>
+        <div id="script_controls" style="margin-left: 1em;">
+        <table style="display:inline" cellpadding="0" cellspacing="0">
+          <tbody><tr>
+            <td valign="top">&nbsp;&nbsp;&nbsp;&nbsp;</td><td valign="top"><textarea class="jmol" id="jmol_command" rows="4" cols="70" onkeypress=" if (event.shiftKey) { keycode=event.keyCode; if (keycode==38 || keycode==40) {event.preventDefault(); idbCommandHistory(keycode)} else {if (event.keyCode == 13) {event.preventDefault(); idbSubmitScript()} } }" wrap="off"></textarea>&nbsp;</td><td align="center" valign="top">&nbsp;</td><td align="center" valign="top"><input class="jmol" id="run_jmol_command" onclick="idbSubmitScript()" value="run" type="button"></td><td align="center" valign="top">&nbsp;</td><td valign="top"><input class="jmol" id="history_up" onclick='idbCommandHistory("up")' value="&lt;" type="button"></td><td valign="top"><input class="jmol" id="history_down" onclick='idbCommandHistory("down")' value="&gt;" type="button"></td>
+          </tr>
+        </tbody></table>
+        </span>
+              <span id="script_info" style="display:none">
+<table class="jmol" cellpadding="0" cellspacing="2">
+<tbody><tr><th class="jmol" align="left" bgcolor="#dddddd" valign="top">Example Command</th><th class="jmol" align="left" bgcolor="#dddddd" valign="top">Action</th></tr>
+<tr><td class="jmol" align="left" valign="top">printNodeInfo 10</td><td class="jmol" align="left" valign="top">print node information in log area</td></tr>
+<tr><td class="jmol" align="left" valign="top">select [ALA]:A</td><td class="jmol" align="left" valign="top">select all 'ALA' residues (Alanines) in chain 'A'</td></tr>
+<tr><td class="jmol" align="left" valign="top">select 5-10</td><td class="jmol" align="left" valign="top">select residue range 5 to 10 in all chains</td></tr>
+<tr><td class="jmol" align="left" valign="top">select 5-10:A</td><td class="jmol" align="left" valign="top">select residue range 5 to 10 in chain 'A'</td></tr>
+<tr><td class="jmol" align="left" valign="top">select protein &amp; not helix &amp; not sheet</td><td class="jmol" align="left" valign="top">select non-helix/non-sheet protein parts</td></tr>
+<tr><td class="jmol" align="left" valign="top">set fontsize 20</td><td class="jmol" align="left" valign="top">set label size to 20 (allowed range: 1-58)</td></tr>
+<tr><td class="jmol" align="left" valign="top">ssbonds 100</td><td class="jmol" align="left" valign="top">show SS bonds with a radius of 100 units (=0.4Å)</td></tr>
+<tr><td class="jmol" align="left" valign="top">wireframe 100</td><td class="jmol" align="left" valign="top">show bonds with a radius of 100 units (=0.4Å)</td></tr>
+</tbody></table>
+
+
+            &nbsp;&nbsp;&nbsp;&nbsp;<i>[&nbsp;<a href="javascript:idbShow('script_info')" target="_self">close Script example commands</a>&nbsp;]</i>
+        </div>
+
+        <h4><span class="expander" onClick='jaShowControl("log","toggle")'><img class="expander" id="log_show" src="plus.gif" style="display: none;"><img class="expander" id="log_hide" src="minus.gif"> Log</span></h4>
+      <div id="log_controls" style="margin-left: 1em;">
+          <br>&nbsp;&nbsp;&nbsp;
+          <textarea class="jmol" id="jmol_monitor" rows="9" cols="90" readonly="readonly" wrap="off"></textarea>
+      </div>
+
+         <hr class="separator">
+         <span id="basic_note" style="display:inline">
+          <table>
+           <tbody><tr>
+             <td valign="top"><b>Note:</b></td>
+             <td>In this "Basic Interface" any change in the selection of most pulldown menus automatically triggers an action (one-step mechanism). 
+<!--                 <br>View and selection are coupled in the network specific controls.</td>
+-->           </tr>
+          </tbody></table>
+         </span>
+         <span id="advanced_note" style="display:none">
+          <table>
+           <tbody><tr>
+              <td valign="top"><b>Note:&nbsp;</b></td>
+              <td>In this "Advanced Interface" any change in the 
+selection of a pulldown menu only sets the target for the corresponding 
+control buttons (two-step mechanism).
+                  <br>View and selection are set independently in the subset-specific controls.</td>
+           </tr>
+          </tbody></table>
+         </span>
+  </form>  
+       </td>
+       <td valign="top">
+         <div id="jmol_location"><div id="jmolJSnet3D_appletinfotableDiv" style="width: 600px; height: 600px; background-color: salmon; font-weight: bold; font-size: 200%; padding: 1em;">ERROR: JSmol should have been loaded here.</div></div>
+         <script type="text/javascript">
+           jmol_width_default  = "600";
+           jmol_height_default = "600";
+           jmol_width  = "600";
+           jmol_height = "600";
+           if (jmol_width == "max") {
+             jmol_width = Math.min(screen.width,2000);
+           } 
+           if (jmol_height == "max") {
+             jmol_height = Math.min(screen.height,2000);
+           }
+           applet_type = "java";
+           load_jmolscript = "script jsnet3d/jsnet3d-load_agefactdb_data.txt;";
+           build_initial_subsets_command = " script jsnet3d/jsnet3d-build_initial_subsets.txt;";
+           url_check = window.location.href.match(/html5/i);
+           if (url_check == "HTML5" || url_check == "html5") {
+             load_jmolscript = "script jsnet3d/jsnet3d-restore_agefactdb_data.txt;";
+             applet_type = "html5";
+             build_initial_subsets_command = "";
+           }
+           start_jmolscript = "javascript jaAppletReady(); var initTime=now(); print \"NOTE: initializing viewer, please wait...\"; script jsnet3d/jsnet3d.spt; " + load_jmolscript + build_initial_subsets_command + "set echo waitmessage off; var initMessage = 'NOTE: JSnet3D initialization finished (time=' + format('%.1f', now(initTime) / 1000) + ' sec)'; print initMessage; log initMessage;";
+
+           Info.width  = jmol_width;
+           Info.height = jmol_height;
+           Info.script = start_jmolscript;
+           Jmol._allowedJmolSize = [25, 6000, 600];
+           Jmol._alertNoBinary = false;
+           idbGetApplet("Java HTML5");
+           
+         </script>
+
+          <h4 class="expander" style=" margin-top:1.5em; margin-left: 0.5em; z-index: 100;" onClick='jaShowControl("mouseaction","toggle");' ><img class="expander" id="mouseaction_show" src="plus.gif" stle="display: none"><img class="expander" id="mouseaction_hide" src="minus.gif" style="display: inline">
+          Mouse Actions</h4>
+        <div id="mouseaction_controls" style="margin-left: 0.5em;">
+        <div class="jsnet3d">
+          <label class="jsnet3d mouseactionGroup">Mouse mode:</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_default" value="default" checked="checked" onclick='javascript:jaSwitchMouseMode(this.value)'> default</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_center_node" value="centerNode" onclick='javascript:jaSwitchMouseMode(this.value)'> center</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_select" value="select" onclick='javascript:jaSwitchMouseMode(this.value)'> select</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_label" value="label" onclick='javascript:jaSwitchMouseMode(this.value)'> label</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_move" value="move" onclick='javascript:jaSwitchMouseMode(this.value)'> move</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_change_position" value="changePosition" onclick='javascript:jaSwitchMouseMode(this.value)'> change position</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseSelect">
+          <label class="jsnet3d mouseactionGroup">Select mode:</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_select_mode_node" value="node" checked="checked" onclick='javascript:jaSwitchMouseMode("select")'> node</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_select_mode_neighbours" value="neighbours" onclick='javascript:jaSwitchMouseMode("select")'> neighbours</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_select_mode_neighbours_no_others" value="neighboursNoOthers" onclick='javascript:jaSwitchMouseMode("select")'> neighbours with no other neighbours</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_select_mode_subnetwork" value="subnetwork" onclick='javascript:jaSwitchMouseMode("select")'> subnetwork</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_mode_select_node_type" value="nodeType" onclick='javascript:jaSwitchMouseMode("select")'> node type</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_mode_select_region" value="region" onclick='javascript:jaSwitchMouseMode("select")'> window region</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseChangePosition">
+          <label class="jsnet3d mouseactionGroup">Change position mode:</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_change_position_mode" id="mouseaction_mouse_change_position_mode_node" value="node" checked="checked" onclick='javascript:jaSwitchMouseMode("changePosition")'> node</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_change_position_mode" id="mouseaction_mouse_change_position_mode_selected_nodes" value="selectedNodes" onclick='javascript:jaSwitchMouseMode("changePosition")'> currently selected nodes</label>
+         </div>
+        <div class="jsnet3d" style="margin-top:1em;">
+        <div class="jsnet3d mouseMode mouseDefault">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2">Left-click <span class="i">(node)</span> :</label><label class="jsnet3d">show detailed node information in the 'Node Info' section</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseDefault">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2">MIDDLE-click + drag <span class="i">(anywhere)</span> :</label><label class="jsnet3d">move all nodes along the X/Y-axes</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseCenterNode">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseCenterNode2">LEFT-click <span class="i">(node)</span> :</label><label class="jsnet3d">set rotation center at the clicked node, move it to the window centre</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseLabel">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseLabel2">LEFT-click <span class="i">(node)</span> :</label><label class="jsnet3d">show/hide label at node (toggles the node label display)</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseLabel">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseLabel2">SHIFT-LEFT-click + drag<span class="i">(node label)</span> :</label><label class="jsnet3d">move node label</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseMove">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseMove2">LEFT-click + drag <span class="i">(anywhere)</span> :</label><label class="jsnet3d">move all nodes along the X/Y-axes </label>
+         </div>
+
+        <div class="jsnet3d mouseMode mouseChangePosition">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseChangePosition2">LEFT-click + drag <span class="i">(node)</span> :</label><label class="jsnet3d">change the position of the node/selected nodes along the X/Y-axes </label>
+         </div>
+        <div class="jsnet3d mouseMode mouseChangePosition">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseChangePosition2">SHIFT-LEFT-click + drag <span class="i">(node)</span> :</label><label class="jsnet3d">change the position of the node/selected nodes along the Z-axis</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseChangePosition">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseChangePosition2">ALT-LEFT-click + drag <span class="i">(anywhere)</span> :</label><label class="jsnet3d">change the position of the selected nodes by rotation</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseChangePosition">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseChangePosition2">ALT-SHIFT-LEFT-click + drag <span class="i">(anywhere)</span> :</label><label class="jsnet3d">change the position of the currently selected nodes along the X/Y-axes </label>
+         </div>
+
+
+        <div class="jsnet3d mouseMode mouseSelect">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseSelect2">LEFT-click <span class="i">(node)</span> :</label><label class="jsnet3d">select only this node/node+neighbours/subnetwork/node type</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseSelect">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseSelect2">LEFT-click <span class="i">(no node/edge)</span> :</label><label class="jsnet3d">clear selection</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseSelect">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseSelect2">SHIFT-LEFT-click <span class="i">(node)</span> :</label><label class="jsnet3d">toggle selection of this node/node+neighbours/subnetwork/node type</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseSelect">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseSelect2">ALT-LEFT-click <span class="i">(node)</span> :</label><label class="jsnet3d">add this node/node+neighbours/subnetwork/node type to the current selection</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseSelect">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseSelect2">ALT_SHIFT-LEFT-click <span class="i">(node)</span> :</label><label class="jsnet3d">remove this node/node+neighbours/subnetwork/node type from the current selection</label>
+         </div>
+
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseLabel mouseChangePosition">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseLabel2 mouseChangePosition2">LEFT-click + drag <span class="i">(near right border)</span> :</label><label class="jsnet3d">zoom in/out</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseLabel mouseChangePosition">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseLabel2 mouseChangePosition2">LEFT-click + drag <span class="i">(not near right border)</span> :</label><label class="jsnet3d">rotate all nodes around the X/Y-axes</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseMove mouseChangePosition">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseMove2 mouseChangePosition2">SHIFT-LEFT-click + drag <span class="i">(no node/edge)</span> :</label><label class="jsnet3d">zoom in/out</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseSelect mouseMove mouseChangePosition">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseSelect2 mouseMove2 mouseChangePosition2">CTRL-LEFT-click + drag <span class="i">(no node/edge)</span> :</label><label class="jsnet3d">move all nodes along the X/Y-axes</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseSelect mouseLabel mouseMove mouseChangePosition">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseSelect2 mouseLabel2 mouseMove2 mouseChangePosition2">Mousewheel :</label><label class="jsnet3d">zoom in/out</label>
+         </div>
+
+        <div class="jsnet3d mouseMode mouseMove" style="margin-top: 1em; margin-left: 1em;"><b>Note:</b> Mouse mode 'move' is needed only on systems where 'MIDDLE-click + drag' doesn't work to move.</div>
+        <div class="jsnet3d mouseMode mouseChangePosition" style="margin-top: 1em; margin-left: 1em;"><b>Note:</b> The change position mode 'currently selected nodes' is needed only on systems where 'ALT-SHIFT-LEFT-click + drag' doesn't work to change positions in the mouse mode 'change postion'.</div>
+        <div class="jsnet3d" style="margin-top: 1em; margin-left: 1em; max-width: 580px;"><b>Note:</b> Which mouse actions are actually available depends on the system configuration like operating system (Windows, MacOS, Linux), web browser (Internet Explorer, Safari, Firefox), network viewer type (Java, Javascript), and the number of mouse buttons. Some of them can be triggered in different ways to make them available on a wide range of systems.</div>
+         </div>
+         
+    </td></tr>
+</tbody></table>
+<div id="upload_info" style="display:inline; width:auto; margin-top:2px;">
+ </div>
+
+       </td>
+      </tr>
+     </tbody></table>
+
+     <script type="text/javascript">
+
+        jaGuiInitialization();  /* should be run again in the 'jaAppletReady' function to overcome hopefully stubborn browsers keeping old checkbox settings */
+
+        function var_dump(obj) {
+          var obj_members = "";
+          var sep = "";
+          for (var key in obj) {
+            obj_members += sep + key + ":" + obj[key];
+            sep = ", ";
+          }
+          return ("[" + obj_members + "]");
+        }
+
+     </script>
+
+    <form id="bounce_image" action="http://jenalib.fli-leibniz.de/cgi-bin/view_snapshot.pl" method="post" target="_blank">
+      <input id="IDB_ID" name="IDB_ID" value="upload" type="hidden">
+      <input id="IMAGE_WIDTH" name="IMAGE_WIDTH" value="600" type="hidden">
+      <input id="IMAGE_HEIGHT" name="IMAGE_HEIGHT" value="600" type="hidden">
+      <input id="IMAGE_DATA" name="IMAGE_DATA" value="" type="hidden">
+    </form>
+<div class="menuBottom" id="menuBottomBar">
+<table class="Menu" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td class="menuBarLeft"><nobr>&nbsp;</nobr></td>
+    <td class="menuBarCenter"><nobr>&nbsp;</nobr></td>
+    <td class="menuBarRight"><nobr>&nbsp;<a target="_blank" href="http://www.stolaf.edu/academics/chemapps/jmol/docs/">Jmol Script Commands</a> | <a target="_blank" href="http://wiki.jmol.org/index.php/MouseManual">Jmol Mouse Manual</a> | <a target="_blank" href="http://wiki.jmol.org/">Jmol Wiki</a></nobr></td>
+   </tr>
+ </tbody></table></div>
+<table class="menu" id="menuBottomPart1" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td>
+      <table class="menuButton" cellpadding="0">
+        <tbody><tr>
+          <td class="atlasNormal">
+            <nobr>controls:</nobr>
+          </td>
+          <td class="menuButton">
+            <nobr><a class="menuButton" id="collapse_all2" href='javascript:idbExpandAll("hide")' target="_self">collapse</a></nobr>
+          </td>
+          <td class="menuButton">
+            <nobr><a class="menuButton" id="expand_all2" href='javascript:idbExpandAll("show")' target="_self">expand</a></nobr>
+          </td>
+        </tr>
+      </tbody></table>
+    </td>
+    <td id="menuBottomSpacer"></td>
+    <td class="menu">      
+    </td>
+  </tr>
+</tbody></table>
+
+
+
+</body></html>

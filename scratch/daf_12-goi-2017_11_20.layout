@@ -1,0 +1,654 @@
+//BioLayout Express3D Version 3.3  Layout File
+"observationId||OB_002179"	"alleleType||loss of function"
+"observationId||OB_000821"	"alleleType||normal"
+"observationId||OB_003176"	"citationId||16626392"
+"observationId||OB_003179"	"alleleType||loss of function"
+"observationId||OB_002182"	"alleleType||RNA interference"
+"observationId||OB_000914"	"alleleType||unknown"
+"ageingFactorId||AF_006481"	"alleleType||unknown"
+"ageingFactorId||AF_006481"	"observationId||OB_003177"
+"observationId||OB_001006"	"alleleType||unknown"
+"observationId||OB_002322"	"alleleType||loss of function"
+"observationId||OB_002977"	"alleleType||unknown"
+"observationId||OB_000916"	"citationId||9725835"
+"observationId||OB_002170"	"alleleType||RNA interference"
+"ageingFactorId||AF_006481"	"observationId||OB_000894"
+"ageingFactorId||AF_006481"	"observationId||OB_000905"
+"observationId||OB_002171"	"ageingFactorId||AF_004818"
+"observationId||OB_003177"	"citationId||16626392"
+"observationId||OB_001006"	"ageingFactorId||AF_009170"
+"observationId||OB_000907"	"alleleType||unknown"
+"ageingFactorId||AF_006481"	"observationId||OB_000910"
+"ageingFactorId||AF_006481"	"observationId||OB_000831"
+"ageingFactorId||AF_006481"	"observationId||OB_001006"
+"ageingFactorId||AF_006481"	"observationId||OB_000819"
+"observationId||OB_001007"	"citationId||20824162"
+"observationId||OB_001004"	"alleleType||unknown"
+"observationId||OB_000905"	"alleleType||unknown"
+"ageingFactorId||AF_006481"	"observationId||OB_002171"
+"observationId||OB_002178"	"alleleType||loss of function"
+"observationId||OB_002185"	"alleleType||RNA interference"
+"observationId||OB_002185"	"citationId||16103914"
+"observationId||OB_000913"	"ageingFactorId||AF_005765"
+"observationId||OB_000911"	"citationId||9725835"
+"observationId||OB_000794"	"ageingFactorId||AF_005765"
+"observationId||OB_002170"	"alleleType||loss of function"
+"ageingFactorId||AF_006481"	"observationId||OB_002174"
+"ageingFactorId||AF_006481"	"observationId||OB_002180"
+"observationId||OB_003174"	"alleleType||loss of function"
+"observationId||OB_000831"	"citationId||9725835"
+"observationId||OB_003173"	"alleleType||loss of function"
+"observationId||OB_002174"	"citationId||16103914"
+"observationId||OB_003173"	"citationId||16626392"
+"observationId||OB_002173"	"alleleType||RNA interference"
+"ageingFactorId||AF_007114"	"alleleType||RNA interference"
+"observationId||OB_002334"	"citationId||16530050"
+"ageingFactorId||AF_006481"	"observationId||OB_002170"
+"observationId||OB_000910"	"citationId||9725835"
+"observationId||OB_000918"	"citationId||9725835"
+"observationId||OB_000886"	"alleleType||mutation"
+"observationId||OB_000915"	"citationId||9725835"
+"ageingFactorId||AF_006481"	"observationId||OB_001001"
+"ageingFactorId||AF_007229"	"alleleType||RNA interference"
+"observationId||OB_000887"	"citationId||8807293"
+"observationId||OB_001007"	"ageingFactorId||AF_009169"
+"observationId||OB_002179"	"citationId||16103914"
+"ageingFactorId||AF_005765"	"alleleType||RNA interference"
+"observationId||OB_003177"	"ageingFactorId||AF_009191"
+"ageingFactorId||AF_004808"	"alleleType||mutation"
+"observationId||OB_003176"	"ageingFactorId||AF_009191"
+"observationId||OB_000821"	"alleleType||loss of function"
+"observationId||OB_002322"	"citationId||16530050"
+"ageingFactorId||AF_006481"	"observationId||OB_000906"
+"observationId||OB_000919"	"ageingFactorId||AF_005765"
+"observationId||OB_000917"	"alleleType||unknown"
+"observationId||OB_001006"	"ageingFactorId||AF_009169"
+"observationId||OB_002976"	"alleleType||unknown"
+"observationId||OB_000907"	"ageingFactorId||AF_005765"
+"ageingFactorId||AF_006481"	"observationId||OB_000887"
+"ageingFactorId||AF_006481"	"observationId||OB_000919"
+"observationId||OB_001006"	"citationId||20824162"
+"observationId||OB_000823"	"citationId||11778046"
+"ageingFactorId||AF_006481"	"observationId||OB_002178"
+"observationId||OB_002180"	"ageingFactorId||AF_005211"
+"observationId||OB_000914"	"citationId||9725835"
+"observationId||OB_000909"	"ageingFactorId||AF_005765"
+"ageingFactorId||AF_006481"	"observationId||OB_003174"
+"observationId||OB_003172"	"alleleType||loss of function"
+"observationId||OB_003176"	"alleleType||loss of function"
+"ageingFactorId||AF_006481"	"alleleType||RNA interference"
+"ageingFactorId||AF_006481"	"observationId||OB_002183"
+"observationId||OB_000830"	"citationId||9725835"
+"observationId||OB_000894"	"alleleType||loss of function"
+"observationId||OB_002334"	"alleleType||RNA interference"
+"ageingFactorId||AF_005211"	"alleleType||RNA interference"
+"observationId||OB_000887"	"alleleType||mutation"
+"observationId||OB_002977"	"ageingFactorId||AF_009105"
+"ageingFactorId||AF_006481"	"observationId||OB_000833"
+"ageingFactorId||AF_006481"	"observationId||OB_002184"
+"ageingFactorId||AF_006481"	"observationId||OB_000886"
+"ageingFactorId||AF_005765"	"alleleType||unknown"
+"observationId||OB_000794"	"citationId||7789761"
+"ageingFactorId||AF_006481"	"alleleType||mutation"
+"ageingFactorId||AF_006481"	"observationId||OB_000821"
+"ageingFactorId||AF_006481"	"observationId||OB_002173"
+"observationId||OB_001003"	"alleleType||unknown"
+"ageingFactorId||AF_006481"	"observationId||OB_000823"
+"observationId||OB_002171"	"alleleType||RNA interference"
+"observationId||OB_001007"	"ageingFactorId||AF_009170"
+"observationId||OB_002176"	"citationId||16103914"
+"observationId||OB_002976"	"citationId||19501612"
+"observationId||OB_002180"	"citationId||16103914"
+"observationId||OB_003174"	"citationId||16626392"
+"observationId||OB_000937"	"alleleType||loss of function"
+"ageingFactorId||AF_006481"	"alleleType||loss of function"
+"observationId||OB_000919"	"citationId||9725835"
+"ageingFactorId||AF_006481"	"observationId||OB_002331"
+"ageingFactorId||AF_006481"	"observationId||OB_000904"
+"observationId||OB_000831"	"alleleType||unknown"
+"ageingFactorId||AF_006481"	"observationId||OB_001007"
+"ageingFactorId||AF_006481"	"observationId||OB_000907"
+"ageingFactorId||AF_006481"	"observationId||OB_002181"
+"observationId||OB_000830"	"alleleType||unknown"
+"ageingFactorId||AF_006481"	"observationId||OB_000794"
+"observationId||OB_002174"	"alleleType||RNA interference"
+"ageingFactorId||AF_006481"	"observationId||OB_001003"
+"ageingFactorId||AF_006481"	"observationId||OB_000918"
+"observationId||OB_000915"	"ageingFactorId||AF_005765"
+"observationId||OB_000919"	"alleleType||unknown"
+"observationId||OB_000916"	"alleleType||unknown"
+"observationId||OB_000904"	"citationId||9725835"
+"observationId||OB_000823"	"ageingFactorId||AF_005765"
+"observationId||OB_002183"	"citationId||16103914"
+"observationId||OB_000918"	"ageingFactorId||AF_005765"
+"observationId||OB_002176"	"alleleType||RNA interference"
+"observationId||OB_001003"	"ageingFactorId||AF_009076"
+"observationId||OB_002170"	"citationId||16103914"
+"observationId||OB_003178"	"alleleType||loss of function"
+"observationId||OB_003178"	"ageingFactorId||AF_009176"
+"observationId||OB_002181"	"ageingFactorId||AF_005211"
+"ageingFactorId||AF_004818"	"alleleType||RNA interference"
+"observationId||OB_002172"	"ageingFactorId||AF_004818"
+"observationId||OB_002180"	"alleleType||loss of function"
+"observationId||OB_000905"	"ageingFactorId||AF_005765"
+"ageingFactorId||AF_006248"	"alleleType||RNA interference"
+"observationId||OB_001007"	"ageingFactorId||AF_009076"
+"ageingFactorId||AF_006481"	"observationId||OB_000916"
+"ageingFactorId||AF_006481"	"observationId||OB_002182"
+"observationId||OB_000908"	"alleleType||unknown"
+"ageingFactorId||AF_005765"	"alleleType||loss of function"
+"observationId||OB_002172"	"alleleType||RNA interference"
+"observationId||OB_002184"	"citationId||16103914"
+"observationId||OB_003179"	"ageingFactorId||AF_009176"
+"observationId||OB_000820"	"citationId||11778046"
+"observationId||OB_000917"	"ageingFactorId||AF_005765"
+"observationId||OB_002176"	"ageingFactorId||AF_007289"
+"observationId||OB_001004"	"citationId||20824162"
+"ageingFactorId||AF_004808"	"alleleType||RNA interference"
+"observationId||OB_002171"	"alleleType||loss of function"
+"observationId||OB_002185"	"alleleType||loss of function"
+"observationId||OB_000905"	"citationId||9725835"
+"observationId||OB_000833"	"alleleType||unknown"
+"observationId||OB_000794"	"alleleType||loss of function"
+"observationId||OB_000909"	"alleleType||unknown"
+"observationId||OB_002322"	"alleleType||RNA interference"
+"observationId||OB_000917"	"citationId||9725835"
+"observationId||OB_000906"	"citationId||9725835"
+"observationId||OB_000908"	"ageingFactorId||AF_005765"
+"observationId||OB_002184"	"alleleType||loss of function"
+"observationId||OB_000823"	"ageingFactorId||AF_009161"
+"observationId||OB_001007"	"alleleType||unknown"
+"observationId||OB_000907"	"citationId||9725835"
+"ageingFactorId||AF_006481"	"observationId||OB_002977"
+"observationId||OB_002175"	"alleleType||loss of function"
+"observationId||OB_002174"	"ageingFactorId||AF_006456"
+"observationId||OB_000918"	"alleleType||unknown"
+"observationId||OB_003172"	"citationId||16626392"
+"observationId||OB_003179"	"citationId||16626392"
+"ageingFactorId||AF_007114"	"alleleType||mutation"
+"observationId||OB_002174"	"alleleType||loss of function"
+"observationId||OB_002172"	"alleleType||loss of function"
+"observationId||OB_000904"	"alleleType||unknown"
+"ageingFactorId||AF_005765"	"alleleType||Germline ablation in daf-2 mutants"
+"observationId||OB_001005"	"citationId||20824162"
+"observationId||OB_001004"	"ageingFactorId||AF_009169"
+"observationId||OB_002182"	"ageingFactorId||AF_007196"
+"observationId||OB_002183"	"alleleType||loss of function"
+"observationId||OB_000910"	"ageingFactorId||AF_005765"
+"observationId||OB_002182"	"alleleType||loss of function"
+"ageingFactorId||AF_006481"	"observationId||OB_002322"
+"observationId||OB_002179"	"alleleType||RNA interference"
+"observationId||OB_000937"	"citationId||11740945"
+"ageingFactorId||AF_006481"	"observationId||OB_000911"
+"ageingFactorId||AF_006481"	"observationId||OB_000908"
+"observationId||OB_001005"	"ageingFactorId||AF_009076"
+"observationId||OB_002180"	"alleleType||RNA interference"
+"observationId||OB_002175"	"alleleType||RNA interference"
+"observationId||OB_003178"	"citationId||16626392"
+"ageingFactorId||AF_005765"	"alleleType||normal"
+"observationId||OB_000833"	"citationId||9725835"
+"observationId||OB_002181"	"citationId||16103914"
+"observationId||OB_000909"	"citationId||9725835"
+"observationId||OB_000886"	"ageingFactorId||AF_007114"
+"observationId||OB_002182"	"citationId||16103914"
+"observationId||OB_002183"	"ageingFactorId||AF_007196"
+"ageingFactorId||AF_007289"	"alleleType||RNA interference"
+"observationId||OB_000915"	"alleleType||unknown"
+"observationId||OB_002173"	"citationId||16103914"
+"observationId||OB_000906"	"alleleType||unknown"
+"observationId||OB_000819"	"citationId||11778046"
+"ageingFactorId||AF_006481"	"observationId||OB_003179"
+"ageingFactorId||AF_006481"	"observationId||OB_001005"
+"ageingFactorId||AF_006481"	"observationId||OB_000913"
+"ageingFactorId||AF_006481"	"observationId||OB_000917"
+"observationId||OB_002181"	"alleleType||loss of function"
+"ageingFactorId||AF_005765"	"alleleType||mutation"
+"observationId||OB_002183"	"alleleType||RNA interference"
+"observationId||OB_000821"	"citationId||11778046"
+"ageingFactorId||AF_006481"	"observationId||OB_000909"
+"observationId||OB_002173"	"ageingFactorId||AF_006456"
+"ageingFactorId||AF_006481"	"observationId||OB_002175"
+"ageingFactorId||AF_006481"	"observationId||OB_000830"
+"observationId||OB_000911"	"ageingFactorId||AF_005765"
+"observationId||OB_002171"	"citationId||16103914"
+"observationId||OB_002178"	"ageingFactorId||AF_006248"
+"observationId||OB_002331"	"alleleType||RNA interference"
+"observationId||OB_001001"	"alleleType||unknown"
+"ageingFactorId||AF_006481"	"observationId||OB_002179"
+"observationId||OB_000886"	"citationId||8807293"
+"observationId||OB_002184"	"ageingFactorId||AF_007229"
+"observationId||OB_000819"	"ageingFactorId||AF_009161"
+"observationId||OB_000820"	"alleleType||loss of function"
+"ageingFactorId||AF_006481"	"observationId||OB_000820"
+"observationId||OB_002173"	"alleleType||loss of function"
+"observationId||OB_000906"	"ageingFactorId||AF_005765"
+"ageingFactorId||AF_006481"	"observationId||OB_003176"
+"observationId||OB_002331"	"citationId||16530050"
+"observationId||OB_002170"	"ageingFactorId||AF_005765"
+"observationId||OB_002184"	"alleleType||RNA interference"
+"observationId||OB_000823"	"alleleType||loss of function"
+"observationId||OB_000916"	"ageingFactorId||AF_005765"
+"observationId||OB_002175"	"ageingFactorId||AF_007289"
+"observationId||OB_002977"	"citationId||19501612"
+"observationId||OB_002181"	"alleleType||RNA interference"
+"ageingFactorId||AF_004808"	"alleleType||loss of function"
+"observationId||OB_000913"	"alleleType||unknown"
+"observationId||OB_002172"	"citationId||16103914"
+"observationId||OB_002179"	"ageingFactorId||AF_006248"
+"observationId||OB_001003"	"citationId||20824162"
+"ageingFactorId||AF_006481"	"observationId||OB_003173"
+"observationId||OB_000819"	"alleleType||loss of function"
+"observationId||OB_001001"	"citationId||20824162"
+"ageingFactorId||AF_006481"	"observationId||OB_000915"
+"observationId||OB_000910"	"alleleType||unknown"
+"ageingFactorId||AF_006481"	"observationId||OB_001004"
+"ageingFactorId||AF_006456"	"alleleType||RNA interference"
+"ageingFactorId||AF_006481"	"observationId||OB_000937"
+"ageingFactorId||AF_006481"	"observationId||OB_003178"
+"observationId||OB_002175"	"citationId||16103914"
+"ageingFactorId||AF_007196"	"alleleType||RNA interference"
+"ageingFactorId||AF_006481"	"observationId||OB_003172"
+"observationId||OB_000904"	"ageingFactorId||AF_005765"
+"observationId||OB_002178"	"citationId||16103914"
+"observationId||OB_000821"	"ageingFactorId||AF_005765"
+"observationId||OB_001005"	"ageingFactorId||AF_009169"
+"ageingFactorId||AF_006481"	"observationId||OB_002176"
+"observationId||OB_000911"	"alleleType||unknown"
+"ageingFactorId||AF_006481"	"observationId||OB_002334"
+"ageingFactorId||AF_006481"	"observationId||OB_002172"
+"observationId||OB_000914"	"ageingFactorId||AF_005765"
+"observationId||OB_002178"	"alleleType||RNA interference"
+"observationId||OB_000894"	"citationId||11740945"
+"observationId||OB_000908"	"citationId||9725835"
+"observationId||OB_002322"	"ageingFactorId||AF_004808"
+"observationId||OB_003177"	"alleleType||loss of function"
+"ageingFactorId||AF_006481"	"observationId||OB_002185"
+"observationId||OB_000913"	"citationId||9725835"
+"ageingFactorId||AF_006481"	"observationId||OB_002976"
+"observationId||OB_000833"	"ageingFactorId||AF_005765"
+"observationId||OB_001005"	"alleleType||unknown"
+"observationId||OB_002176"	"alleleType||loss of function"
+"ageingFactorId||AF_006481"	"observationId||OB_000914"
+"observationId||OB_002185"	"ageingFactorId||AF_007229"
+//NODECOORD	"observationId||OB_000833"	509.53867	791.99646	545.65857
+//NODESIZE	"observationId||OB_000833"	9.683478
+//NODESHAPE	"observationId||OB_000833"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000833"	1.0
+//NODECOORD	"observationId||OB_000910"	428.68552	752.7741	603.45044
+//NODESIZE	"observationId||OB_000910"	9.683478
+//NODESHAPE	"observationId||OB_000910"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000910"	1.0
+//NODECOORD	"observationId||OB_002977"	495.18677	720.90045	206.37727
+//NODESIZE	"observationId||OB_002977"	9.683478
+//NODESHAPE	"observationId||OB_002977"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002977"	1.0
+//NODECOORD	"observationId||OB_000911"	559.4039	774.6473	438.12695
+//NODESIZE	"observationId||OB_000911"	9.683478
+//NODESHAPE	"observationId||OB_000911"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000911"	1.0
+//NODECOORD	"observationId||OB_001005"	309.0824	671.21246	265.4523
+//NODESIZE	"observationId||OB_001005"	9.683478
+//NODESHAPE	"observationId||OB_001005"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_001005"	1.0
+//NODECOORD	"citationId||11740945"	395.45013	233.9301	122.79379
+//NODESIZE	"citationId||11740945"	9.683478
+//NODESHAPE	"citationId||11740945"	CIRCLE	SPHERE
+//NODEALPHA	"citationId||11740945"	1.0
+//NODECOORD	"observationId||OB_001004"	307.2069	700.1297	306.45218
+//NODESIZE	"observationId||OB_001004"	9.683478
+//NODESHAPE	"observationId||OB_001004"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_001004"	1.0
+//NODECOORD	"observationId||OB_002976"	480.8221	654.84357	214.38795
+//NODESIZE	"observationId||OB_002976"	9.683478
+//NODESHAPE	"observationId||OB_002976"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002976"	1.0
+//NODECOORD	"ageingFactorId||AF_004808"	733.08307	415.72626	456.73007
+//NODESIZE	"ageingFactorId||AF_004808"	9.683478
+//NODESHAPE	"ageingFactorId||AF_004808"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_004808"	1.0
+//NODECOORD	"observationId||OB_000831"	531.12036	752.1287	314.82092
+//NODESIZE	"observationId||OB_000831"	9.683478
+//NODESHAPE	"observationId||OB_000831"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000831"	1.0
+//NODECOORD	"observationId||OB_001007"	254.14838	693.4749	318.933
+//NODESIZE	"observationId||OB_001007"	9.683478
+//NODESHAPE	"observationId||OB_001007"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_001007"	1.0
+//NODECOORD	"observationId||OB_000830"	452.00497	749.14624	302.68588
+//NODESIZE	"observationId||OB_000830"	9.683478
+//NODESHAPE	"observationId||OB_000830"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000830"	1.0
+//NODECOORD	"observationId||OB_001006"	247.99466	714.2679	364.98676
+//NODESIZE	"observationId||OB_001006"	9.683478
+//NODESHAPE	"observationId||OB_001006"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_001006"	1.0
+//NODECOORD	"citationId||11778046"	240.50368	523.37286	827.6258
+//NODESIZE	"citationId||11778046"	9.683478
+//NODESHAPE	"citationId||11778046"	CIRCLE	SPHERE
+//NODEALPHA	"citationId||11778046"	1.0
+//NODECOORD	"observationId||OB_001001"	260.146	617.3176	357.7725
+//NODESIZE	"observationId||OB_001001"	9.683478
+//NODESHAPE	"observationId||OB_001001"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_001001"	1.0
+//NODECOORD	"observationId||OB_002178"	650.59827	462.04346	639.8825
+//NODESIZE	"observationId||OB_002178"	9.683478
+//NODESHAPE	"observationId||OB_002178"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002178"	1.0
+//NODECOORD	"ageingFactorId||AF_007289"	707.84937	153.15584	450.78595
+//NODESIZE	"ageingFactorId||AF_007289"	9.683478
+//NODESHAPE	"ageingFactorId||AF_007289"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_007289"	1.0
+//NODECOORD	"ageingFactorId||AF_009105"	521.49023	872.74133	0.0
+//NODESIZE	"ageingFactorId||AF_009105"	9.683478
+//NODESHAPE	"ageingFactorId||AF_009105"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_009105"	1.0
+//NODECOORD	"observationId||OB_002331"	694.33514	443.9171	348.47018
+//NODESIZE	"observationId||OB_002331"	9.683478
+//NODESHAPE	"observationId||OB_002331"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002331"	1.0
+//NODECOORD	"observationId||OB_000794"	491.09656	531.44745	740.28015
+//NODESIZE	"observationId||OB_000794"	9.683478
+//NODESHAPE	"observationId||OB_000794"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000794"	1.0
+//NODECOORD	"observationId||OB_001003"	302.41287	619.22675	271.37595
+//NODESIZE	"observationId||OB_001003"	9.683478
+//NODESHAPE	"observationId||OB_001003"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_001003"	1.0
+//NODECOORD	"observationId||OB_002334"	658.7093	414.84903	330.0988
+//NODESIZE	"observationId||OB_002334"	9.683478
+//NODESHAPE	"observationId||OB_002334"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002334"	1.0
+//NODECOORD	"citationId||8807293"	928.6785	684.2632	271.1192
+//NODESIZE	"citationId||8807293"	9.683478
+//NODESHAPE	"citationId||8807293"	CIRCLE	SPHERE
+//NODEALPHA	"citationId||8807293"	1.0
+//NODECOORD	"observationId||OB_002179"	615.1088	437.22906	667.8133
+//NODESIZE	"observationId||OB_002179"	9.683478
+//NODESHAPE	"observationId||OB_002179"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002179"	1.0
+//NODECOORD	"observationId||OB_002174"	515.3896	325.37567	629.27716
+//NODESIZE	"observationId||OB_002174"	9.683478
+//NODESHAPE	"observationId||OB_002174"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002174"	1.0
+//NODECOORD	"observationId||OB_002173"	508.66324	298.78568	589.2873
+//NODESIZE	"observationId||OB_002173"	9.683478
+//NODESHAPE	"observationId||OB_002173"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002173"	1.0
+//NODECOORD	"observationId||OB_002176"	560.07715	290.12653	443.74335
+//NODESIZE	"observationId||OB_002176"	9.683478
+//NODESHAPE	"observationId||OB_002176"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002176"	1.0
+//NODECOORD	"observationId||OB_002175"	585.6787	310.36862	420.66364
+//NODESIZE	"observationId||OB_002175"	9.683478
+//NODESHAPE	"observationId||OB_002175"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002175"	1.0
+//NODECOORD	"observationId||OB_002181"	660.21204	375.52527	433.02798
+//NODESIZE	"observationId||OB_002181"	9.683478
+//NODESHAPE	"observationId||OB_002181"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002181"	1.0
+//NODECOORD	"citationId||7789761"	500.2106	553.3026	1000.0
+//NODESIZE	"citationId||7789761"	9.683478
+//NODESHAPE	"citationId||7789761"	CIRCLE	SPHERE
+//NODEALPHA	"citationId||7789761"	1.0
+//NODECOORD	"observationId||OB_002180"	631.60443	338.2769	422.76425
+//NODESIZE	"observationId||OB_002180"	9.683478
+//NODESHAPE	"observationId||OB_002180"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002180"	1.0
+//NODECOORD	"observationId||OB_002183"	696.8857	460.69522	532.60254
+//NODESIZE	"observationId||OB_002183"	9.683478
+//NODESHAPE	"observationId||OB_002183"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002183"	1.0
+//NODECOORD	"observationId||OB_002182"	686.5244	472.8819	581.9707
+//NODESIZE	"observationId||OB_002182"	9.683478
+//NODESHAPE	"observationId||OB_002182"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002182"	1.0
+//NODECOORD	"citationId||19501612"	502.5518	748.94165	2.619102
+//NODESIZE	"citationId||19501612"	9.683478
+//NODESHAPE	"citationId||19501612"	CIRCLE	SPHERE
+//NODEALPHA	"citationId||19501612"	1.0
+//NODECOORD	"observationId||OB_000918"	380.6942	727.453	595.3102
+//NODESIZE	"observationId||OB_000918"	9.683478
+//NODESHAPE	"observationId||OB_000918"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000918"	1.0
+//NODECOORD	"observationId||OB_000917"	361.05646	750.60126	512.2541
+//NODESIZE	"observationId||OB_000917"	9.683478
+//NODESHAPE	"observationId||OB_000917"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000917"	1.0
+//NODECOORD	"observationId||OB_000919"	425.54227	781.852	562.1191
+//NODESIZE	"observationId||OB_000919"	9.683478
+//NODESHAPE	"observationId||OB_000919"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000919"	1.0
+//NODECOORD	"observationId||OB_000914"	340.11395	708.833	559.52924
+//NODESIZE	"observationId||OB_000914"	9.683478
+//NODESHAPE	"observationId||OB_000914"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000914"	1.0
+//NODECOORD	"observationId||OB_000913"	559.7025	767.9214	553.7183
+//NODESIZE	"observationId||OB_000913"	9.683478
+//NODESHAPE	"observationId||OB_000913"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000913"	1.0
+//NODECOORD	"observationId||OB_000916"	563.92145	786.95935	499.28195
+//NODESIZE	"observationId||OB_000916"	9.683478
+//NODESHAPE	"observationId||OB_000916"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000916"	1.0
+//NODECOORD	"observationId||OB_000915"	487.69376	768.9553	591.10156
+//NODESIZE	"observationId||OB_000915"	9.683478
+//NODESHAPE	"observationId||OB_000915"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000915"	1.0
+//NODECOORD	"ageingFactorId||AF_009191"	202.8555	171.28494	296.37164
+//NODESIZE	"ageingFactorId||AF_009191"	9.683478
+//NODESHAPE	"ageingFactorId||AF_009191"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_009191"	1.0
+//NODECOORD	"observationId||OB_000887"	722.4508	636.51733	341.56314
+//NODESIZE	"observationId||OB_000887"	9.683478
+//NODESHAPE	"observationId||OB_000887"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000887"	1.0
+//NODECOORD	"ageingFactorId||AF_007196"	869.28	376.22885	618.1073
+//NODESIZE	"ageingFactorId||AF_007196"	9.683478
+//NODESHAPE	"ageingFactorId||AF_007196"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_007196"	1.0
+//NODECOORD	"observationId||OB_000886"	760.696	589.77325	380.54892
+//NODESIZE	"observationId||OB_000886"	9.683478
+//NODESHAPE	"observationId||OB_000886"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000886"	1.0
+//NODECOORD	"ageingFactorId||AF_009176"	108.003525	231.74936	598.6695
+//NODESIZE	"ageingFactorId||AF_009176"	9.683478
+//NODESHAPE	"ageingFactorId||AF_009176"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_009176"	1.0
+//NODECOORD	"ageingFactorId||AF_004818"	647.82263	127.25869	556.4386
+//NODESIZE	"ageingFactorId||AF_004818"	9.683478
+//NODESHAPE	"ageingFactorId||AF_004818"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_004818"	1.0
+//NODECOORD	"ageingFactorId||AF_005211"	808.4965	230.40808	443.0081
+//NODESIZE	"ageingFactorId||AF_005211"	9.683478
+//NODESHAPE	"ageingFactorId||AF_005211"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_005211"	1.0
+//NODECOORD	"ageingFactorId||AF_007114"	880.77795	473.20126	498.93237
+//NODESIZE	"ageingFactorId||AF_007114"	9.683478
+//NODESHAPE	"ageingFactorId||AF_007114"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_007114"	1.0
+//NODECOORD	"observationId||OB_002185"	566.9729	402.76126	675.9598
+//NODESIZE	"observationId||OB_002185"	9.683478
+//NODESHAPE	"observationId||OB_002185"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002185"	1.0
+//NODECOORD	"observationId||OB_002184"	541.1839	368.48584	665.0259
+//NODESIZE	"observationId||OB_002184"	9.683478
+//NODESHAPE	"observationId||OB_002184"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002184"	1.0
+//NODECOORD	"alleleType||RNA interference"	667.0411	361.53183	549.145
+//NODESIZE	"alleleType||RNA interference"	9.683478
+//NODESHAPE	"alleleType||RNA interference"	CIRCLE	SPHERE
+//NODEALPHA	"alleleType||RNA interference"	1.0
+//NODECOORD	"citationId||16530050"	771.1974	331.94675	195.99434
+//NODESIZE	"citationId||16530050"	9.683478
+//NODESHAPE	"citationId||16530050"	CIRCLE	SPHERE
+//NODEALPHA	"citationId||16530050"	1.0
+//NODECOORD	"alleleType||Germline ablation in daf-2 mutants"	613.6121	810.2329	775.3381
+//NODESIZE	"alleleType||Germline ablation in daf-2 mutants"	9.683478
+//NODESHAPE	"alleleType||Germline ablation in daf-2 mutants"	CIRCLE	SPHERE
+//NODEALPHA	"alleleType||Germline ablation in daf-2 mutants"	1.0
+//NODECOORD	"ageingFactorId||AF_009161"	235.87958	436.28503	872.8852
+//NODESIZE	"ageingFactorId||AF_009161"	9.683478
+//NODESHAPE	"ageingFactorId||AF_009161"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_009161"	1.0
+//NODECOORD	"observationId||OB_000894"	431.81927	344.80612	310.77606
+//NODESIZE	"observationId||OB_000894"	9.683478
+//NODESHAPE	"observationId||OB_000894"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000894"	1.0
+//NODECOORD	"citationId||16626392"	158.00604	280.7319	432.71085
+//NODESIZE	"citationId||16626392"	9.683478
+//NODESHAPE	"citationId||16626392"	CIRCLE	SPHERE
+//NODEALPHA	"citationId||16626392"	1.0
+//NODECOORD	"ageingFactorId||AF_009169"	171.32603	812.3377	208.41885
+//NODESIZE	"ageingFactorId||AF_009169"	9.683478
+//NODESHAPE	"ageingFactorId||AF_009169"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_009169"	1.0
+//NODECOORD	"ageingFactorId||AF_006456"	631.9789	169.2635	681.2924
+//NODESIZE	"ageingFactorId||AF_006456"	9.683478
+//NODESHAPE	"ageingFactorId||AF_006456"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_006456"	1.0
+//NODECOORD	"ageingFactorId||AF_005765"	524.16516	638.5905	589.7325
+//NODESIZE	"ageingFactorId||AF_005765"	9.683478
+//NODESHAPE	"ageingFactorId||AF_005765"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_005765"	1.0
+//NODECOORD	"ageingFactorId||AF_007229"	686.3973	263.1963	759.83673
+//NODESIZE	"ageingFactorId||AF_007229"	9.683478
+//NODESHAPE	"ageingFactorId||AF_007229"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_007229"	1.0
+//NODECOORD	"alleleType||loss of function"	477.45697	424.88245	521.40826
+//NODESIZE	"alleleType||loss of function"	9.683478
+//NODESHAPE	"alleleType||loss of function"	CIRCLE	SPHERE
+//NODEALPHA	"alleleType||loss of function"	1.0
+//NODECOORD	"observationId||OB_003172"	309.59933	364.75287	459.7314
+//NODESIZE	"observationId||OB_003172"	9.683478
+//NODESHAPE	"observationId||OB_003172"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_003172"	1.0
+//NODECOORD	"observationId||OB_003173"	266.7563	431.40332	478.3239
+//NODESIZE	"observationId||OB_003173"	9.683478
+//NODESHAPE	"observationId||OB_003173"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_003173"	1.0
+//NODECOORD	"citationId||20824162"	133.24593	698.66473	223.55348
+//NODESIZE	"citationId||20824162"	9.683478
+//NODESHAPE	"citationId||20824162"	CIRCLE	SPHERE
+//NODEALPHA	"citationId||20824162"	1.0
+//NODECOORD	"citationId||16103914"	669.6928	299.14273	589.64044
+//NODESIZE	"citationId||16103914"	9.683478
+//NODESHAPE	"citationId||16103914"	CIRCLE	SPHERE
+//NODEALPHA	"citationId||16103914"	1.0
+//NODECOORD	"observationId||OB_000819"	336.43732	453.3738	684.3014
+//NODESIZE	"observationId||OB_000819"	9.683478
+//NODESHAPE	"observationId||OB_000819"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000819"	1.0
+//NODECOORD	"ageingFactorId||AF_009170"	71.32156	824.10455	289.57974
+//NODESIZE	"ageingFactorId||AF_009170"	9.683478
+//NODESHAPE	"ageingFactorId||AF_009170"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_009170"	1.0
+//NODECOORD	"observationId||OB_000937"	436.51816	380.73526	286.80078
+//NODESIZE	"observationId||OB_000937"	9.683478
+//NODESHAPE	"observationId||OB_000937"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000937"	1.0
+//NODECOORD	"observationId||OB_000821"	405.64224	564.54504	699.301
+//NODESIZE	"observationId||OB_000821"	9.683478
+//NODESHAPE	"observationId||OB_000821"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000821"	1.0
+//NODECOORD	"citationId||9725835"	448.81314	849.98505	456.36945
+//NODESIZE	"citationId||9725835"	9.683478
+//NODESHAPE	"citationId||9725835"	CIRCLE	SPHERE
+//NODEALPHA	"citationId||9725835"	1.0
+//NODECOORD	"ageingFactorId||AF_009076"	167.17418	703.5227	128.59294
+//NODESIZE	"ageingFactorId||AF_009076"	9.683478
+//NODESHAPE	"ageingFactorId||AF_009076"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_009076"	1.0
+//NODECOORD	"observationId||OB_000823"	371.33664	510.2533	695.68396
+//NODESIZE	"observationId||OB_000823"	9.683478
+//NODESHAPE	"observationId||OB_000823"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000823"	1.0
+//NODECOORD	"ageingFactorId||AF_006481"	477.94727	543.55566	467.9767
+//NODESIZE	"ageingFactorId||AF_006481"	9.683478
+//NODESHAPE	"ageingFactorId||AF_006481"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_006481"	1.0
+//NODECOORD	"observationId||OB_000820"	305.05508	492.51395	636.5505
+//NODESIZE	"observationId||OB_000820"	9.683478
+//NODESHAPE	"observationId||OB_000820"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000820"	1.0
+//NODECOORD	"observationId||OB_003178"	290.96826	343.31836	538.06934
+//NODESIZE	"observationId||OB_003178"	9.683478
+//NODESHAPE	"observationId||OB_003178"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_003178"	1.0
+//NODECOORD	"observationId||OB_002322"	615.39496	384.0874	348.98267
+//NODESIZE	"observationId||OB_002322"	9.683478
+//NODESHAPE	"observationId||OB_002322"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002322"	1.0
+//NODECOORD	"observationId||OB_003179"	266.08066	380.516	542.0999
+//NODESIZE	"observationId||OB_003179"	9.683478
+//NODESHAPE	"observationId||OB_003179"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_003179"	1.0
+//NODECOORD	"observationId||OB_003176"	335.4298	314.90994	402.7114
+//NODESIZE	"observationId||OB_003176"	9.683478
+//NODESHAPE	"observationId||OB_003176"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_003176"	1.0
+//NODECOORD	"ageingFactorId||AF_006248"	787.73596	352.86795	741.48315
+//NODESIZE	"ageingFactorId||AF_006248"	9.683478
+//NODESHAPE	"ageingFactorId||AF_006248"	CIRCLE	SPHERE
+//NODEALPHA	"ageingFactorId||AF_006248"	1.0
+//NODECOORD	"observationId||OB_003177"	320.66705	345.62674	374.61984
+//NODESIZE	"observationId||OB_003177"	9.683478
+//NODESHAPE	"observationId||OB_003177"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_003177"	1.0
+//NODECOORD	"observationId||OB_003174"	290.84732	414.68878	408.53577
+//NODESIZE	"observationId||OB_003174"	9.683478
+//NODESHAPE	"observationId||OB_003174"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_003174"	1.0
+//NODECOORD	"alleleType||unknown"	427.13165	716.1275	411.78418
+//NODESIZE	"alleleType||unknown"	9.683478
+//NODESHAPE	"alleleType||unknown"	CIRCLE	SPHERE
+//NODEALPHA	"alleleType||unknown"	1.0
+//NODECOORD	"alleleType||normal"	477.23785	714.65216	821.9799
+//NODESIZE	"alleleType||normal"	9.683478
+//NODESHAPE	"alleleType||normal"	CIRCLE	SPHERE
+//NODEALPHA	"alleleType||normal"	1.0
+//NODECOORD	"observationId||OB_002170"	603.01764	488.89035	638.55304
+//NODESIZE	"observationId||OB_002170"	9.683478
+//NODESHAPE	"observationId||OB_002170"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002170"	1.0
+//NODECOORD	"observationId||OB_002172"	517.0625	278.55096	528.5882
+//NODESIZE	"observationId||OB_002172"	9.683478
+//NODESHAPE	"observationId||OB_002172"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002172"	1.0
+//NODECOORD	"observationId||OB_002171"	533.8888	278.0142	487.18976
+//NODESIZE	"observationId||OB_002171"	9.683478
+//NODESHAPE	"observationId||OB_002171"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_002171"	1.0
+//NODECOORD	"alleleType||mutation"	716.557	590.5292	511.00333
+//NODESIZE	"alleleType||mutation"	9.683478
+//NODESHAPE	"alleleType||mutation"	CIRCLE	SPHERE
+//NODEALPHA	"alleleType||mutation"	1.0
+//NODECOORD	"observationId||OB_000907"	599.6944	730.7784	421.19803
+//NODESIZE	"observationId||OB_000907"	9.683478
+//NODESHAPE	"observationId||OB_000907"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000907"	1.0
+//NODECOORD	"observationId||OB_000906"	605.20483	752.70276	459.49835
+//NODESIZE	"observationId||OB_000906"	9.683478
+//NODESHAPE	"observationId||OB_000906"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000906"	1.0
+//NODECOORD	"observationId||OB_000909"	365.44724	753.83246	563.95593
+//NODESIZE	"observationId||OB_000909"	9.683478
+//NODESHAPE	"observationId||OB_000909"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000909"	1.0
+//NODECOORD	"observationId||OB_000908"	599.48987	752.27814	506.03616
+//NODESIZE	"observationId||OB_000908"	9.683478
+//NODESHAPE	"observationId||OB_000908"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000908"	1.0
+//NODECOORD	"observationId||OB_000905"	563.79065	729.58215	392.60675
+//NODESIZE	"observationId||OB_000905"	9.683478
+//NODESHAPE	"observationId||OB_000905"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000905"	1.0
+//NODECOORD	"observationId||OB_000904"	331.00284	706.25146	511.93237
+//NODESIZE	"observationId||OB_000904"	9.683478
+//NODESHAPE	"observationId||OB_000904"	CIRCLE	SPHERE
+//NODEALPHA	"observationId||OB_000904"	1.0
+//CURRENTCLASSSET	""
+//EDGESIZE	1.0
+//EDGECOLOR	"#aacfae"
+//EDGEARROWHEADSIZE	"29"
+//NODECLASSCOLOR	"No Class"	"#000090"
+//DEFAULTSEARCH	google

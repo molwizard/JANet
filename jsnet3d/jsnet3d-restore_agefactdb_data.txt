@@ -49,7 +49,7 @@ if (subsetName == "") {
 }
 subsetFileNumber = 1;
 
-javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
+javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "');";
 javascript @javascriptCommand;
 
 logMsg([level: "info", msg: "Restored full subset (all loaded network data)."]);
@@ -85,7 +85,7 @@ if (subsetName == "") {
 }
 subsetFileNumber = 2;
 
-javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
+javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "');";
 javascript @javascriptCommand;
 
 logMsg([level: "info", msg: "Restored default subset (ageing factor/lifespan observation, no putative ageing factors, no allele types, nocitations)."]);

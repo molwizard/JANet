@@ -112,7 +112,7 @@ if (subnetworkSize > 1) {
   networkData..subsets.[networkData..currentSubsetKey]..subsetName = subsetName;
   networkData..subsets.[networkData..currentSubsetKey]..subsetType = "default";
 
-  javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
+  javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "');";
   javascript @javascriptCommand;
 
 } else {

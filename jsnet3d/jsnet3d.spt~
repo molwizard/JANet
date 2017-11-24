@@ -9,13 +9,15 @@ set antialiasdisplay on;
 set perspectiveDepth off;
 color hover black;
 background hover translucent 2 [255,255,125];
-background [240,240,240];
+background black;
 bind "MIDDLE-drag" "_translate";
 #bind "SHIFT-LEFT-drag" "_translate";
 set fontScaling on;
 set appendNew on
 set selectAllModels off;
 #set windowCentered off;
+set language en;
+set languageTranslation off;
 
 subsetFileNumber = 0;
 subsetKeys       = [full: 1, default: 1];
@@ -29,7 +31,8 @@ hoverRange           = "neighbours";
 hoverRangeNeighbourDistance = 1;
 hoverRangeNeighbourMode     = "add";
 displayedBeforeHover = {displayed};
-hoverEdgeTranslucency = 5;
+hoverEdgeTranslucency = 4;
+hoverEdgeEnhanceTranslucency = 2;
 
 pickRange                  = "node";
 pickRangeNeighbourDistance = 1;
@@ -83,14 +86,28 @@ networkDefinitions["generic"] = {};
 networkDefinitions["generic"]["columnDefinitions"] = [node: {}, annotation: {}];
 #     node column definitions
 var cDefs = networkDefinitions["generic"]..columnDefinitions..node;   # shortcut for simpler access (by pointer)
-cDefs..generic       = {"columnType": "node", "infoKey": "nodeId", "nodeType": "default"};
+cDefs..generic       = {"columnType": "node", "infoKey": "genericId", "nodeType": "generic"};
+cDefs..id_1       = {"columnType": "node", "infoKey": "genericId", "nodeType": "generic"};
+cDefs..id_2 = cDefs..id_1;
+#     rendering definitions
+networkDefinitions["generic"]..renderingDefinitions = {};
+rDefs = networkDefinitions["generic"]..renderingDefinitions;   # shortcut for simpler access (by pointer)
+#       default
+rDefs..default = [default: [size: 15], color: "deepskyblue", labelBackground: "[250, 250, 250]", labelSize: 12, labelOffsetX: 3, labelOffsetY: 3];
+#     label definitions
+networkDefinitions["generic"]..labelDefinitions = {};
+lDefs = networkDefinitions["generic"]..labelDefinitions;   # shortcut for simpler access (by pointer)
+lDefs..default = [generic: [short: [[infoKey: "genericId"]],
+                             long: [[value: "ID: "], [infoKey: "genericId"], [value: "|(#"], [infoKey: "nodeNumber"], [value: ")"]]
+                              ]
+                    ];
 #   translations
 networkDefinitions["generic"]["translations"] = {};
 var translations = networkDefinitions["generic"]["translations"];   # shortcut for simpler access (by pointer)
 #      typeToTypeId
-translations["typeToTypeId"] = {"default": "UNK"};
+translations["typeToTypeId"] = {"generic": "UNK"};
 #      typeToSingleLetter
-translations..typeToSingleLetter = {"default": "U"};
+translations..typeToSingleLetter = {"generic": "U"};
 
 # ### Boolean networks (PRELIMINARY: single node type, no annotation columns ###
 networkDefinitions["boolean"] = {};
@@ -99,15 +116,15 @@ networkDefinitions["boolean"]..edgeType = "directed";
 networkDefinitions["boolean"]["columnDefinitions"] = [node: {}, annotation: {}];
 #     node column definitions
 var cDefs = networkDefinitions["boolean"]..columnDefinitions..node;   # shortcut for simpler access (by pointer)
-cDefs..from       = {"columnType": "node", "infoKey": "nodeId", "nodeType": "default"};
-cDefs..to         = {"columnType": "node", "infoKey": "nodeId", "nodeType": "default"};
+cDefs..from       = {"columnType": "node", "infoKey": "nodeId", "nodeType": "boolean"};
+cDefs..to         = {"columnType": "node", "infoKey": "nodeId", "nodeType": "boolean"};
 #   translations
 networkDefinitions["boolean"]["translations"] = {};
 var translations = networkDefinitions["boolean"]["translations"];   # shortcut for simpler access (by pointer)
 #      typeToTypeId
-translations["typeToTypeId"] = {"default": "UNK"};
+translations["typeToTypeId"] = {"boolean": "UNK"};
 #      typeToSingleLetter
-translations..typeToSingleLetter = {"default": "U"};
+translations..typeToSingleLetter = {"boolean": "U"};
 
   ##########################
   ### AgeFactDB networks ###
@@ -192,7 +209,7 @@ rDefs..goTerm = [default: [size: 10, color: "navy"],
                                   ]
                 ];
 #       species
-rDefs..species = [default: [size: 35, color: "[240,240,65]"]];
+rDefs..species = [default: [size: 35, color: "[240,240,65]", labelBackground: "[120,120,120]"]];
 #       alleleType
 rDefs..alleleType = [default: [size: 18, color: "sandybrown"]];
 #       citation
@@ -201,7 +218,6 @@ rDefs..citation = [default: [size: 17, color: "tan"]];
 rDefs..bioSystem = [default: [size: 30, color: "[171,92,0]"]];
 #       gene
 rDefs..gene = [default: [size: 14, color: "[194,143,143]"]];
-
 
 #     label definitions
 networkDefinitions["agefactdb"]..labelDefinitions = {};
@@ -910,6 +926,7 @@ function hashToTsvLine(dataHashref) {
           switch(currentInfo[infoKey].type) {
             case "string":
               infoData = currentInfo[infoKey];
+              infoData = infoData.replace("||", "; ");
               infoData = infoData.replace("|", "; ");
               break;
             case "hash":
@@ -1042,7 +1059,9 @@ function readTsvFile(tsvFilename) {
 }
 
 function loadNetworkData(dataHashref) {
-  var msg = "";
+  var msg           = "";
+  var deleteRawData = false;
+
   # Check required parameters
   if (dataHashref.type != "hash") {
     msg = "parameter 'tsvFilename' NOT PROVIDED in call of method 'loadNetworkData'";
@@ -1062,6 +1081,9 @@ function loadNetworkData(dataHashref) {
     if (dataHashref["fileList"] != "") {
       dataHashref["fileList"] = [dataHashref["fileList"]];
     }
+  }
+  if (dataHashref["deleteRawDataAfterParsing"] != "") {
+    deleteRawData = dataHashref["deleteRawDataAfterParsing"];
   }
 
   dataHashref..networkDefinition = dataHashref..networkDefinitions..[dataHashref..networkType];
@@ -1095,7 +1117,15 @@ function loadNetworkData(dataHashref) {
       tsvData[fileNumber].["data"]     = readTsvFile(fileName);
     }
 
-    parseNetworkTsvData(dataHashref);    
+    parseNetworkTsvData(dataHashref);
+
+    if (deleteRawData) {
+      if (networkData..tsvData.type == "array") {
+        for (var dataSet in networkData..tsvData) {
+          dataSet..data = [];  # file names etc. are kept to document which data were loaded 
+        }
+      }
+    }
   } else {
     msg = "fileType '" + filetype + "' NOT SUPPORTED in call of method 'readTsvFile'";
     logMsg([level: "error", msg: msg]);
@@ -1180,7 +1210,7 @@ function parseNetworkTsvData(dataHashref) {
     annotationColumns     = {};
     edgeAnnotationColumns = {};
     var startTime = now();
-    logMsg([level: "info", msg: "started parsing " + fileCount + " TSV files..."]);
+    logMsg([level: "info", msg: "started parsing " + fileCount + " TSV files (type=" + networkType + ")..."]);
     networkDefs = dataHashref..networkDefinitions.[networkType];
     columnDefs  = networkDefs..columnDefinitions;
     columnTypes = networkDefs..columnTypes.keys;
@@ -2128,6 +2158,11 @@ function defineLabel (dataHashref) {    # works on 'raw network data' level
               }
             }
           }
+
+          if (currentLabel == "") {
+            currentLabel = "n/a";
+          }
+
           if (labelType == "short") {
             nodeInfo..labelShort = currentLabel;
           } elseif (labelType == "long") {
@@ -2135,7 +2170,7 @@ function defineLabel (dataHashref) {    # works on 'raw network data' level
           } elseif (labelType == "custom") {
             nodeInfo..labelCustom = currentLabel;
           }
-          #logMsg("    final " + labelType + " label='" + currentLabel + "'");
+          logMsg("    final " + labelType + " label='" + currentLabel + "'");
         }
       }
     }
@@ -2245,6 +2280,9 @@ function setLabel(dataHashref) {   # works on 'molecular' level
         var currentNodeNumber = currentNodeInfo..nodeNumber;
         var currentLabel      = currentNodeInfo[labelProperty];
         var currentHoverLabel = currentNodeInfo[hoverLabelProperty];
+        if (currentLabel == "") {
+          currentLabel = "N/A";
+        }
 
         #print "DEBUG: nodeKey=" + nodeKey + " fileNumber=" + _currentFileNumber + "  nodeNumber=" + currentNodeNumber + "  label='" + currentLabel +"'  hover='" + currentHoverLabel + "'";
         select file=_currentFileNumber and atomno=@currentNodeNumber;
@@ -2253,10 +2291,10 @@ function setLabel(dataHashref) {   # works on 'molecular' level
         #var dummy = script('set hoverLabel "' +  currentHoverLabel + '"');
         switch(action) {
           case "display":
-            label display;
+            set label display;
             break;
           case "hide":
-            label hide;
+            set label hide;
             break;
         }
       }
@@ -2925,6 +2963,106 @@ function showNodeInfo_OLD(dataHashref) {
 
   var javascriptCommand = "jaShowControl('nodeinfo', 'show'); $(\"#" + domNodeId + "\").html('" + htmlNodeInfo + "')";
   javascript @javascriptCommand;
+}
+
+function selectByDegree(dataHashref, maxValue, selectMode, action, outputType) {
+  var minValue           = "";
+  var nodeInfo           = {};
+  var nodeNumbers        = [];
+  var subsetKey          = "";
+  var nodeBitset         = {none};
+
+  # Check required parameters
+  if (dataHashref.type == "hash") {
+    if ("" + dataHashref..minValue != "") {
+      minValue = dataHashref..minValue;
+    }
+    if ("" + dataHashref..maxValue != "") {
+      maxValue = dataHashref..maxValue;
+    }
+    if (dataHashref..subsetKey != "") {
+      subsetKey = dataHashref..subsetKey;
+    }
+    if (dataHashref..selectMode != "") {
+      selectMode = dataHashref..selectMode;
+    } else {
+      selectMode = "only";
+    }
+    if (dataHashref..action != "") {
+      action = dataHashref..action;
+    } else {
+      action = "select";
+    }
+    if (dataHashref..outputType != "") {
+      outputType = dataHashref..outputType;
+    } else {
+      outputType = "nodeNumbers";
+    }
+  } elseif (dataHashref.type != "array") {
+    minValue = dataHashref;
+    if (selectMode == "") {
+      selectMode = "only";
+    }
+    if (action == "") {
+      action = "select";
+    }
+    if (outputType == "") {
+      outputType = "nodeNumbers";
+    }
+    subsetKey = networkData..currentSubsetKey;
+  } else {
+   logMsg([level: "error", msg: "parameter hash not provided in call of method 'selectByDegree' - EMPTY SELECTION"]);
+  }
+
+  if ("" + minValue != "") {
+    if ("" +  maxValue != "") {
+      nodeBitset = {bondcount>=@minValue and bondcount<=@maxValue};
+      nodeInfo = getNodeInfo([currentSubsetKey: subsetKey, nodeBitset: nodeBitset, outputType: "multiple"]);
+    }
+  }
+
+  logMsg("====== nodeBitset - selectByDegree (min=" + minValue + "  max=" + maxValue + ") ===========");
+  log "====== nodeBitset - selectByDegree (min=" + minValue + "  max=" + maxValue + ") ===========";
+  log nodeBitset;
+  logMsg("====== nodeInfo - selectByDegree ===========");
+  log nodeInfo;
+
+  if (nodeInfo.size > 0) {
+    nodeNumbers = nodeInfo.array("id").select("(nodeNumber)");
+  }
+
+  switch(selectMode) {
+    case "only":
+      nodeBitset = {atomno=@nodeNumbers};
+      break;
+    case "add":
+      nodeBitset = {selected | atomno=@nodeNumbers};
+      break;
+    case "subtract":
+      nodeBitset = {selected & NOT atomno=@nodeNumbers};
+      break;
+    case "and":
+      nodeBitset = {selected & atomno=@nodeNumbers};
+      break;
+    case "not":
+      nodeBitset = {NOT atomno=@nodeNumbers};
+      break;
+  }
+
+  switch(action) {
+    case "select":
+      select @nodeBitset;
+      break;
+  }
+
+  switch(outputType) {
+    default case "nodeNumbers":
+      return nodeNumbers;
+      break;
+    case "bitset":
+      return nodeBitset;
+      break;
+  }
 }
 
 function selectByInfoKey(dataHashref, value, selectMode, action, outputType) {   # called either by a hash as single parameter ('selectByInfoKey([infoKey: "labelShort", value: "daf-2"])') or by up to five string parameters 'infoKey', 'value' ('selectByInfoKey("labelShort", "daf-2")')
@@ -3808,7 +3946,12 @@ function buildSubset(dataHashref) {   # works with raw network data, copies 'nod
       }
     }
 
+
+   if (dataHashref..networkDefinitions.type == "hash") {
     lDefs = dataHashref..networkDefinitions.[dataHashref..networkType]..labelDefinitions;
+   } else {
+    lDefs = networkData..networkDefinitions.[dataHashref..networkType]..labelDefinitions;
+   }
 
   }
   logMsg("   started building subset '" + subsetKey + "' from  base subset '" + baseSubsetKey + "' network data...");
@@ -3938,7 +4081,7 @@ function buildSubset(dataHashref) {   # works with raw network data, copies 'nod
 function resetGuiAfterLoadNetworkData(mode) {   # SPECIFIC FOR JSNET3D-AGEFACTDB GUI
   var startTime         = now();
 
-  logMsg([level: "info", msg: "reinitializing interface..."]);
+  logMsg([level: "info", msg: "Reinitializing interface..."]);
 
 
   if (mode != "init") {
@@ -3979,16 +4122,16 @@ function resetGuiAfterLoadNetworkData(mode) {   # SPECIFIC FOR JSNET3D-AGEFACTDB
       adjustEdgeLength(0.4);
 
       # Set orientation
-      center selected;
+      center all;
       rotate best;
       #
       # ### Zoom ###
-      zoom {selected} 0;
+      zoom 0;
 
       var subsetName        = "Full";
       var optionHtml        = '<option value="full">Full</option>';
       var x                 = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
-      var javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
+      var javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "');";
       javascript @javascriptCommand;
 
 
@@ -3999,18 +4142,19 @@ function resetGuiAfterLoadNetworkData(mode) {   # SPECIFIC FOR JSNET3D-AGEFACTDB
       var subsetName = "Full";
       networkData..subsets.[networkData..currentSubsetKey]..subsetName = subsetName;
 
-      javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
+      javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "');";
       javascript @javascriptCommand;
     } else {
       logMsg([level: "info", msg: "   no network data found for full subset - SKIPPED SUBSET GENERATION"]);
     }
+
+    var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)";
+    logMsg([level: "info", msg: "finished reinitializing interface" + timeMessage]);
   }
 
-  var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)";
-  logMsg([level: "info", msg: "finished reinitializing interface" + timeMessage]);
 }
 
-function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeString) {   # SPECIFIC FOR JSNET3D-AGEFACTDB GUI
+function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeString, mode) {   # SPECIFIC FOR JSNET3D-AGEFACTDB GUI
   var startTime         = now();
   var nodeId            = "";
   var subsetKey         = "";
@@ -4024,9 +4168,14 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
   var optionHtml        = "";
   var nodeName          = "";
   var subsetNameExtension = "";
-  
-  logMsg("subsetValue='" + subsetValue + "'");
-  show subsetValueData;
+  var skipLayout          = false;
+  var skipLayoutReason    = " (switched off manually in layout options)";
+
+  if (mode.find("skipLayout","im") == "skipLayout") {
+    skipLayout = true;
+  }
+  #logMsg("subsetValue='" + subsetValue + "'");
+  #show subsetValueData;
   if (subsetValueData.size >= 2) {
     var subsetBaseName = subsetValueData[1] + "_" + subsetType;
     nodeId             = subsetValueData[2];
@@ -4160,7 +4309,7 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
       }
     
       networkData..importFormat = "coordinateTSV";
-      networkData..importFilename = "biolayout/agefactdb-" + networkData..currentSubsetKey + "-coordinates.txt";
+      networkData..importFilename = "data/agefactdb-" + networkData..currentSubsetKey + "-coordinates.txt";
       networkData..importSubsetKey = networkData..currentSubsetKey;
       networkData..importCoordinateScalingFactor = 1.0;
       importSubsetCoordinates(networkData);
@@ -4179,21 +4328,26 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
       labelMessage = networkData..subsets.[networkData..currentSubsetKey]..nodeInfo.[nodeKey]..labelCustom;
       logMsg([level: "info", msg: labelMessage]);
     
-      select file=@subsetFileNumber AND [ALT_ALT]; label display;
-      select file=@subsetFileNumber AND ([OB_INC] OR [OB_DEC]) and temperature=0; halo on;
+      select [ALT_ALT]; label display;
+      select ([OB_INC] OR [OB_DEC]) and temperature=0; halo on;
     
       initDisplay(layoutOptions);
     
       # Build layout
-      buildLayout({file=subsetFileNumber}, layoutOptions);
-    
+      if (skipLayout) {
+        logMsg([level: "info", msg: "skipped layout generation"]);
+      } else {
+        var buildNodes = {all};
+        buildLayout(buildNodes, layoutOptions);
+      }
+
       # Store new coordinates in mmCIF data
       #buildMmcifData(networkData);
       #mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;
     
-    #  storeCoordinates(networkData)
+      storeCoordinates(networkData)
       networkData..exportSubset = networkData..currentSubsetKey;
-      networkData..exportFilename = "biolayout/agefactdb-" + networkData..currentSubsetKey + "-coordinates.txt";
+      networkData..exportFilename = "data/agefactdb-" + networkData..currentSubsetKey + "-coordinates.txt";
       networkData..exportFormat = "coordinateTSV";
     #  exportSubset(networkData);
     
@@ -4202,18 +4356,18 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
       }      
       setSizeByChange("node", 0.05, {[OB_INC] OR [OB_DEC] OR [OB_NON]});
       setScale({"node": 4, "edge": 0.04, "frameSize": 50});
-      select file=@subsetFileNumber;
+      select all;
       adjustEdgeLength(0.4);
-      color bonds translucent 5;
+      color bonds translucent 4;
     
       # window size: 600x600
     
       # Set orientation
-      center selected;
+      center all;
       rotate best;
       #
       # ### Zoom ###
-      zoom {selected} 0;
+      zoom 0;
     
       initHover;
       if (networkData..subsets.[networkData..currentSubsetKey].type == "hash") {
@@ -4245,7 +4399,7 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
       } else {
         var x = javascript("document.getElementById('displaysubset_menu').innerHTML = document.getElementById('displaysubset_menu').innerHTML + '" + optionHtml + "';");
       }
-      javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
+      javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "'); menu_state['displaysubset_menu'] = '" + networkData..currentSubsetKey + "';";
       javascript @javascriptCommand;
       var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)";
       logMsg([level: "info", msg: "finished building subset '" + networkData..currentSubsetKey + "'" + timeMessage]);
@@ -4508,6 +4662,72 @@ function exportSubset(dataHashref) {
     logMsg([level: "error", msg: "ERROR: export filename IS EMPTY in call of method 'exportSubset'\n"]); 
   }
 }
+
+function exportJson(typesLoaded) {  # export network data in JSON format for Javascript version, split into two parts because of 'out of memory' problem with network data including GO
+  if (typesLoaded == "") {
+    typesLoaded = networkData..typesLoaded;
+  }
+
+  if (typesLoaded != "") {
+    var jsonData           = "";
+    var path               = "jsnet3d/";
+    var prefix             = "networkData-";
+    var jsonFileMain       = path + prefix + typesLoaded + "-without_full_subset_edge_info.json";
+    var jsonFileFullSubset = path + prefix + typesLoaded + "-full_subset_edge_info.json";
+
+    networkData..subsets..full..mmcifData    = "";
+    networkData..subsets..default..mmcifData = "";
+
+    logMsg([level: "info", msg: "Exporting subset 'full' in JSON format to file '" + jsonFileFullSubset + "'..."]);
+    jsonData = format("JSON",networkData..subsets..full..edgeInfo);
+    write var jsonData @jsonFileFullSubset;
+
+    logMsg([level: "info", msg: "Exporting network data without subset 'full' in JSON format to file '" + jsonFileMain + "'..."]);
+    var fullSubset = networkData..subsets..full..edgeInfo;
+    networkData..subsets..full..edgeInfo = {};
+    jsonData = format("JSON",networkData);
+    write var jsonData @jsonFileMain;
+    networkData..subsets..full..edgeInfo = fullSubset;
+  } else {
+    logMsg([level: "error", msg: "could NOT DETERMINE export file names (missing info about loaded network data)"]);
+  }
+}
+
+function exportMmcif(typesLoaded) {  # export 'molecular' network data in MMCIF format
+  if (typesLoaded == "") {
+    typesLoaded = networkData..typesLoaded;
+  }
+
+  if (typesLoaded != "") {
+    var mmcifData              = "";
+    var path                   = "jsnet3d/";
+    var prefix                 = "janet-";
+    var mmcifFileDefaultSubset = path + prefix + typesLoaded + "-default.mmcif";
+    var mmcifFileFullSubset    = path + prefix + typesLoaded + "-full.mmcif";
+    var storedSubsetKey        = networkData..currentSubsetKey;
+
+    networkData..subsets..default..mmcifData = "";
+
+    logMsg([level: "info", msg: "Exporting subset 'full' in MMCIF format to file '" + mmcifFileFullSubset + "'..."]);
+    networkData..currentSubsetKey = "full";
+    buildMmcifData(networkData);
+    mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;
+    write var mmcifData @mmcifFileFullSubset;
+    networkData..subsets..full..mmcifData    = "";
+
+    logMsg([level: "info", msg: "Exporting subset 'default' in MMCIF format to file '" + mmcifFileDefaultSubset + "'..."]);
+    networkData..currentSubsetKey = "default";
+    buildMmcifData(networkData);
+    mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;
+    write var mmcifData @mmcifFileDefaultSubset;
+    networkData..subsets..default..mmcifData    = "";
+
+    networkData..currentSubsetKey = storedSubsetKey;
+  } else {
+    logMsg([level: "error", msg: "could NOT DETERMINE export file names (missing info about loaded network data)"]);
+  }
+}
+
 
 function importSubsetCoordinates(dataHashref) {
   var msg            = "";
@@ -6419,7 +6639,7 @@ function buildFRLayout(nodeSet, options) {
 
   var pMsg = "";
 
-  logMsg([level: "info", msg: "running buildFRLayout..."]);
+  logMsg([level: "info", msg: "Building Fruchterman-Reingold layout (" + options.fr.iterationCount + " iteratios)..."]);
   #log options;
   if (nodeSet) {
     if (nodeSet.size > 0) {
@@ -6500,12 +6720,12 @@ function buildFRLayout(nodeSet, options) {
         initDisplay(options);
       }
       if (options.fr.startCoordinateMode == "random") {
-        logMsg([level: "info", msg: "STARTED: nodes placed on random positions"]);
+        logMsg([level: "info", msg: "  nodes placed on random positions"]);
         updateCoordinates(nodeSet, options);
       }
       #set echo progressMessage "Calculating layout...";
       #set echo progressMessage displayed;
-      logData.push("STARTED: iterations=" + options.fr.iterationCount + "  startCoordinateMode=" + options.fr.startCoordinateMode + "  kValue=" + kValue + "  kValueDoubled=" + kValueDoubled + "  kValueSquared=" + kValueSquared);
+      #logData.push("STARTED: iterations=" + options.fr.iterationCount + "  startCoordinateMode=" + options.fr.startCoordinateMode + "  kValue=" + kValue + "  kValueDoubled=" + kValueDoubled + "  kValueSquared=" + kValueSquared);
 
       for (iterationNumber FROM [1 options.fr.iterationCount]) {
         #pMsg  = "Iteration " + iterationNumber + " of " + options.fr.iterationCount + " (" + now(startTime) + " ms)...";
@@ -6702,7 +6922,7 @@ function applyForces(nodeSet, options) {
 function updateCoordinates(nodeSet, options) {
   if (nodeSet.size > 0) {
     var nodeCount = nodeSet.size;
-    if (options["updateDisplay"].type != "hash") { options["updateDisplay"] = {} }
+    if (options["updateDisplay"].type != "hash") { options["updateDisplay"] = {"center": true, "zoom": true} }
     if (options["updateCoordinates"].type != "hash") { options["updateCoordinates"] = {} }
     if (options.tiled == true && options["updateCoordinates"]["final"] == true) {
       var oX = 0;
@@ -7670,6 +7890,10 @@ function setNodeProperty(property, mode, data) {  # works on molecular level
     setTemperatureByNeighbours([action: "setValueAndColorAndTemperature", nodeBitset:{selected}])
   }
 
+  if (propertyName == "color" && mode == "edgeCount") {
+    colorByDegree({selected});
+  }
+
   # Set individual node property
   if (propertyName == "rendering" && mode == "nodeType") {
   }
@@ -7725,7 +7949,7 @@ function initDisplay(options, data) {
     }
   }
 
-  var defaultColor    = "black";
+  var defaultColor    = "lightgrey";
   var defaultNodeSize = 15;
   var defaultLabelSize = 12;
   var defaultLabelColor = "none";
@@ -7948,7 +8172,7 @@ function updateDisplay(options) {
   edgeSize = [edgeSize 3.0].min;
   wireframe @{edgeSize}
 
-  if (options["updateDisplay"].type != "hash") { options["updateDisplay"] = {} }
+  if (options["updateDisplay"].type != "hash") { options["updateDisplay"] = {"center": true, "zoom": true} }
   if (options["updateDisplay"]["center"] == true) {
     center displayed;
   }
@@ -7961,7 +8185,7 @@ function updateDisplay(options) {
 
 function setScale(scaleInfo, options) {
   var changedScale = false;
-   var autoZoom    = true;
+   var autoZoom    = false;
   logMsg(scaleInfo);
   if (scaleInfo.type == "hash") {
     if (options.type != "hash") {
@@ -8573,6 +8797,95 @@ function colorByChange(type) {  # types: atom, bond
   set bondModeOr currentBondMode;
 }
 
+function colorByDegree(nodeBitset, mode, colorList) {   # available modes: absolute, relative
+  var current_selection = {selected};
+  var currentEdgeMode   = bondModeOr;
+  var indexList         = [];
+
+  set bondModeOr true;
+
+  if (colorList.type != "array") {
+    colorList = ["lightgrey","khaki","gold","orange","chocolate","tan","darkgoldenrod","saddlebrown","aqua","deepskyblue","dodgerblue","royalblue","blue","chartreuse","yellowgreen","limegreen","green","pink","lightcoral","orangered","crimson","violet","magenta"];
+  }
+
+  if (mode == "") {
+    mode = "absolute"
+  }
+
+  var minColorIndex = 1;
+  var maxColorIndex = colorList.size;
+
+  var nodeList = @current_selection;
+  if (nodeBitset.type == "bitset") {
+    nodeList = nodeBitset;
+  }
+  #logMsg("maxColorIndex=" + maxColorIndex + "  nodeCount=" + currentSelection.size);
+
+  # Determine degree range (absolute values)
+  var minDegree  = 0.0;
+  var maxDegree  = 0.0 + {nodeList}.bondcount.max;
+
+  if (mode == "relative") {
+    minDegree = 0.0 + {nodeList}.bondcount.min;
+  }
+
+  for (var i = 1; i<=maxDegree+1; i++) {
+    indexList[i] = i-1;   # needed for building integer range values identical to color indexes
+  }
+
+  var legend = '<h5 class="janetColorLegend">Legend - Coloring by Degree [subset: ' + networkData..subsets.[networkData..currentSubsetKey]..subsetName + ']</h5><ul class="janetColorLegend">';
+
+  if (maxDegree < maxColorIndex) {
+    for (var degree=0; degree<=maxDegree; degree++) {
+      var colorIndex   = 1 + degree;
+      var currentColor = colorList[colorIndex];
+      legend = legend + '  <li style="background-color: ' + currentColor + '">' + degree + '</li>';
+    }
+    for (var currentNode in @nodeList) {
+      var degree       = {currentNode}.bondcount;
+      var colorIndex   = 1 + degree;
+      var currentColor = colorList[colorIndex];
+      select @currentNode;
+      color @currentColor;
+    }
+  } else {
+
+    if (maxDegree == 0) {
+      maxDegree = 0.00001;
+    }
+
+    var degreeRange = (maxDegree + 1) / maxColorIndex;
+    var rangeStart  = minDegree + 1;
+    for (var colorIndex = minColorIndex; colorIndex<=maxColorIndex; colorIndex++) {
+      
+      var currentColor = colorList[colorIndex];
+      var rangeEnd     = rangeStart + degreeRange - 1;
+      legend           = legend + '  <li style="background-color: ' + currentColor + '">' + indexList[rangeStart] + " - " + indexList[rangeEnd] + '</li>';
+      rangeStart       = 1 + rangeEnd;
+    }
+
+    for (var currentNode in @nodeList) {
+      var degree = {currentNode}.bondcount;
+      var normalizedDegree = degree / maxDegree;
+
+      var colorIndex = [minColorIndex + (normalizedDegree * maxColorIndex), maxColorIndex].min;   # '0' at the beginning needed to make sure 'nodeSize' is an integer value (DOES IT REALLY WORK WITH INTEGER?)
+      #print "nn=" + {currentNode}.atomno + "  deg=" + degree + "  maxDeg=" + maxDegree + "  normDeg=" + normalizedDegree + "  colIndex=" + colorIndex + "  col=" + colorList[colorIndex];
+      var currentColor = colorList[colorIndex];
+      select @currentNode;
+      color @currentColor;
+    }
+  }
+
+  select @current_selection;
+  set bondModeOr currentEdgeMode;
+
+  legend = legend + '</ul>';
+  var domId = "color_legend";
+  var javascriptCommand = '$("#'+ domId + '").html(\'' + legend + '\'); $("#'+ domId + '").css("display","block")';
+  javascript @javascriptCommand;
+
+}
+
 function setSizeByChange(type, scalingFactor, nodeBitset) {  # types: node, edge
   var current_selection = {selected};
   var currentEdgeMode  = bondModeOr;
@@ -8739,6 +9052,7 @@ function setSizeByDegree(type, scalingFactor, nodeBitset) {  # types: node, edge
   set bondModeOr currentEdgeMode;
 }
 
+
 function manageGenesOfInterest(dataHashref) {
   var msg                         = "";
   var startTime                   = now();
@@ -8899,6 +9213,7 @@ function manageGenesOfInterest(dataHashref) {
                                filterExpression: "",
                                stopConditions: [{"infoKey": "nodeType", "value": "species"}, {"infoKey": "nodeType", "value": "observation"}]];
     buildSubset(networkData);
+    subsetFileNumber++;
 
     buildMmcifData(networkData);
     mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;
@@ -8923,6 +9238,7 @@ function manageGenesOfInterest(dataHashref) {
     layoutOptions.fr.temperatureScalingFactor = 0.95;
     layoutOptions.fr.kValueModifier           = 0.6;
     layoutOptions.labelSubnetworks            = false;
+
     buildLayout({displayed}, layoutOptions);
 
     set fontscaling off;
@@ -9223,7 +9539,13 @@ function hoverAction(action) {
     hoverRangeNeighbourDistance = 1;
   }
   if ("" + hoverEdgeTranslucency == "") {
-    hoverEdgeTranslucency = 5;
+    hoverEdgeTranslucency = 4;
+  }
+  if ("" + hoverEdgeEnhanceTranslucency == "") {
+    hoverEdgeEnhanceTranslucency = 2;
+  }
+  if (hoverIncludeHidden == "") {
+    hoverIncludeHidden = "on";
   }
 
   var switchOff        = false;
@@ -9296,13 +9618,17 @@ function hoverAction(action) {
       color halo cyan;
       halo on;
       select atomindex=@lastAtomIndexHovered OR connected(atomindex=@lastAtomIndexHovered);
-      color bonds translucent 4;
+      color bonds translucent @hoverEdgeEnhanceTranslucency;
     } elseif (hoverMode == "only") {
       if (lastHoverUnfinished != true) {
         displayedBeforeHover = {displayed};
       }
       set bondModeOr true;
-      display selected;
+      if (hoverIncludeHidden == "on") {
+        display selected;
+      } else {
+        display selected and displayed;
+      }
       select atomindex=@lastAtomIndexHovered;
       color halo cyan;
       halo on;
@@ -9756,6 +10082,14 @@ function pickAction(pickMode) {
   if (pickRangeNeighbourDistance == "") {
     pickRangeNeighbourDistance = 1;
   }
+  if (mouseVisibilityMode == "") {
+    mouseVisibilityMode = "only";
+  }
+
+  if (pickMode == "dummy") {  # dummy pick mode just to be able to update the selected node count in the JANet interface
+    message "Script completed";
+    return "";
+  }
 
   var currentSelection = {selected};
   var pickedNodeSet    = {none};
@@ -9776,6 +10110,7 @@ function pickAction(pickMode) {
       modifierString = modifierToString[modifiers];
     }
     logMsg("index=" + pickedAtomIndex + "  modifiers=" + modifiers);
+print "DEBUG: index=" + pickedAtomIndex + "  modifiers=" + modifiers;
 
     switch(pickMode) {
       case "label":
@@ -9798,8 +10133,6 @@ function pickAction(pickMode) {
           set fontScaling off;
           setLabel(unlabelledNodes);
           set fontScaling currenFontScaling
-          var x={@unlabelledNodes}.label.all;
-          #show x;
         }
 
         switch(modifierString) {
@@ -9857,6 +10190,63 @@ function pickAction(pickMode) {
 
         break;
 
+      case "visibility":
+        switch(pickRange) {
+          case "neighbours":
+            pickedNodeSet = getNeighbours(pickedNode, pickRangeNeighbourDistance, "add");
+            break;
+          case "subnetwork":
+            pickedNodeSet ={within("molecule", atomindex=@pickedAtomIndex)};
+            break;
+          case "node":
+            pickedNodeSet = pickedNode;
+            break;
+        }
+
+        switch(mouseVisibilityMode) {
+          case "only":
+            display @pickedNodeSet;
+            if (lastHoverUnfinished && hoverMode=="only") {
+              displayedBeforeHover = {displayed};   # new set needed for hover mode 'show only connected nodes', otherwise hover would counteract after moving mouse
+            }
+            break;
+          case "add":
+            if (lastHoverUnfinished && hoverMode=="only") {
+              display @displayedBeforeHover OR @pickedNodeSet;
+              displayedBeforeHover = {displayed};   # new set needed for hover mode 'show only connected nodes', otherwise hover would counteract after moving mouse
+            } else {
+              display add @pickedNodeSet;
+            }
+            break;
+          case "subtract":
+            if (lastHoverUnfinished && hoverMode=="only") {
+              display @displayedBeforeHover AND NOT @pickedNodeSet;
+              displayedBeforeHover = {displayed};   # new set needed for hover mode 'show only connected nodes', otherwise hover would counteract after moving mouse
+            } else {
+              display remove @pickedNodeSet;
+            }
+            displayedBeforeHover = {displayed};   # new set needed for hover mode 'show only connected nodes', otherwise hover would counteract after moving mouse
+            break;
+          case "and":
+            if (lastHoverUnfinished && hoverMode=="only") {
+              display @displayedBeforeHover AND @pickedNodeSet;
+              displayedBeforeHover = {displayed};   # new set needed for hover mode 'show only connected nodes', otherwise hover would counteract after moving mouse
+            } else {
+              display displayed and @pickedNodeSet;
+            }
+            break;
+          case "not":
+            if (lastHoverUnfinished && hoverMode=="only") {
+              display NOT @pickedNodeSet;
+              displayedBeforeHover = {displayed};   # new set needed for hover mode 'show only connected nodes', otherwise hover would counteract after moving mouse
+            } else {
+              display not @pickedNodeSet;
+            }
+            break;
+        }
+
+        break;
+
       case "select":
         switch(pickRange) {
           case "neighbours":
@@ -9894,7 +10284,7 @@ function pickAction(pickMode) {
             select @currentSelection AND NOT @pickedNodeSet;
             break;
         }
-
+        message "Script completed";
         break;
     }
   }
@@ -9903,6 +10293,34 @@ function pickAction(pickMode) {
 
 function initPick(mode) {
   set pickCallback "jmolscript: pickAction(\"" + mode + "\");";
+}
+
+function showGui() {
+  javascript jaDisplayGui("show");
+}
+
+function hideGui() {
+  javascript jaDisplayGui("hide");
+}
+
+function displayLabel(action) {
+  if (action == "") {
+    action = "show";
+  }
+
+  if (action == "show") {
+    var unlabelledNodes = {selected and (label="" OR label like "?*")};
+    if (unlabelledNodes.size > 0) {
+      logMsg([level: "info", msg: "Undefined labels for some selected nodes - defining missing labels for " + unlabelledNodes.size + " nodes..."]);
+      var currentFontScaling = fontScaling;
+      set fontScaling off;
+      setLabel(unlabelledNodes);
+      set fontScaling currenFontScaling;
+    }
+    set label display;
+  } else {
+    set label hide;
+  }
 }
 
 #initHover;

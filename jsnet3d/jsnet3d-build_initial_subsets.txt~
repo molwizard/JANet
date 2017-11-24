@@ -25,11 +25,11 @@ if (subnetworkSize > 1) {
   networkData..importCoordinateScalingFactor = 0.2;
   importSubsetCoordinates(networkData);
 
-#  buildMmcifData(networkData);
-#  mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;
+  buildMmcifData(networkData);
+  mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;
   zap @{networkData..currentSubsetKey};
-  load APPEND @mmcifFile FILTER "addBonds";
-#  load APPEND "@mmcifData" FILTER "addBonds";
+#  load APPEND @mmcifFile FILTER "addBonds";
+  load APPEND "@mmcifData" FILTER "addBonds";
   initDisplay(layoutOptions);
   frame ID @{networkData..currentSubsetKey};
   setScale({"node": 2.5, "edge": 0.04, "frameSize": 50});
@@ -87,11 +87,11 @@ if (subnetworkSize > 1) {
   networkData..importCoordinateScalingFactor = 0.2;
   importSubsetCoordinates(networkData);
 
-#  buildMmcifData(networkData);
-#  mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;
+  buildMmcifData(networkData);
+  mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;
   zap @{networkData..currentSubsetKey};
-#  load APPEND "@mmcifdata" FILTER "addBonds";
-  load APPEND @mmcifFile FILTER "addBonds";
+  load APPEND "@mmcifdata" FILTER "addBonds";
+#  load APPEND @mmcifFile FILTER "addBonds";
   initDisplay(layoutOptions);
   frame ID @{networkData..currentSubsetKey};
   setScale({"node": 2.6, "edge": 0.04, "frameSize": 50});

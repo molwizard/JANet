@@ -44,6 +44,7 @@
         var expanded_info_names  = [];
         var vertices             = [];
         var subset_names         = [];
+        var subsetKeyToName      = [];
 
         /* define scalars */
         var interface_type             = "";
@@ -142,6 +143,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
 
         /* determine applet type (Jmol/JSmol) */
         function jaAppletReady() {
+          console.log("NOTE: Jmol/JSmol loaded successfully");
           var applet_info = Jmol.getPropertyAsArray(jmolJSnet3D, "appletInfo");
           var applet_type_shown = "(using Jmol [Java applet])";
           if (applet_info.javaVendor) {
@@ -351,7 +353,9 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           } else {
             sizeInfo = new Array(document.getElementById("applet_width").value, document.getElementById("applet_height").value);
             Jmol.resizeApplet(jmolJSnet3D, sizeInfo);
-            Jmol.script(jmolJSnet3D, "stereo off; set platformspeed 9;");
+            if (applet_type == "java") {
+              Jmol.script(jmolJSnet3D, "stereo off; set platformspeed 8;");
+            }
 
             jaDisplayGui("show");
           }
@@ -388,6 +392,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
              /* adapt HTML tag properties */
              document.getElementById("advanced_note").style.display   = "inline";  /* show note about advanced interface */
              document.getElementById("basic_note").style.display      = "none";    /* hide note about basic interface */
+             document.getElementById("networkdata_type_lifespan").disabled = false;    /* enable excluding AgeFactDB lifespan data */
           } else {
              /* adapt variables */
 	     interface_type    = "basic";            /* set interface type to "basic" */
@@ -398,6 +403,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
              /* adapt HTML tag properties */
              document.getElementById("advanced_note").style.display   = "none";    /* hide note about advanced interface */
              document.getElementById("basic_note").style.display      = "inline";  /* show note about basic interface */
+             document.getElementById("networkdata_type_lifespan").disabled = true;    /* disable excluding AgeFactDB lifespan data */
           }
 
           /* adapt Jmol scripts */ 
@@ -414,6 +420,18 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
               $(this).css('display', displayStyle);
             });
           });
+
+          /* align labels of label groups */
+          var hiddenDomNodes = idbExpandAll("show", "hidden");   /* for adjustment all sections must be visible to get correct width */
+          jaAdjustOptionLabelWidth(".generalOptionGroup");
+          jaAdjustOptionLabelWidth(".layoutGroup");
+          jaAdjustOptionLabelWidth(".selectGroup");
+          jaAdjustOptionLabelWidth(".renderingGroup");
+          jaAdjustOptionLabelWidth(".nodevisibilityGroup");
+          jaAdjustOptionLabelWidth(".edgevisibilityGroup");
+          jaAdjustOptionLabelWidth(".mouseactionGroup");
+          idbExpandAll("hide", "", hiddenDomNodes);
+
         }
 
         function jaSwitchMouseMode(mode, commandMode) {
@@ -421,11 +439,12 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           var mouseModeClass   = ".mouseMode"; 
           var modeToStyle      = new Array ();
 
-          modeToStyle["default"]        = { cssClass: ".mouseDefault",      style: "block"};
-          modeToStyle["label"]          = { cssClass: ".mouseLabel",        style: "block"};
-          modeToStyle["centerNode"]     = { cssClass: ".mouseCenterNode",   style: "block"};
-          modeToStyle["select"]         = { cssClass: ".mouseSelect",       style: "block"};
-          modeToStyle["move"]           = { cssClass: ".mouseMove",         style: "block"};
+          modeToStyle["default"]        = { cssClass: ".mouseDefault",        style: "block"};
+          modeToStyle["label"]          = { cssClass: ".mouseLabel",          style: "block"};
+          modeToStyle["centerNode"]     = { cssClass: ".mouseCenterNode",     style: "block"};
+          modeToStyle["select"]         = { cssClass: ".mouseSelect",         style: "block"};
+          modeToStyle["move"]           = { cssClass: ".mouseMove",           style: "block"};
+          modeToStyle["visibility"]     = { cssClass: ".mouseVisibility",     style: "block"};
           modeToStyle["changePosition"] = { cssClass: ".mouseChangePosition", style: "block"};
 
           jaSetRadioGroupValue(mouseModeDomName, mode);
@@ -454,6 +473,9 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
             selectModeCommand = selectModeToCommand[selectMode];
           }
 
+          var mouseVisibilityModeDomName = "mouseaction_mouse_visibility_mode";
+          var mouseVisibilityMode        = jaGetRadioGroupValue(mouseVisibilityModeDomName);
+
           var mouseChangePositionModeDomName = "mouseaction_mouse_change_position_mode";
           var changePositionModeToCommand    = new Array ();
 
@@ -468,14 +490,15 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
 
           var jmolCommands = new Array ();
 
-          jmolCommands["reset"]        = 'set picking off; set pickCallback ""; set pickingStyle SELECT NONE; set dragselected off; set allowMoveAtoms off; set allowRotateSelected off; unbind; bind "MIDDLE-drag" "_translate";';
-          jmolCommands["default"]      = jmolCommands["reset"] + " set picking on;  pickRange='node'; initPick('info');";
-          jmolCommands["centerNode"]   = jmolCommands["reset"] + ' set picking center;';
-          jmolCommands["select"]       = jmolCommands["reset"] + ' set pickingStyle SELECT extendedSelect;' + selectModeCommand;
+          jmolCommands["reset"]          = 'set picking off; set pickCallback ""; set pickingStyle SELECT NONE; set dragselected off; set allowMoveAtoms off; set allowRotateSelected off; unbind; bind "MIDDLE-drag" "_translate";';
+          jmolCommands["default"]        = jmolCommands["reset"] + " set picking on;  pickRange='node'; initPick('info');";
+          jmolCommands["centerNode"]     = jmolCommands["reset"] + ' set picking center;';
+          jmolCommands["select"]         = jmolCommands["reset"] + ' set pickingStyle SELECT extendedSelect;' + selectModeCommand;
           /* jmolCommands["label"]        = jmolCommands["reset"] + " set picking on;  pickRange='node'; initPick('label');"; */
-          jmolCommands["label"]        = jmolCommands["reset"] + " set picking label;  pickRange='node'; initPick('label');";
-          jmolCommands["move"]         = jmolCommands["reset"] + ' bind "LEFT-drag" "_translate";';
+          jmolCommands["label"]          = jmolCommands["reset"] + " set picking label;  pickRange='node'; initPick('label');";
+          jmolCommands["move"]           = jmolCommands["reset"] + ' bind "LEFT-drag" "_translate";';
           jmolCommands["changePosition"] = jmolCommands["reset"] + ' set allowMoveAtoms on; ' + changePositionModeCommand;
+          jmolCommands["visibility"]     = jmolCommands["reset"] + " set picking on;  pickRange='neighbours'; initPick('visibility'); mouseVisibilityMode=\"" + mouseVisibilityMode + "\";";
 
           if (jmolCommands[mode]) {
             if (commandMode != "noCommands") {
@@ -488,6 +511,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           var modeToDomName      = new Array ();
 
           modeToDomName["select"]         = "mouseaction_mouse_select_mode";
+          modeToDomName["visibility"]     = "mouseaction_mouse_visibility_mode";
           modeToDomName["changePosition"] = "mouseaction_mouse_change_position_mode";
 
           var domName = modeToDomName[mode];
@@ -498,77 +522,310 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
         function idbInitHelp(mode) {                   /* define interactive help messages (interface type specific) */
           if (mode == "init") {    /* define all help messages */
             /* define help text hash with 3 subhashes: 'static' (interface type independent), 'basic' (basic interface only), 'advanced' (advanced interface only) */
-            ja_help["static"]["advanced_link"]     = "Switch to 'Advanced' JANet Interface";
-            ja_help["static"]["basic_link"]        = "Switch to 'Basic' JANet Interface";
-            ja_help["static"]["help_link"]         = "Show JANet help page";
-            ja_help["static"]["spin_checkbox"]     = "Rotate automatically around the Y-axis (on/off)";
-            ja_help["static"]["selected_checkbox"] = "Mark selected nodes by a yellow halo (on/off)";
-            ja_help["static"]["autozoom_checkbox"] = "Zoom and center selected nodes automatically (after using a control element)";
+            var static    = ja_help["static"];
+            var basic     = ja_help["basic"];
+            var advanced  = ja_help["advanced"];
 
-            ja_help["static"]["view_default"]      = "Default view";
+            static.page_name = "Name of the current subset";
 
-               ja_help["basic"]["selection_only"]              = "Select chosen node set and unselect other nodes";
-            ja_help["advanced"]["selection_only"]              = "Select chosen node set and unselect other nodes";
-               ja_help["basic"]["select_node_type_menu"]                 = "Choose node set for selection, select chosen nodes and unselect others";
-            ja_help["advanced"]["select_node_type_menu"]                 = "Choose node set as target for selection control buttons";
-            ja_help["static"]["selection_add"]      = "Add chosen node set to current selection";
-            ja_help["static"]["selection_subtract"] = "Remove chosen node set from current selection";
-            ja_help["static"]["selection_and"]      = "Select intersection between chosen node set and current selection";
-            ja_help["static"]["selection_not"]      = "Select everything except chosen node set";
+            static.interface_type_basic        = "Switch to 'Basic' JANet Interface";
+            static.interface_type_advanced     = "Switch to 'Advanced' JANet Interface";
 
-               ja_help["basic"]["render_on"]                  = "Render selected nodes by chosen rendering type";
-            ja_help["advanced"]["render_on"]                  = "Render selected nodes by chosen rendering type";
-               ja_help["basic"]["render_menu"]                = "Choose rendering type and render selected nodes";
-            ja_help["advanced"]["render_menu"]                = "Choose rendering type as target for rendering control buttons";
-            ja_help["static"]["render_off"]        = "Switch off chosen rendering type for selected nodes";
-            ja_help["static"]["render_only"]       = "Render selected nodes by chosen rendering type and switch off other types";
-            ja_help["static"]["render_trans"]      = "Render selected nodes transparently by chosen rendering type";
+            static.view_default          = "Apply default view (no labels, color by node type/subtype, LO size by lifespan change, edges translucent)";
+            static.view_gene_of_interest = "Apply genes of interest view (different for overview and direct/complete neighbourhood subsets)";
+            static.view_labelled         = "Apply labelled view (labels for AF in focus, LOs, allele types; other properties like in the default view)";
 
-               ja_help["basic"]["color_menu"]                 = "Choose color scheme and color selected nodes (all rendering types)";
-            ja_help["advanced"]["color_menu"]                 = "Choose color scheme as target for molecule coloring controls";
-               ja_help["basic"]["color_chooser_node"]     = "Choose custom node color and color selected nodes with it (all rendering types)";
-            ja_help["advanced"]["color_chooser_node"]     = "Choose custom node color for  selected rendering types";
-               ja_help["basic"]["color_on"]                   = "Color selected nodes by chosen color scheme (all rendering types)";
-            ja_help["advanced"]["color_on"]                   = "Color selected nodes by chosen color scheme (selected rendering types)";
-            ja_help["static"]["render_color_menu"] = "Choose rendering type as target for coloring controls";
+            static.hover_mode_enhance     = "Mark hovered node and neighbours by a yellow halo, reduce transparency of thei edges";
+            static.hover_mode_only        = "Show only hovered node and neighbours";
+            static.hover_mode_edges       = "Show only edges of the hovered node";
+            static.hover_include_hidden   = "Show also hidden neighbours in hover mode 'show only connected nodes'";
+            static.hover_range_neighbour  = "Set hover range to 'neighbour'";
+            static.hover_range_subnetwork = "Set hover range to 'subnetwork'";
+            static.hover_depth            = "Define hover neighbour depth";
+            static.hover_depth_set        = "Apply hover neighbour depth";
 
+            static.selected_checkbox = "Mark selected nodes by a yellow halo (on/off)";
+            static.spin_checkbox     = "Rotate automatically around the Y-axis (on/off)";
+            static.autozoom_checkbox = "Zoom and center selected nodes automatically after using a control element (on/off)";
+            static.perspective_depth_checkbox = "Apply perspective depth (on/off)";
 
-               ja_help["basic"]["color_chooser_background"]     = "Choose background color and use it";
-            ja_help["advanced"]["color_chooser_background"]     = "Choose background color as target for 'other' button";
-            ja_help["static"]["background_black"]    = "Set background color to 'black'";
-            ja_help["static"]["background_white"]    = "Set background color to 'white'";
-            ja_help["static"]["background_color_on"] = "Set background color to chosen color";
+            static.description_info = "";
 
-            ja_help["static"]["stereo_side_by_side"] = "Activate 'side by side' stereo view";
-            ja_help["static"]["stereo_cross_eyed"]   = "Activate 'cross eyed' stereo view";
-            ja_help["static"]["stereo_redblue"]      = "Activate 'red/blue' stereo view";
-            ja_help["static"]["stereo_redcyan"]      = "Activate 'red/cyan' stereo view";
-            ja_help["static"]["stereo_redgreen"]     = "Activate 'red/green' stereo view";
-            ja_help["static"]["stereo_off"]          = "Switch off stereo view";
+            static.genesofinterest_show           = "Expand 'Genes of Interest' subsection";
+            static.genesofinterest_hide           = "Collapse 'Genes of Interest' subsection";
+            static.genesofinterest_info_link      = "Show/Hide genes of interest match info table";
+            static.genesofinterest_list           = "Input gene list for the genes of interest analysis";
+            static.genesofinterest_filtersubset   = "Filter the subset management dropdown list for matching entries (on/off)";
+            static.genesofinterest_activate       = "Activate the gene list and search for matches";
+            static.genesofinterest_deactivate     = "Deactivate the gene list";
+            static.genesofinterest_clear          = "Clear the gene list";
+            static.genesofinterest_build_overview = "Build an overview subset with the matching genes of interest";
 
-            ja_help["static"]["applet_width"]        = "Choose the 'width' of the graphics window";
-            ja_help["static"]["applet_height"]       = "Choose the 'height' of the graphics window";
-            ja_help["static"]["resize"]              = "Resize the graphics window to the chosen 'width' and 'height'";
-            ja_help["static"]["maximize"]            = "Maximize the graphics window size according to the current browser window size";
-            ja_help["static"]["default_size"]        = "Set the graphics window size to the default size";
-            ja_help["static"]["snapshot"]            = "Create a snapshot image of the graphics window in JPEG format";
+            static.networkdata_show          = "Expand subsection";
+            static.networkdata_hide          = "Collapse subsection";
+            static.networkdata_type_lifespan = "Lifespan observations, ageing factors, putative ageing factors, homology observations from AgeFacttDB";
+            static.networkdata_type_go       = "Gene Ontology (GO) terms assigned to ageing factors/putative ageing factors";
+            static.networkdata_type_kegg     = "KEGG pathways assigned to ageing factors/putative ageing factors";
+            static.networkdata_type_keggGene = "Additional genes from KEGG pathways assigned to ageing factors/putative ageing factors";
+            static.networkdata_load          = "Load the selected network data (clears current network data and subsets first)";
 
-            ja_help["static"]["dna_on"]              = "Switch special 'DNA/RNA' rendering on";
-            ja_help["static"]["dna_off"]             = "Switch special 'DNA/RNA' rendering off";
-            ja_help["static"]["label_off"]           = "Switch all labels off";
-            ja_help["static"]["zoom_selected"]       = "Zoom and center on the currently selected nodes";
-            ja_help["static"]["high_quality"]        = "Activate high quality rendering (slow, needs more memory)";
-            ja_help["static"]["medium_quality"]      = "Activate medium quality rendering (fast, needs less memory)";
+            static.subset_show  = "Expand subsection";
+            static.subset_hide  = "Collapse subsection";
+            static.subset_count = "Total number of subsets";
 
-            ja_help["static"]["jmol_command"]        = "Enter Jmol scripting command (browse history with cursor 'up/down' keys)";
-            ja_help["static"]["run_jmol_command"]    = "Run scripting command (submit it to Jmol)";
+            static.displaysubset_show         = "Expand subsection";
+            static.displaysubset_hide         = "Collapse subsection";
+            static.displaysubset_menu         = "Chose subset and display it (set it as current subset)";
+            static.displaysubset_prev         = "Show previous subset";
+            static.displaysubset_next         = "Show next subset";
+            static.displaysubset_export_xgmml = "Export current subset for import into Cytoscape in XGMML format";
+            static.cytoscape_style_link       = "Cytoscape style file customized for AgeFactDB networks";
 
-            ja_help["static"]["jmol_monitor"]        = "Jmol message log for status and error messages";
+            static.managesubset_show                                = "Expand subsection";
+            static.managesubset_hide                                = "Collapse subsection";
+            static.standardsubset_menu                              = "Choose the ageing factor/putative ageing factor used as subset focus";
+            static.standardsubset_prev                              = "Choose the previous ageing factor/putative ageing factor";
+            static.standardsubset_next                              = "Choose the next ageing factor/putative ageing factor";
+            static.standardsubset_type_radio_direct                 = "Set subset type to 'direct neighbourhood'";
+            static.standardsubset_type_radio_complete               = "Set subset type to 'complete neighbourhood'";
+            static.standardsubset_node_type_alleleType_label        = "Include allele type nodes (on/off)";
+            static.standardsubset_node_type_alleleType              = "Include allele type nodes (on/off)";
+            static.standardsubset_node_type_citation_label          = "Include citation nodes (on/off)";
+            static.standardsubset_node_type_citation                = "Include citation nodes (on/off)";
+            static.standardsubset_node_type_homology_analysis_label = "Include homology analysis observation nodes (on/off)";
+            static.standardsubset_node_type_homology_analysis       = "Include homology analysis observation nodes (on/off)";
+            static.standardsubset_node_type_species_label           = "Include species nodes (on/off)";
+            static.standardsubset_node_type_species                 = "Include species nodes (on/off)";
+            static.standardsubset_node_type_keggPathway_label       = "Include KEGG pathway nodes (on/off)";
+            static.standardsubset_node_type_keggPathway             = "Include KEGG pathway nodes (on/off)";
+            static.standardsubset_node_type_keggPathwayGene_label   = "Include KEGG pathway additional gene nodes (on/off)";
+            static.standardsubset_node_type_keggPathwayGene         = "Include KEGG pathway additional gene nodes (on/off)";
+            static.standardsubset_node_type_go_process_label        = "Include Gene Ontology 'process' term nodes (on/off)";
+            static.standardsubset_node_type_go_process              = "Include Gene Ontology 'process' term nodes (on/off)";
+            static.standardsubset_node_type_go_function_label       = "Include Gene Ontology 'function' nodes (on/off)";
+            static.standardsubset_node_type_go_function             = "Include Gene Ontology 'function' nodes (on/off)";
+            static.standardsubset_node_type_go_component_label      = "Include Gene Ontology 'component' nodes (on/off)";
+            static.standardsubset_node_type_go_component            = "Include Gene Ontology 'component' nodes (on/off)";
+            static.standardsubset_add                               = "Build new standard subset with the chosen parameters";
+            static.standardsubset_delete                            = "";
+            static.customsubset_add                                 = "Build new custom subset with the chosen parameters";
+            static.customsubset_delete                              = "";
 
-            ja_help["static"]["mouseaction_mouse_mode_default"] = "Default mode";
-            ja_help["static"]["mouseaction_mouse_mode_select_node"] = "Node selection mode";
-            ja_help["static"]["mouseaction_mouse_mode_label"] = "Label mode; toggle lables of individual nodes, move individual node labels";
-            ja_help["static"]["mouseaction_mouse_mode_translate_selected"] = "Node translation mode; translate individual nodes relativ to all other nodes";
+            static.layout_show                          = "Expand subsection";
+            static.layout_hide                          = "Collapse subsection";
+            static.layout_start_coordinate_mode_random  = "Start layout generation using random node positions";
+            static.layout_start_coordinate_mode_current = "Start layout generation using the current node positions";
+            static.layout_iteration_count               = "Number of iterations";
+            static.layout_random_coordiate_factor       = "Multiplication factor for random coordinates (influences network dimension)";
+            static.layout_random_coordinate_seed        = "Seed value for random number generator (using the same seed makes layouts reproducible)";
+            static.layout_start_temperature             = "Start temperature";
+            static.layout_minimum_temperature           = "Minimum temperature";
+            static.layout_temperature_scaling_factor    = "Temperature scaling factor";
+            static.layout_kvalue_modifier               = "kValue modifier (multiplication factor)";
+            static.layout_tile_subnetworks_yes          = "Tile unconnected subnetworks";
+            static.layout_tile_subnetworks_no           = "Don't tile unconnected subnetworks";
+            static.layout_display_intermediates_yes     = "Display intermediate layouts";
+            static.layout_display_intermediates_no      = "Don't display intermediate layouts";
+            static.layout_export_format_biolayout       = "Set export format to 'BioLayoutExpress 3D' node key pairs";
+            static.layout_export_format_tsv             = "Set export format to 'tab-separated values'";
+            static.layout_export_file                   = "Set export filename (including path)";
+            static.layout_import_format_biolayout       = "Set import format to 'BioLayoutExpress 3D'";
+            static.layout_import_format_tsv             = "Set import format to 'tab-separated values'";
+            static.layout_import_file                   = "Set import filename (including path)";
+
+            static.layout_build             = "Build layout for current subset";
+            static.layout_export            = "Export layout of current subset";
+            static.layout_import            = "Import layout for current subset";
+            static.layout_reset_coordinates = "Reset coordinates to stored values (drop maual changes)";
+            static.layout_store_coordinates = "Store manual coordinate changes";
+
+            static.nodeinfo_show    = "Expand subsection";
+            static.nodeinfo_hide    = "Collapse subsection";
+            static.nodeinfo_content = "Node properties of last node clicked in mouse mode 'default'";
+
+            static.select_show     = "Expand subsection";
+            static.select_hide     = "Collapse subsection";
+            static.selection_count = "Selection Info";
+
+               basic.select_node_type_menu   = "Choose node set for selection, select chosen nodes and unselect others";
+            advanced.select_node_type_menu   = "Choose node set as target for selection control buttons";
+            static.select_node_type_only     = "Select chosen nodes and unselect other nodes";
+            static.select_node_type_only2    = "Select chosen nodes and unselect other nodes";
+            static.select_node_type_add      = "Add chosen nodes to current selection";
+            static.select_node_type_subtract = "Remove chosen nodes from current selection";
+            static.select_node_type_and      = "Select intersection between chosen nodes and current selection";
+            static.select_node_type_not      = "Select everything except chosen nodes";
+
+               basic.select_species_menu   = "Choose node set for selection, select chosen nodes and unselect others";
+            advanced.select_species_menu   = "Choose node set as target for selection control buttons";
+            static.select_species_only     = "Select chosen nodes and unselect other nodes";
+            static.select_species_only2    = "Select chosen nodes and unselect other nodes";
+            static.select_species_add      = "Add chosen node set to current selection";
+            static.select_species_subtract = "Remove chosen node set from current selection";
+            static.select_species_and      = "Select intersection between chosen node set and current selection";
+            static.select_species_not      = "Select everything except chosen node set";
+
+            static.select_property_value_menu     = "Choose node property used for selection";
+            static.select_property_value          = "Choose node property value used for selection";
+            static.select_property_value_only     = "Select only nodes with the chosen node property value";
+            static.select_property_value_add      = "Add nodes with the chosen node property value to current selection";
+            static.select_property_value_subtract = "Remove nodes with the chosen node property value from current selection";
+            static.select_property_value_and      = "Select intersection between nodes with the chosen node property value and current selection";
+            static.select_property_value_not      = "Select everything except nodes with the chosen node property value";
+
+            static.select_degree_min_value = "Enter minimum degree (number of edges)";
+            static.select_degree_max_value = "enter maximum degree (number of edges)";
+            static.select_degree_only      = "Select chosen nodes and unselect other nodes";
+            static.select_degree_add       = "Add chosen node set to current selection";
+            static.select_degree_subtract  = "Remove chosen node set from current selection";
+            static.select_degree_and       = "Select intersection between chosen node set and current selection";
+            static.select_degree_not       = "Select everything except chosen node set";
+
+               basic.select_miscellaneous_menu   = "Choose node set for selection, select chosen nodes and unselect others";
+            advanced.select_miscellaneous_menu   = "Choose node set as target for selection control buttons";
+            static.select_miscellaneous_only     = "Select chosen nodes and unselect other nodes";
+            static.select_miscellaneous_only2    = "Select chosen nodes and unselect other nodes";
+            static.select_miscellaneous_add      = "Add chosen node set to current selection";
+            static.select_miscellaneous_subtract = "Remove chosen node set from current selection";
+            static.select_miscellaneous_and      = "Select intersection between chosen node set and current selection";
+            static.select_miscellaneous_not      = "Select everything except chosen node set";
+
+            static.rendering_show = "Expand subsection";
+            static.rendering_hide = "Collapse subsection";
+               basic.render_menu  = "Choose rendering type and render selected nodes";
+            advanced.render_menu  = "Choose rendering type as target for rendering control buttons";
+            static.render_on      = "Render selected nodes by chosen rendering type";
+            static.render_only    = "Render selected nodes by chosen rendering type and switch off other types";
+            static.render_trans   = "Render selected nodes transparently by chosen rendering type";
+            static.render_off     = "Switch off chosen rendering type for selected nodes";
+
+            static.rendering_node_size_type           = "Set sizes of selected nodes by node type ";
+            static.rendering_node_size_lifespan       = "Set sizes of selected nodes by lifespan cange value";
+            static.rendering_node_size_degree         = "Set sizes of selected nodes by edge count (degree)";
+            static.rendering_node_size_scaling_factor = "Set and apply node size scaling factor";
+
+            static.rendering_edge_size_uniform        = "Unify diameter of all edges of selected nodes";
+            static.rendering_edge_size_lifespan       = "Set edge diameter of selected nodes by lifespan change value";
+            static.rendering_edge_size_edge_count     = "Set edge diameter of selected nodes by edge count (degree)";
+            static.rendering_edge_size_scaling_factor = "Set and apply edge diameter scaling factor";
+
+            static.rendering_node_label_size       = "Choose size for labels of selected nodes";
+            static.rendering_node_label_size_apply = "Set label size of selected nodes to the chosen value";
+
+            static.rendering_node_scaling_factor       = "Choose node scaling factor for all nodes";
+            static.rendering_node_scaling_factor_apply = "Apply chosen node scaling factor to all nodes";
+
+            static.rendering_edge_scaling_factor       = "Choose edge diameter scaling factor for all edges";
+            static.rendering_edge_scaling_factor_apply = "Apply chosen edge diameter scaling factor to all nodes";
+
+            static.high_quality_rendering   = "Set rendering quality to high (slower)";
+            static.medium_quality_rendering = "Set rendering quality to medium (faster)";
+            static.full_detail_zoom         = "Show full details during zoom and rotation (slower)";
+            static.reduced_detail_zoom      = "Show reduced details during zoom and rotation (faster)";
+
+            static.coloring_show = "Expand subsection";
+            static.coloring_hide = "Collapse subsection";
+
+            static.coloring_node_show = "Expand subsection";
+            static.coloring_node_hide = "Collapse subsection";
+            static.render_color_menu  = "Choose rendering type for setting color";
+               basic.color_menu       = "Choose and apply color scheme";
+            advanced.color_menu       = "Choose color scheme";
+            static.color_on           = "Apply chosen color scheme";
+            static.color_legend       = "Color legend";
+
+            static.coloring_label_show = "Expand subsection";
+            static.coloring_label_hide = "Collapse subsection";
+            static.label_default       = "Set label color to default value";
+            static.label_black         = "Set label color to 'black'";
+            static.label_white         = "Set label color to 'white'";
+            static.label_color_on      = "Set label color to chosen other color";
+
+            static.coloring_label_background_show = "Expand subsection";
+            static.coloring_label_background_hide = "Collapse subsection";
+            static.label_background_default       = "Set label background color to default value";
+            static.label_background_black         = "Set label background color to 'black'";
+            static.label_background_white         = "Set label background color to 'white'";
+            static.label_background_none          = "Set label background color off";
+            static.label_background_color_on      = "Set label background color to chosen other color";
+
+            static.coloring_background_show = "Expand subsection";
+            static.coloring_background_hide = "Collapse subsection";
+            static.background_default       = "Set graphics window background color to default value";
+            static.background_black         = "Set graphics window background color to 'black'";
+            static.background_white         = "Set graphics window background color to 'white'";
+            static.background_color_on      = "Set graphics window background color to chosen other color";
+            static.rgb_value                = "Enter RGB color value";
+
+            static.visibility_show = "Expand subsection";
+            static.visibility_hide = "Collapse subsection";
+
+            static.visibility_node_show            = "Expand subsection";
+            static.visibility_node_hide            = "Collapse subsection";
+            static.nodevisibility_display_only     = "Display only selected nodes, hide all other nodes";
+            static.nodevisibility_display_add      = "Display the selected nodes (add to displayed nodes)";
+            static.nodevisibility_display_subtract = "Hide the selected nodes (subtract from displayed nodes)";
+            static.nodevisibility_display_and      = "Display only selected nodes that are already displayed, hide all other nodes";
+            static.nodevisibility_display_not      = "Display all unselected nodes, hide selected nodes";
+            static.nodevisibility_hide_only        = "Hide only selected nodes, display all other nodes";
+            static.nodevisibility_hide_add         = "Hide selected nodes (add to hidden nodes)";
+            static.nodevisibility_hide_subtract    = "Display selected nodes (subtract from hidden nodes)";
+            static.nodevisibility_hide_and         = "Hide selected and already hidden nodes, display all other nodes";
+            static.node_visibility_hide_not        = "Hide selected and not hidden nodes, display all other nodes";
+            static.nodevisibility_display_all      = "Display all nodes";
+            static.nodevisibility_hide_all         = "Hide all nodes";
+
+            static.visibility_edge_show              = "Expand subsection";
+            static.visibility_edge_hide              = "Collapse subsection";
+            static.edgevisibility_selection_mode_and = "Act on edges where both nodes are selected";
+            static.edgevisibility_selection_mode_or  = "Act on edges where one or both nodes are selected";
+            static.edgevisibility_display_only       = "Display only edges of the selected nodes, hide all other edges";
+            static.edgevisibility_display_add        = "Display the edges of the selected nodes (add to displayed edges)";
+            static.edgevisibility_display_subtract   = "Hide the edges of the selected and displayed nodes (subtract from displayed edges)";
+            static.edgevisibility_hide_only          = "Hide only edges of the selected nodes, display all other edges";
+            static.edgevisibility_hide_add           = "Hide edges of the selected node (add to hidden edges)";
+            static.edgevisibility_hide_subtract      = "Display edges of the selected nodes (subtract from hidden edges)";
+            static.edgevisibility_display_all        = "Display all edges";
+            static.edgevisibility_hide_all           = "Hide all edges";
+
+            static.graphics_show = "Expand subsection";
+            static.graphics_hide = "Collapse subsection";
+            static.applet_width  = "Choose graphics window/snapshot width (pixel)";
+            static.applet_height = "Choose graphics window/snapshot height (pixel)";
+            static.resize        = "Resize the graphics window to the chosen width and height";
+            static.maximize      = "Maximize the graphics window size according to the current browser window size";
+            static.default_size  = "Set the graphics window size to the default size";
+            static.snapshot      = "Create a snapshot image of the graphics window of the chosen width and height to a new window/overlay";
+
+            static.stereo_show                   = "Expand subsection";
+            static.stereo_hide                   = "Collapse subsection";
+            static.stereo_side_by_side           = "Switch on 'side-by-side' stereo view";
+            static.stereo_side_by_side_condensed = "Switch on 'condensed side-by-side' stereo view";
+            static.stereo_cross_eyed             = "Switch on 'cross-eyed' stereo view";
+            static.stereo_redblue                = "Switch on 'red/blue' stereo view";
+            static.stereo_redcyan                = "Switch on 'red/cyan' stereo view";
+            static.stereo_redgreen               = "Switch on 'red/green' stereo view";
+            static.stereo_3dbeamer_on            = "Switch on '3D beamer' mode (condensed side-by-side stereo, hide interface, set fullscreen mode)";
+            static.stereo_3dbeamer_off           = "Switch off '3D beamer' mode";
+            static.stereo_off                    = "Switch off stereo view";
+
+            static.miscellaneous_show = "Expand subsection";
+            static.miscellaneous_hide = "Collapse subsection";
+            static.all_labels_off     = "Hide labels of all nodes";
+            static.label_on           = "Show labels of selected nodes";
+            static.label_off          = "Hide labels of seected nodes";
+            static.label_front_on     = "Activate option 'label always at front' for selected nodes";
+            static.label_front_off    = "Deactivate option 'label always at front' for selected nodes";
+            static.zoom_selected      = "Zoom and center on the currently selected nodes";
+            static.stop_command       = "Stop currently running command";
+
+            static.script_show      = "Expand subsection";
+            static.script_hide      = "Collapse subsection";
+            static.script_info_link = "Show/hide example commands";
+            static.jmol_command     = "Enter JANet/Jmol scripting commands (browse history with cursor 'up/down' keys)";
+            static.run_jmol_command = "Run scripting command (submit it to Jmol)";
+            static.history_up       = "Show previous command from history";
+            static.history_down     = "Show next command from history";
 
             /* install all interface type independent help texts */
             for (var id in ja_help["static"]) {
@@ -664,6 +921,44 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           }
         }
 
+        function jaShowInfo(sectionName,action) {      /* show or hide info section */
+          var infoDomId = sectionName + "_info";
+
+          if (document.getElementById(infoDomId)) {
+            switch(action) {
+              case "show":
+                document.getElementById(infoDomId).style.display = "block";
+                if (show_action[infoDomId]) {
+                  show_action[infoDomId] = "hide";
+                }
+                break;
+
+              case "hide":
+                document.getElementById(infoDomId).style.display = "none";
+                if (show_action[infoDomId]) {
+                  show_action[infoDomId] = "show";
+                }
+                break;
+
+              case "toggle":
+                if (document.getElementById(infoDomId).style.display == "none") {
+                  document.getElementById(infoDomId).style.display = "block";
+                  if (show_action[infoDomId]) {
+                    show_action[infoDomId] = "hide";
+                  }
+                } else {
+                  document.getElementById(infoDomId).style.display = "none";
+                  if (show_action[infoDomId]) {
+                    show_action[infoDomId] = "show";
+                  }
+                }
+                break;
+            }
+          } else {
+            console.log("ERROR: DOM node with ID '" + infoDomId + "' NOT FOUND in method 'jaShowInfo'");
+          }
+        }
+
         function idbExpandAll(action, mode, domNodes)  {               /* show or hide all control elements (no info tables) in Jmol viewer */
           if (!mode) {
             mode = "all";
@@ -688,6 +983,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           if (document.getElementById(menuDomId)) {
             var menuObject = document.getElementById(menuDomId);
           var current_subset = menu_state["displaysubset_menu"];
+          var current_subset_key = "" + Jmol.evaluateVar(jmolJSnet3D, "print networkData..currentSubsetKey");
           var start_script  = false;
           var new_subset = "";
           if (current_subset != "") {
@@ -719,6 +1015,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
             if (start_script == true) {
               menu_state["displaysubset_menu"] = new_subset;
               idbSetSelected(menuObject, menu_state["displaysubset_menu"]);
+              $('#page_name').text(subsetKeyToName[new_subset]);
               var jmolCommands = [];
               jmolCommands.push("print 'NOTE: changing subset from \"" + current_subset + "\" to \"" + new_subset + "\"...'");
               jmolCommands.push("networkData..subsets.[\"" + current_subset + "\"]..storedOrientation = script(\"show orientation\").split(\"#\").[1];");
@@ -736,7 +1033,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           }
         }
 
-        function idbMenuBrowser(action,type) {         /* browse forward/backwoard through menu entries */
+        function jaMenuBrowser(action,type) {         /* browse forward/backwoard through menu entries */
           var menu_name      = type + "_menu";
           var old_menu_state = menu_state[menu_name];
 
@@ -745,17 +1042,19 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
               idbSetSelectedPrev(document.getElementById(menu_name),menu_state[menu_name]);
               menu_state[menu_name] = idbGetSelected(document.getElementById(menu_name));
               if (menu_state[menu_name] != old_menu_state) {
-                Jmol.script(jmolJSnet3D, script_base[menu_state[menu_name]]["menu"]);
+                if (script_base[menu_state[menu_name]]["menu"]) {
+                  Jmol.script(jmolJSnet3D, script_base[menu_state[menu_name]]["menu"]);
+                }
               }
-              idbSetLabelText(type);
               break;
            case "next":
               idbSetSelectedNext(document.getElementById(menu_name),menu_state[menu_name]);
               menu_state[menu_name] = idbGetSelected(document.getElementById(menu_name));
               if (menu_state[menu_name] != old_menu_state) {
-                Jmol.script(jmolJSnet3D, script_base[menu_state[menu_name]]["menu"]);
+                if (script_base[menu_state[menu_name]]["menu"]) {
+                  Jmol.script(jmolJSnet3D, script_base[menu_state[menu_name]]["menu"]);
+                }
               }
-              idbSetLabelText(type);
               break;
           }
         }
@@ -1113,7 +1412,8 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           /* ### color scripts ### */
           color_script["custom"]     = unify_colors + ' color ' + render_color_type + ' ' + custom_node_color + ';';
           color_script["nodetype"]    = 'setNodeProperty("color","nodeType")';
-          color_script["lifespanchangequalitative"]    = 'setNodeProperty("color","lifespanChangeQualitative")';
+          color_script["lifespanchangequalitative"] = 'setNodeProperty("color","lifespanChangeQualitative")';
+          color_script["edge_count"]                = 'setNodeProperty("color","edgeCount")';
 
           /* ### general structure independent control scripts ### */
 
@@ -1121,6 +1421,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           script_base["hover_mode"]             = [];
           script_base["hover_mode"]["enhance"]  = "hoverMode = 'enhance';";
           script_base["hover_mode"]["only"]     = "hoverMode = 'only';";
+          script_base["hover_mode"]["edgesOn"]  = "hoverMode = 'edgesOn';";
 
           /* Hover Range */
           script_base["hover_range"]                = [];
@@ -1569,8 +1870,16 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           script_base["select_displayed"]["add"]      = "select displayed OR selected;";
           script_base["select_displayed"]["subtract"] = "select selected AND NOT displayed";
           script_base["select_displayed"]["and"]      = "select displayed and selected;";
-          script_base["select_displayed"]["not"]      = "select hidden;";
+          script_base["select_displayed"]["not"]      = "select not displayed;";
           script_base["select_displayed"]["menu"]     = (interface_type == "basic") ? "select displayed;" : "";
+
+          script_base["select_hidden"]             = [];
+          script_base["select_hidden"]["only"]     = "select hidden;";
+          script_base["select_hidden"]["add"]      = "select hidden OR selected;";
+          script_base["select_hidden"]["subtract"] = "select selected AND NOT hidden";
+          script_base["select_hidden"]["and"]      = "select hidden and selected;";
+          script_base["select_hidden"]["not"]      = "select not hidden;";
+          script_base["select_hidden"]["menu"]     = (interface_type == "basic") ? "select hidden;" : "";
 
           script_base["select_none"]             = [];
           script_base["select_none"]["only"]     = "select none;";
@@ -1594,22 +1903,22 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           script_base["nodevisibility_selected"]["display_add"]      = "display ADD selected;";
           script_base["nodevisibility_selected"]["display_subtract"] = "display REMOVE selected;";
           script_base["nodevisibility_selected"]["display_and"]      = "display displayed & selected;";
-          script_base["nodevisibility_selected"]["display_not"]      = "display NOT selected;";
+          script_base["nodevisibility_selected"]["display_not"]      = "display NOT displayed & selected;";
           script_base["nodevisibility_selected"]["hide_only"]     = "hide selected;";
           script_base["nodevisibility_selected"]["hide_add"]      = "hide ADD selected;";
           script_base["nodevisibility_selected"]["hide_subtract"] = "hide REMOVE selected;";
           script_base["nodevisibility_selected"]["hide_and"]      = "hide hidden & selected;";
-          script_base["nodevisibility_selected"]["hide_not"]      = "hide NOT selected;";
+          script_base["nodevisibility_selected"]["hide_not"]      = "hide NOT hidden & selected;";
           script_base["nodevisibility_selected"]["menu"]     = (interface_type == "basic") ? "display selected;" : "";
 
           /* Edge Visibility */
           script_base["edgevisibility_selected"]                     = [];
           script_base["edgevisibility_selected"]["display_only"]     = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={not selected}.bonds; hide bondSet; bondSet={selected}.bonds; display bondSet; set bondModeOr savedMode;";
-          script_base["edgevisibility_selected"]["display_add"]      = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; display bondSet; set bondModeOr savedMode;";
-          script_base["edgevisibility_selected"]["display_subtract"] = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; hide bonds; set bondModeOr savedMode;";
-          script_base["edgevisibility_selected"]["hide_only"]     = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={not selected}.bonds; display bondSet; bondSet={selected}.bonds; hide bondSet; set bondModeOr savedMode;";
-          script_base["edgevisibility_selected"]["hide_add"]      = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; hide bondSet; set bondModeOr savedMode;";
-          script_base["edgevisibility_selected"]["hide_subtract"] = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; display bondSet; set bondModeOr savedMode;";
+          script_base["edgevisibility_selected"]["display_add"]      = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; display ADD bondSet; set bondModeOr savedMode;";
+          script_base["edgevisibility_selected"]["display_subtract"] = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; hide ADD bondSet; set bondModeOr savedMode;";
+          script_base["edgevisibility_selected"]["hide_only"]     = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={not selected}.bonds; display bondSet; bondSet={selected}.bonds; hide ADD bondSet; set bondModeOr savedMode;";
+          script_base["edgevisibility_selected"]["hide_add"]      = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; hide ADD bondSet; set bondModeOr savedMode;";
+          script_base["edgevisibility_selected"]["hide_subtract"] = "var savedMode=bondModeOr; set bondModeOr edgevisibilitySelectionModeOr; var bondSet={selected}.bonds; display ADD bondSet; set bondModeOr savedMode;";
           script_base["edgevisibility_selected"]["menu"]     = (interface_type == "basic") ? "display selected;" : "";
 
           /* Rendering */
@@ -1687,6 +1996,11 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           script_base["color_lifespanchangequalitative"]["off"]  = rendering_types_color_none;
           script_base["color_lifespanchangequalitative"]["menu"] = (interface_type == "basic") ? color_script["lifespanchangequalitative"] : "";
 
+          script_base["color_edge_count"]         = [];
+          script_base["color_edge_count"]["on"]   = color_script["edge_count"];
+          script_base["color_edge_count"]["off"]  = rendering_types_color_none;
+          script_base["color_edge_count"]["menu"] = (interface_type == "basic") ? color_script["edge_count"] : "";
+
           script_base["color_charge"]         = [];
           script_base["color_charge"]["on"]   = color_script["charge"];
           script_base["color_charge"]["off"]  = rendering_types_color_none;
@@ -1705,9 +2019,9 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           /* ### structure independent type specific scripts ### */
 
           restrict_not_selected = 'define restrictprev selected; restrict NOT selected; select restrictprev;';
-          script_base['default_view_default'] = 'var currentSelection = selected; select all; label hide; initDisplay(layoutOptions); var subsetType = networkData..subsets.[networkData..currentSubsetKey]..subsetType; setSizeByChange("node", 0.05, {[OB_INC] OR [OB_DEC] OR [OB_NON]}); if (subsetType == "standard") { var centralNode = centralNodeInfo..nodeNumber; select atomno=@centralNode; label display; select ([OB_INC] OR [OB_DEC] OR [OB_NON]) and temperature=0; halo on; label "n/a"; label hide; } elseif (subsetType == "full") { select all; color bonds opaque; } select @currentSelection;';
-          script_base['default_view_labelled'] = 'var currentSelection = selected; select all; label hide; initDisplay(layoutOptions); select [ALT_ALT]; displayLabel("show"); var centralNodeInfo = networkData..subsets.[networkData..currentSubsetKey]..centralNodeInfo; var subsetType = networkData..subsets.[networkData..currentSubsetKey]..subsetType; if (subsetType == "standard") { var centralNode = centralNodeInfo..nodeNumber; select atomno=@centralNode; displayLabel("show"); ' + script_base["select_observationlifespan"]["only"] + ' displayLabel("show"); select ([OB_INC] OR [OB_DEC] OR [OB_NON]) AND temperature=0; label "n/a"; setSizeByChange("node", 0.05, {[OB_INC] OR [OB_DEC] OR [OB_NON]}); } select @currentSelection;';
-          script_base['default_view_gene_of_interest'] = 'var currentSelection = selected; select all; label hide; initDisplay(layoutOptions);  select [ALT_ALT]; displayLabel("show"); var centralNodeInfo = networkData..subsets.[networkData..currentSubsetKey]..centralNodeInfo; selectByInfoKey("nodeKey",networkData..subsets..full..genesOfInterest..matchedExperimentalNodeKeys.keys); define set1 selected; selectByInfoKey("nodeKey",networkData..subsets..full..genesOfInterest..matchedHomologyBaseNodeKeys.keys); define set2 selected; selectByInfoKey("nodeId",networkData..subsets..full..genesOfInterest..nodeIds); define set3 selected; var subsetType = networkData..subsets.[networkData..currentSubsetKey]..subsetType; if (subsetType == "standard") { var centralNode = centralNodeInfo..nodeNumber; select atomno=@centralNode; displayLabel("show"); ' + script_base["select_observationlifespan"]["only"] + ' displayLabel("show"); select ([OB_INC] OR [OB_DEC] OR [OB_NON]) and temperature=0; halo on; label "n/a"; select set1,set2,set3; displayLabel("show"); } elseif (subsetType == "goi_overview") { select set1,set2; displayLabel("show"); } select set3; color cyan; color label dodgerblue; set fontSize 8; select @currentSelection;';
+          script_base['default_view_default'] = 'var currentSelection = {selected}; select all; label hide; initDisplay(layoutOptions); var subsetType = networkData..subsets.[networkData..currentSubsetKey]..subsetType; setSizeByChange("node", 0.05, {[OB_INC] OR [OB_DEC] OR [OB_NON]}); if (subsetType == "standard") { var centralNode = centralNodeInfo..nodeNumber; select atomno=@centralNode; label display; select ([OB_INC] OR [OB_DEC] OR [OB_NON]) and temperature=0; halo on; label "n/a"; label hide; } elseif (subsetType == "full") { select all; color bonds opaque; } select @currentSelection;';
+          script_base['default_view_labelled'] = 'var currentSelection = {selected}; select all; label hide; initDisplay(layoutOptions); select [ALT_ALT]; displayLabel("show"); var centralNodeInfo = networkData..subsets.[networkData..currentSubsetKey]..centralNodeInfo; var subsetType = networkData..subsets.[networkData..currentSubsetKey]..subsetType; if (subsetType == "standard") { var centralNode = centralNodeInfo..nodeNumber; select atomno=@centralNode; displayLabel("show"); ' + script_base["select_observationlifespan"]["only"] + ' displayLabel("show"); select ([OB_INC] OR [OB_DEC] OR [OB_NON]) AND temperature=0; label "n/a"; setSizeByChange("node", 0.05, {[OB_INC] OR [OB_DEC] OR [OB_NON]}); } select @currentSelection;';
+          script_base['default_view_gene_of_interest'] = 'var currentSelection = {selected}; select all; label hide; initDisplay(layoutOptions);  select [ALT_ALT]; displayLabel("show"); var centralNodeInfo = networkData..subsets.[networkData..currentSubsetKey]..centralNodeInfo; selectByInfoKey("nodeKey",networkData..subsets..full..genesOfInterest..matchedExperimentalNodeKeys.keys); define set1 selected; selectByInfoKey("nodeKey",networkData..subsets..full..genesOfInterest..matchedHomologyBaseNodeKeys.keys); define set2 selected; selectByInfoKey("nodeId",networkData..subsets..full..genesOfInterest..nodeIds); define set3 selected; var subsetType = networkData..subsets.[networkData..currentSubsetKey]..subsetType; if (subsetType == "standard") { var centralNode = centralNodeInfo..nodeNumber; select atomno=@centralNode; displayLabel("show"); ' + script_base["select_observationlifespan"]["only"] + ' displayLabel("show"); select ([OB_INC] OR [OB_DEC] OR [OB_NON]) and temperature=0; halo on; label "n/a"; select set1,set2,set3; displayLabel("show"); } elseif (subsetType == "goi_overview") { select set1,set2; displayLabel("show"); } select set3; color cyan; color label dodgerblue; set fontSize 8; select @currentSelection;';
 
           /* ### structure dependent general scripts ### */
 
@@ -1758,6 +2072,8 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
         document.getElementById('interface_type_advanced').checked=false;
         document.getElementById('interface_type_basic').checked=true;
         document.getElementById('hover_mode_only').checked=false;
+        document.getElementById('hover_include_hidden').value="off";
+        document.getElementById('hover_include_hidden').checked=true;
         document.getElementById('hover_mode_enhance').checked=true;
         document.getElementById('hover_range_subnetwork').checked=false;
         document.getElementById('hover_range_neighbour').checked=true;
@@ -1778,6 +2094,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
         document.getElementById('edgevisibility_selection_mode_or').checked=true;
         document.getElementById('mouseaction_mouse_mode_default').checked=true;
         document.getElementById('mouseaction_mouse_select_mode_node').checked=true;
+        document.getElementById('mouseaction_mouse_visibility_mode_only').checked=true;
         document.getElementById('mouseaction_mouse_change_position_mode_node').checked=true;
 
         jaSwitchMouseMode("default", "noCommands");
@@ -1811,6 +2128,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
         jaShowControl("displaysubset","show");
         jaShowControl("managesubset","show");
 
+        console.log("NOTE: GUI initialization finished");
       }
 
         function jaSelectByProperty(mode) {
@@ -1820,10 +2138,30 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
 
           if (document.getElementById(valueDomId)) {
             value = document.getElementById(valueDomId).value;
-            var jmolCommand = 'selectByInfoKey("' + property + '","' + value + '","' + mode + '","select");';
+            var jmolCommand = 'selectByInfoKey("' + property + '","' + value + '","' + mode + '","select");'; 
             Jmol.script(jmolJSnet3D, jmolCommand);
           } else {
             alert("INTERNAL ERROR: DOM node ID '" + valueDomId + "' not found (mode=" + mode + ")");
+          }
+        }
+
+        function jaSelectByDegree(mode) {
+          var minValue      = "";
+          var maxValue      = "";
+          var minValueDomId = "select_degree_min_value";
+          var maxValueDomId = "select_degree_max_value";
+
+          if (document.getElementById(minValueDomId)) {
+            if (document.getElementById(maxValueDomId)) {
+              minValue = document.getElementById(minValueDomId).value;
+              maxValue = document.getElementById(maxValueDomId).value;
+              var jmolCommand = 'selectByDegree("' +  + '","' + value + '","' + mode + '","select");'; 
+              Jmol.script(jmolJSnet3D, jmolCommand);
+            } else {
+              alert("INTERNAL ERROR: DOM node ID '" + maxValueDomId + "' not found (mode=" + mode + ")");
+            }
+          } else {
+            alert("INTERNAL ERROR: DOM node ID '" + minValueDomId + "' not found (mode=" + mode + ")");
           }
         }
 
@@ -1854,6 +2192,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
                 }
               }
             }
+            jaSetLayoutParameter();
             var jmolCommand = 'manageStandardSubset("' + action + '", "' + selectedValue + '", "' + subsetType + '", "' + extraNodeTypes.join("||") + '");';
             Jmol.script(jmolJSnet3D, jmolCommand);
           }
@@ -1878,9 +2217,13 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
             if (document.getElementById(subsetFilterDomId)) {
               if (document.getElementById(subsetFilterDomId).checked) {
                 subsetFilter = "true";
+              } else {
+                subsetFilter = "false";
               }
             }
-            if (action == "activate") {
+
+            switch(action) {
+              case "activate":
               if (document.getElementById(listDomId)) {
                 var listData = document.getElementById(listDomId).value;
                 var lines    = listData.split(/[\n\r]/);
@@ -1892,7 +2235,9 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
                       geneIdList.push(RegExp.$1);
                     } else {
                       if (/^ *(.*?) *\t *(.*?) *$/.test(lines[i])) {
-                        geneNameList.push(RegExp.$1 + "||" + RegExp.$2);
+                        var symbol = RegExp.$1;
+                        var species = RegExp.$2;
+                        geneNameList.push(symbol + "||" + species);
                         speciesList[RegExp.$2]++;
                       } else {
                         if (/^ *(.*)\s+(\S+? \S+?) *$/.test(lines[i])) {
@@ -1911,23 +2256,34 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
                 /* alert("GeneIDs: " + geneIdList + "\nGeneNames: " + geneNameList + "\nSpecies: " + Object.keys(speciesList)); */
                 var scriptCommand = 'genesOfInterest = [action: "' + action + '", parsed: false, subsetFilter: ' + subsetFilter + ']; genesOfInterest..ncbiGeneIds = "' + geneIdList.join("##") + '"; genesOfInterest..geneKeys = "' + geneNameList.join("##") + '"; genesOfInterest..speciesList = "' + Object.keys(speciesList).join("##") + '"; manageGenesOfInterest(genesOfInterest);';
                 Jmol.script(jmolJSnet3D, scriptCommand);
+                jaShowInfo("genesofinterest", "show");
                 if (document.getElementById("genesofinterest_build_overview")) {
                   document.getElementById("genesofinterest_build_overview").disabled = false;
                 }
               }
-            } else {
-              if (action == "deactivate") {
+              break;
+
+              case "deactivate":
                 alert("Sorry, not implemented yet");
                 if (document.getElementById("genesofinterest_build_overview")) {
                   document.getElementById("genesofinterest_build_overview").disabled = true;
                 }
+                break;
 
-              } else {
-                if (action == "overview") {
+              case "filter":
+                if (subsetFilter == "true") {
+                  action = "filterOn";
+                } else {
+                  action = "filterOff";
+                }
+                var scriptCommand = 'manageGenesOfInterest("' + action + '");';
+                Jmol.script(jmolJSnet3D, scriptCommand);
+                break;
+
+              case "overview":
                   var scriptCommand = 'manageGenesOfInterest("' + action + '");';
                   Jmol.script(jmolJSnet3D, scriptCommand);
-                }
-              }
+                break;
             }
           }
         }
@@ -1987,10 +2343,8 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
               var typeKey = typesLoaded.sort().join("_");
               var fileString = '"' + fileList.join('", "') + '"';
               var jmolCommand = 'logMsg([level: "iError", msg: "network data COULD NOT BE LOADED"]);';
-console.log(jmolCommand);
 
               var jmolCommandLoad = 'var startTime = now(); networkData..mode="new"; networkData..deleteRawDataAfterParsing=true; networkData..typesLoaded="' + typeKey + '"; networkData..networkType="agefactdb"; networkData..fileType="tsv"; networkData..fileList = [' + fileString + ']; loadNetworkData(networkData); var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)"; logMsg([level: "info", msg: "finished loading and parsing network data" + timeMessage]); updateStandardSubsetManagementMenu(networkData);';
-console.log(jmolCommand);
 
               if (applet_type == "java") {
                 jmolCommand = jmolCommandLoad;
@@ -2018,9 +2372,11 @@ console.log(jmolCommand);
                 jmolCommands.push('updateStandardSubsetManagementMenu(networkData);');
                 jmolCommands.push('set platformSpeed 2');
                 jmolCommand = jmolCommands.join(" ");
+                jmolCommands = new Array();
               }
 
               Jmol.script(jmolJSnet3D, jmolCommand);
+              jmolCommand = "";
               if (action == "initialLoad") {
                 Jmol.script(jmolJSnet3D, "resetGuiAfterLoadNetworkData(\"init\");");
               } else {
@@ -2031,6 +2387,87 @@ console.log(jmolCommand);
               alert("No network data selected - network data unchanged");
             }
           }
+        }
+
+        function jaSetLayoutParameter(domIdBaseName) {
+          if (!domIdBaseName) {
+            domIdBaseName = "layout_";
+          }
+          var exportFormatDomName = domIdBaseName + "export_format";
+          var importFormatDomName = domIdBaseName + "import_format";
+          var importFormat        = "";
+          var exportFormat        = "";
+          var importFile          = "";
+          var exportFile          = "";
+          var jqueryExpression    = "";
+          var jmolCommand         = "";
+          var jmolCommands        = [];
+
+          var iterationCount           = $("#" + domIdBaseName + "iteration_count").val();
+          var randomCoordiateFactor    = $("#" + domIdBaseName + "random_coordiate_factor").val();
+          var randomCoordinateSeed     = $("#" + domIdBaseName + "random_coordinate_seed").val();
+          var startTemperature         = $("#" + domIdBaseName + "start_temperature").val();
+          var minimumTemperature       = $("#" + domIdBaseName + "minimum_temperature").val();
+          var temperatureScalingFactor = $("#" + domIdBaseName + "temperature_scaling_factor").val();
+          var kvalueModifier           = $("#" + domIdBaseName + "kvalue_modifier").val();
+
+          jqueryExpression = 'input[name=' + domIdBaseName + 'start_coordinate_mode]:checked';
+          var startCoordinateMode    = $(jqueryExpression).val();
+
+          jqueryExpression = 'input[name=' + domIdBaseName + 'tile_subnetworks]:checked';
+          var tileSubnetworks    = $(jqueryExpression).val();
+
+          jqueryExpression = 'input[name=' + domIdBaseName + 'display_intermediates]:checked';
+          var displayIntermediates    = $(jqueryExpression).val();
+
+          if (startCoordinateMode != "") {
+            jmolCommand = 'layoutOptions.fr.startCoordinateMode="' + startCoordinateMode + '";';
+            jmolCommands.push(jmolCommand);
+          }
+          if ("" + iterationCount != "") {
+            jmolCommand = 'layoutOptions.fr.iterationCount=' + iterationCount + ';';
+            jmolCommands.push(jmolCommand);
+          }
+          if ("" + randomCoordiateFactor != "") {
+            jmolCommand = 'layoutOptions.fr.randomCoordiateFactor=' + randomCoordiateFactor + ';';
+            jmolCommands.push(jmolCommand);
+          }
+          if ("" + randomCoordinateSeed != "") {
+            jmolCommand = 'layoutOptions.fr.randomCoordinateSeed=' + randomCoordinateSeed + ';';
+            jmolCommands.push(jmolCommand);
+          }
+          if ("" + startTemperature != "") {
+            jmolCommand = 'layoutOptions.fr.startTemperature=' + startTemperature + ';';
+            jmolCommands.push(jmolCommand);
+          }
+          if ("" + minimumTemperature != "") {
+            jmolCommand = 'layoutOptions.fr.minimumTemperature=' + minimumTemperature + ';';
+            jmolCommands.push(jmolCommand);
+          }
+          if ("" + temperatureScalingFactor != "") {
+            jmolCommand = 'layoutOptions.fr.temperatureScalingFactor=' + temperatureScalingFactor + ';';
+            jmolCommands.push(jmolCommand);
+          }
+          if ("" + kvalueModifier != "") {
+            jmolCommand = 'layoutOptions.fr.kvalueModifier=' + kvalueModifier + ';';
+            jmolCommands.push(jmolCommand);
+          }
+
+          if (tileSubnetworks == "yes") {
+            jmolCommand = 'layoutOptions.tiled=true;';
+          } else {
+            jmolCommand = 'layoutOptions.tiled=false;';
+          }
+          jmolCommands.push(jmolCommand);
+          if (displayIntermediates == "yes") {
+            jmolCommand = 'layoutOptions.fr.displayIntermediates=true;';
+          } else {
+            jmolCommand = 'layoutOptions.fr.displayIntermediates=false;';
+          }
+          jmolCommands.push(jmolCommand);
+
+          jmolCommand = jmolCommands.join(" ");
+          Jmol.script(jmolJSnet3D, jmolCommand);
         }
 
         function jaManageLayout(action) {
@@ -2052,34 +2489,8 @@ console.log(jmolCommand);
 
           switch(action) {
             case "build":
-              jqueryExpression = 'input[name=' + domIdBaseName + 'start_coordinate_mode]:checked';
-              var startCoordinateMode    = $(jqueryExpression).val();
-              var iterationCount    = $("#layout_iteration_count").val();
-              jqueryExpression = 'input[name=' + domIdBaseName + 'tile_subnetworks]:checked';
-              var tileSubnetworks    = $(jqueryExpression).val();
-              jqueryExpression = 'input[name=' + domIdBaseName + 'display_intermediates]:checked';
-              var displayIntermediates    = $(jqueryExpression).val();
-              jmolCommand = 'layoutOptions.fr.startCoordinateMode="' + startCoordinateMode + '";';
-              jmolCommands.push(jmolCommand);
-              if (iterationCount != "") {
-                jmolCommand = 'layoutOptions.fr.iterationCount=' + iterationCount + ';';
-                jmolCommands.push(jmolCommand);
-              }
-              if (tileSubnetworks == "yes") {
-                jmolCommand = 'layoutOptions.tiled=true;';
-              } else {
-                jmolCommand = 'layoutOptions.tiled=false;';
-              }
-              jmolCommands.push(jmolCommand);
-              if (displayIntermediates == "yes") {
-                jmolCommand = 'layoutOptions.fr.displayIntermediates=true;';
-              } else {
-                jmolCommand = 'layoutOptions.fr.displayIntermediates=false;';
-              }
-              jmolCommands.push(jmolCommand);
+              jaSetLayoutParameter(domIdBaseName);
               jmolCommand = 'buildLayout({all}, layoutOptions);';
-              jmolCommands.push(jmolCommand);
-              jmolCommand = jmolCommands.join(" ");
               Jmol.script(jmolJSnet3D, jmolCommand);
               break;
             case "export":
@@ -2158,7 +2569,6 @@ console.log(jmolCommand);
       <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Interface type:</label>
           <label class="jsnet3d"><input type="radio" name="interface_type" id="interface_type_basic" value="basic" onClick='interfaceType=jaGetRadioGroupValue("interface_type"); jaSwitchInterface(interfaceType)'> basic</label>
           <label class="jsnet3d"><input type="radio" name="interface_type" id="interface_type_advanced" value="advanced" onClick='interfaceType=jaGetRadioGroupValue("interface_type"); jaSwitchInterface(interfaceType)'>advanced</label>
-        <a title="Show Jena3D help page" id="help_link" class="help" href="http://jena3d.fli-leibniz.de/doc/Jena3D_help.html" target="_blank" style="display: none;">Help</a>
        </div>
        <div>
        <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Standard views:</label>
@@ -2172,6 +2582,8 @@ console.log(jmolCommand);
        <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Hover mode:</label>
          <label class="jsnet3d"><input type="radio" name="hover_mode" id="hover_mode_enhance" value="enhance" checked="checked" onClick='hoverMode=jaGetRadioGroupValue("hover_mode"); Jmol.script(jmolJSnet3D, script_base["hover_mode"][hoverMode])'> enhance connected nodes</label>
          <label class="jsnet3d"><input type="radio" name="hover_mode" id="hover_mode_only" value="only" onClick='hoverMode=jaGetRadioGroupValue("hover_mode"); Jmol.script(jmolJSnet3D, script_base["hover_mode"][hoverMode])'> show only connected nodes</label>
+         <label class="jsnet3d advanced_inline"><input type="radio" name="hover_mode" id="hover_mode_edges" value="edgesOn" onClick='hoverMode=jaGetRadioGroupValue("hover_mode"); Jmol.script(jmolJSnet3D, script_base["hover_mode"][hoverMode])'> show edges</label>
+         <label class="jsnet3d advanced_inline"><input id="hover_include_hidden" value="on" onclick='if (this.value=="off") { this.value="on"; Jmol.script(jmolJSnet3D, "hoverIncludeHidden="on";") } else { this.value="off"; Jmol.script(jmolJSnet3D, "hoverIncludeHidden="off";") }' type="checkbox" checked="checked"> include hidden nodes</label>
        </div>
        <div>
        <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Hover range:</label>
@@ -2182,10 +2594,10 @@ console.log(jmolCommand);
        </div>
        <div>
          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Miscellaneous:</label>
+        <label><input title="Mark selected atoms by a yellow halo (on/off)" class="jmol" id="selected_checkbox" value="selected" onclick='if (this.value=="selected") { this.value="normal"; Jmol.script(jmolJSnet3D, "set selectionHalos on;") } else { this.value="selected"; Jmol.script(jmolJSnet3D, "set selectionHalos off;") }' type="checkbox">mark&nbsp;selected&nbsp;nodes</label>
        <label><input title="Rotate automatically around Y-axis (on/off)" class="jmol" id="spin_checkbox" value="on" onclick='if (this.value=="on") { this.value="off"; Jmol.script(jmolJSnet3D, "spin on;") } else { this.value="on"; Jmol.script(jmolJSnet3D, "spin off;") }' type="checkbox">spin</label>
-        <label><input title="Mark selected atoms by a yellow halo (on/off)" class="jmol" id="selected_checkbox" value="selected" onclick='if (this.value=="selected") { this.value="normal"; Jmol.script(jmolJSnet3D, "set selectionHalos on;") } else { this.value="selected"; Jmol.script(jmolJSnet3D, "set selectionHalos off;") }' type="checkbox">mark&nbsp;selected&nbsp;part</label>
         <label><input title="Zoom and center selected atoms automatically (after using a control)" class="jmol" id="autozoom_checkbox" value="on" onclick='if (this.value=="on") { this.value="off"; auto_zoom_script="if ({selected}.size > 0) { zoomto (selected) 0; }"; Jmol.script(jmolJSnet3D, auto_zoom_script); } else { this.value="on"; auto_zoom_script=""; }' type="checkbox">auto&nbsp;zoom/center</label>
-        <label><input title="Set perspective depth (on/off); should be off when node/edge sizes represent values" class="jmol" id="perspective_depth_checkbox" value="off" onclick='if (this.value=="off") { this.value="on"; Jmol.script(jmolJSnet3D, "set perspectiveDepth off;") } else { this.value="off"; Jmol.script(jmolJSnet3D, "set perspectiveDepth on;") }' type="checkbox">perspective&nbsp;depth</label>
+        <label class="advanced_inline"><input title="Set perspective depth (on/off); should be off when node/edge sizes represent values" class="jmol" id="perspective_depth_checkbox" value="off" onclick='if (this.value=="off") { this.value="on"; Jmol.script(jmolJSnet3D, "set perspectiveDepth off;") } else { this.value="off"; Jmol.script(jmolJSnet3D, "set perspectiveDepth on;") }' type="checkbox">perspective&nbsp;depth</label>
 
    <span id="description_info" style="display:none"><p>
 </p><table class="atlasNormal" valign="left" style="font-size:100%;" border="0" cellpadding="0" cellspacing="0">
@@ -2199,12 +2611,12 @@ console.log(jmolCommand);
 <hr class="separator">
         <h4><span class="expander" onClick='jaShowControl("genesofinterest","toggle")'><img class="expander" id="genesofinterest_show" src="plus.gif" style="display: none;"><img class="expander" id="genesofinterest_hide" src="minus.gif"> Genes of Interest</span>  <a title="Show or hide 'Genes of Interest' information" id="genesofinterest_info_link" href="javascript:idbShow('genesofinterest_info', 'block')" target="_self" style="display:inline; margin-left: 2em;">Info</a></h4>
         <div  id="genesofinterest_controls" style="margin-left: 1em;">
-	    <label>Enter a Gene list, e.g. differentially expressed genes:<br><textarea id="genesofinterest_list" style="width:32em; height:10em; margin-left: 1.0ex; margin-top: 0.6ex; margin-bottom:0.7ex;"></textarea></label>
+	    <label>Enter a Gene list, e.g. differentially expressed genes (<a href="jsnet3d/weimer_et_al-differentially_expressed_genes-subset.txt" target="_blank">example list</a>):<br><textarea id="genesofinterest_list" style="width:32em; height:10em; margin-left: 1.0ex; margin-top: 0.6ex; margin-bottom:0.7ex;"></textarea></label>
 	    <br><span class="atlasComment">Format: <b>one gene per line;</b> NCBI Gene ID or gene symbol + species (separated by a <i>Tab</i> or <i>Space</i> character)</span>
-            <br><label style="margin-left: 2em;"><input type="checkbox" id="genesofinterest_filtersubset" value="filter_subset" checked="checked"> filter subsets</label>
+            <br><label style="margin-left: 2em;"><input type="checkbox" id="genesofinterest_filtersubset" value="filter_subset" checked="checked" onClick='jaManageGenesOfInterest("filter")'> filter subsets</label>
             <br><span style="margin-left: 1em; font-weight: bold;">Action:</span>
             <input title="Read gene list and activate it"  class="jmol" id="genesofinterest_activate"     value="activate list"     onclick='jaManageGenesOfInterest("activate")'     type="button">
-            <input title="Deactivate gene list"  class="jmol" id="genesofinterest_deactivate"     value="deactivate list"     onclick='jaManageGenesOfInterest("deactivate")'     type="button">
+            <input title="Deactivate gene list"  class="jmol" id="genesofinterest_deactivate"     value="deactivate list"     onclick='jaManageGenesOfInterest("deactivate")'     type="button" disabled="disabled">
             <input title="Clear gene list (activation status is not changed)"  class="jmol" id="genesofinterest_clear"     value="clear list"     onclick='jaManageGenesOfInterest("clear")'     type="button">
             <input title="Build overview subset"  class="jmol" id="genesofinterest_build_overview"     value="build overview subset"     onclick='jaManageGenesOfInterest("overview")'     type="button" disabled="disabled">
         </div>
@@ -2233,7 +2645,7 @@ console.log(jmolCommand);
             <input class="jmol" id="displaysubset_prev" value="show" title="Show selected subset" onclick='Jmol.script(jmolJSnet3D, jsnet3dSubsetControl("menu"))' type="button"><input class="jmol" id="displaysubset_prev" value="&lt;" title="Show previous subset" onclick='Jmol.script(jmolJSnet3D, jsnet3dSubsetControl("prev"))' type="button"><input title="Show next susbset" class="jmol" id="displaysubset_next" value="&gt;" onclick='Jmol.script(jmolJSnet3D, jsnet3dSubsetControl("next"))' type="button">
             <span id="displaysubset_controls_adv" class="advanced_inline" style="display:none; margin-left: 1em;"></span>
             <br><span style="margin-left: 1em; font-weight: bold;">Action:</span>
-              <input title="Export the displayed subset in XGMML format for Cytoscape" class="jmol" id="displaysubset_export_xgmml" value="export in XGMML format (Cytoscape)"     onclick='Jmol.script(jmolJSnet3D, jsnet3dSubsetControl("export_xgmml"))' type="button">
+              <input title="Export the displayed subset in XGMML format for Cytoscape" class="jmol" id="displaysubset_export_xgmml" value="export in XGMML format (Cytoscape)"     onclick='Jmol.script(jmolJSnet3D, jsnet3dSubsetControl("export_xgmml"))' type="button"><span class="jaComment">(<a href="jsnet3d/cytoscape-agefactdb_style-2017_08_17.xml" target="_blank" id="cytoscape_style_link">Cytoscape style</a>)</span>
           </div>
 
           <h4><span class="expander" onClick='jaShowControl("managesubset","toggle")'><img class="expander" id="managesubset_show" src="plus.gif"style="display: none;"><img class="expander" id="managesubset_hide" src="minus.gif"> Management</span></h4>
@@ -2243,7 +2655,7 @@ console.log(jmolCommand);
               <select class="jmol" id="standardsubset_menu" onchange='menu_state["standardsubset_menu"] = idbGetSelected(this);' style="margin-left: 1em;">
                 <option value="undefined">NO SUBSET DEFINED YET</option>
               </select>
-            <input class="jmol" id="standardsubset_prev" value="&lt;" title="Previous standard subset" onclick='Jmol.script(jmolJSnet3D, idbMenuBrowser("previous","standardsubset"))' type="button"><input title="Next standard susbset" class="jmol" id="standardsubset_next" value="&gt;" onclick='Jmol.script(jmolJSnet3D, idbMenuBrowser("next","standardsubset"))' type="button">
+            <input class="jmol" id="standardsubset_prev" value="&lt;" title="Previous standard subset" onclick='jaMenuBrowser("previous","standardsubset")' type="button"><input title="Next standard susbset" class="jmol" id="standardsubset_next" value="&gt;" onclick='jaMenuBrowser("next","standardsubset")' type="button">
 
 	    <br><span style="margin-left: 2em;">Neighbourhood:</span> <label><input type="radio" class="jmol" name="standardsubset_type" id="standardsubset_type_radio_direct" value="direct" checked="checked">direct</label>
               <label><input type="radio" class="jmol" name="standardsubset_type" id="standardsubset_type_radio_complete" value="complete">complete</label>
@@ -2251,7 +2663,7 @@ console.log(jmolCommand);
               <label id="standardsubset_node_type_alleleType_label"><input type="checkbox" class="jmol" id="standardsubset_node_type_alleleType" value="alleleType" checked="checked">alleleType</label>
               <label id="standardsubset_node_type_citation_label"><input type="checkbox" class="jmol" id="standardsubset_node_type_citation" value="citation" checked="checked">citation</label>
               <label id="standardsubset_node_type_homology_analysis_label"><input type="checkbox" class="jmol" id="standardsubset_node_type_homology_analysis" value="homology_analysis" checked="checked">homology analysis observation</label>
-              <label id="standardsubset_node_type_species"><input type="checkbox" class="jmol" id="standardsubset_node_type_species" value="species">species</label>
+              <label id="standardsubset_node_type_species_label"><input type="checkbox" class="jmol" id="standardsubset_node_type_species" value="species">species</label>
               <label id="standardsubset_node_type_keggPathway_label" style="display: none;"><input type="checkbox" class="jmol" id="standardsubset_node_type_keggPathway" value="keggPathway">KEGG pathway</label>
               <label id="standardsubset_node_type_keggPathwayGene_label" style="display: none;"><input type="checkbox" class="jmol" id="standardsubset_node_type_keggPathwayGene" value="keggPathwayGene">KEGG pathway gene</label>
               <label id="standardsubset_node_type_go_process_label" style="display: none;"><input type="checkbox" class="jmol" id="standardsubset_node_type_go_process" value="go_process">GO process term</label>
@@ -2284,6 +2696,30 @@ console.log(jmolCommand);
           <label class="jsnet3d layoutGroup">Iteration count:</label>
             <label class="jsnet3d"><input type="text" id="layout_iteration_count" size="6" value="100"></label>
          </div>
+        <div class="jsnet3d advanced_block">
+          <label class="jsnet3d layoutGroup">Random coordinate factor:</label>
+            <label class="jsnet3d"><input type="text" id="layout_random_coordiate_factor" size="6" value="0.6"></label>
+         </div>
+        <div class="jsnet3d advanced_block">
+          <label class="jsnet3d layoutGroup">Random coordiate seed:</label>
+            <label class="jsnet3d"><input type="text" id="layout_random_coordinate_seed" size="10" value="1234567890"></label>
+         </div>
+        <div class="jsnet3d advanced_block">
+          <label class="jsnet3d layoutGroup">Start temperature:</label>
+            <label class="jsnet3d"><input type="text" id="layout_start_temperature" size="6" value="4"></label>
+         </div>
+        <div class="jsnet3d advanced_block">
+          <label class="jsnet3d layoutGroup">Minimum temperature:</label>
+            <label class="jsnet3d"><input type="text" id="layout_minimum_temperature" size="6" value="0.1"></label>
+         </div>
+        <div class="jsnet3d advanced_block">
+          <label class="jsnet3d layoutGroup">Temperature scaling factor:</label>
+            <label class="jsnet3d"><input type="text" id="layout_temperature_scaling_factor" size="6" value="0.95"></label>
+         </div>
+        <div class="jsnet3d advanced_block">
+          <label class="jsnet3d layoutGroup">kValue modifier:</label>
+            <label class="jsnet3d"><input type="text" id="layout_kvalue_modifier" size="6" value="0.6"></label>
+         </div>
         <div class="jsnet3d">
           <label class="jsnet3d layoutGroup">Tile subnetworks:</label>
             <label class="jsnet3d"><input type="radio" name="layout_tile_subnetworks" id="layout_tile_subnetworks_yes" value="yes"> yes</label>
@@ -2314,8 +2750,10 @@ console.log(jmolCommand);
          </div>
           <span style="margin-left: 1em; font-weight: bold;">Action:</span>
               <input title="Build layout "             class="jmol" id="layout_build"     value="build"     onclick='jaManageLayout("build");' type="button">
-              <input title="Export "  class="jmol" id="layout_export"  value="export"  onclick='jaManageLayout("export");' type="button">
-              <input title="Export "  class="jmol" id="layout_import"  value="import"  onclick='jaManageLayout("import");' type="button">
+              <input title="Export "  class="jmol" id="layout_export"            value="export"            onclick='jaManageLayout("export");' type="button">
+              <input title="Export "  class="jmol" id="layout_import"            value="import"            onclick='jaManageLayout("import");' type="button">
+              <input title="Export "  class="jmol advanced_inline" id="layout_reset_coordinates" value="reset coordinates" onclick='Jmol.script(jmolJSnet3D, "restoreCoordinates(networkData);")' type="button">
+              <input title="Export "  class="jmol advanced_inline" id="layout_store_coordinates" value="store coordinates" onclick='Jmol.script(jmolJSnet3D, "storeCoordinates(networkData);")' type="button">
           </div>
         </div>
 
@@ -2397,7 +2835,7 @@ console.log(jmolCommand);
 
           <div class="jsnet3d advanced_block">
             <label class="jsnet3d selectGroup">Property value:</label>
-            <select class="jmol" id="select_property_value_menu" onchange="menu_state[&quot;select_property_value_menu&quot;] = idbGetSelected(this);">
+            <select class="jmol" id="select_property_value_menu" onchange='menu_state["select_property_value_menu"] = idbGetSelected(this);'>
               <option value="ageingFactorId">ageingFactorId</option>
               <option value="ageingFactorName">ageingFactorName</option>
               <option value="ageingFactorType">ageingFactorType</option>
@@ -2439,12 +2877,20 @@ console.log(jmolCommand);
         &nbsp;<label class="jsnet3d"> <span class="i">value</span> <input class="jmol" type="text" id="select_property_value" size="12" value=""></label><input class="jmol" id="select_property_value_only" value="only" onclick='jaSelectByProperty("only")' type="button"><input class="jmol" id="select_property_value_add" value="&nbsp;+&nbsp;" onclick='jaSelectByProperty("add")' type="button"><input class="jmol" id="select_property_value_subtract" value="&nbsp;-&nbsp;" onclick='jaSelectByProperty("subtract")' type="button"><input class="jmol" id="select_property_value_and" value="&nbsp;&amp;&nbsp;" onclick='jaSelectByProperty("and")' type="button"><input class="jmol" id="select_property_value_not" value="not" onclick='jaSelectByProperty("not")' type="button">
           </div>
 
+          <div class="jsnet3d advanced_block">
+            <label class="jsnet3d selectGroup">Degree:</label>
+        &nbsp;<label class="jsnet3d"> <span class="i">minimum</span> <input class="jmol" type="text" id="select_degree_min_value" size="4" value=""></label>
+        &nbsp;<label class="jsnet3d"> <span class="i">maximum</span> <input class="jmol" type="text" id="select_degree_max_value" size="4" value=""></label>
+        <input class="jmol" id="select_degree_only" value="only" onclick='jaSelectByDegree("only")' type="button"><input class="jmol" id="select_degree_add" value="&nbsp;+&nbsp;" onclick='jaSelectByDegree("add")' type="button"><input class="jmol" id="select_degree_subtract" value="&nbsp;-&nbsp;" onclick='jaSelectByDegree("subtract")' type="button"><input class="jmol" id="select_degree_and" value="&nbsp;&amp;&nbsp;" onclick='jaSelectByDegree("and")' type="button"><input class="jmol" id="select_degree_not" value="not" onclick='jaSelectByDegree("not")' type="button">
+          </div>
+
           <div class="jsnet3d">
             <label class="jsnet3d selectGroup">Miscellaneous:</label>
             <select class="jmol" id="select_miscellaneous_menu" onchange="menu_state[&quot;select_miscellaneous_menu&quot;] = idbGetSelected(this); Jmol.script(jmolJSnet3D, script_base[menu_state[&quot;select_miscellaneous_menu&quot;]][&quot;menu&quot;])">
               <option value="select_all" selected="selected">All Nodes</option>
               <option value="select_none">No Node</option>
-              <option value="select_displayed">Displayed Nodes</option>
+              <option value="select_displayed">Displayed Node</option>
+              <option value="select_hidden">Hidden Node</option>
               <option value="select_neighbour">Neighbour Node of Selected Nodes</option>
               <option value="select_singleneighbour">Single-neighbour Node</option>
               <option value="select_goi">Gene of Interest</option>
@@ -2493,6 +2939,11 @@ console.log(jmolCommand);
             <label class="jsnet3d"><input type="text" id="rendering_edge_scaling_factor" size="6" value="0.05"></label>
             <input class="jmol" id="rendering_edge_scaling_factor_apply" value="apply" onclick='var sf=document.getElementById("rendering_edge_scaling_factor").value; if (sf != "") { var jmolCommand="setScale([edge: " + sf + "]);"; Jmol.script(jmolJSnet3D, jmolCommand) }' type="button">
          </div>
+
+        <span style="margin-left: 1em; font-weight: bold;">Action:</span>
+         &nbsp;&nbsp;<input class="jmol" id="high_quality_rendering" value="high-quality rendering" onclick='Jmol.script(jmolJSnet3D, "set antialiasDisplay on;")' type="button"><input class="jmol" id="medium_quality_rendering" value="medium-quality rendering" onclick='Jmol.script(jmolJSnet3D, "set antialiasDisplay off;")' type="button"><input class="jmol" id="full_detail_zoom" value="full-detail zoom/rotation" onclick='Jmol.script(jmolJSnet3D, "set platformSpeed 8;")' type="button"><input class="jmol" id="reduced_detail_zoom" value="reduced-detail zoom/rotation" onclick='Jmol.script(jmolJSnet3D, "set platformSpeed 2;")' type="button">
+
+
         </div>
 
        <h4><span class="expander" onClick='jaShowControl("coloring","toggle")'><img class="expander" id="coloring_show" src="plus.gif" style="display: none;"><img class="expander" id="coloring_hide" src="minus.gif"> Coloring</span></h4>
@@ -2501,15 +2952,17 @@ console.log(jmolCommand);
        <div id="coloring_node_controls" style="margin-left: 1em;">
        <span id="coloring_controls_adv" class="advanced_inline" style="display:none"><select class="jmol" id="render_color_menu" onchange="idbSetRenderColorType(this)"><option value="">Sphere/Edge</option><option value="Dots">Dotted sphere</option><option value="render_Halo">Halo</option><option selected="selected" value="all">All rendering types</option></select>
 </span>
-       <select class="jmol" id="color_menu" onchange='menu_state["color_menu"] = idbGetSelected(this); Jmol.script(jmolJSnet3D, script_base[menu_state["color_menu"]]["menu"])'>
-         <option selected="selected" value="color_subnetwork">by Subnetwork </option>
-
-         <option value="color_nodetype">by Node type         </option>
-         <option value="color_lifespanchangequalitative">by Lifespan change - qualitative      </option>
-         <option value="color_custom">by Custom color        </option>
+       <select class="jmol" id="color_menu" onchange='menu_state["color_menu"] = idbGetSelected(this); $("#color_legend").css("display","none"); Jmol.script(jmolJSnet3D, script_base[menu_state["color_menu"]]["menu"])'>
+         <option value="color_nodetype" selected="selected">by Node type                 </option>
+         <option value="color_lifespanchangequalitative">by Lifespan change - qualitative</option>
+         <option value="color_edge_count">by Degree (edge count)                         </option>
+         <option value="color_subnetwork">by Subnetwork                                  </option>
+         <option value="color_custom">by Custom color                                    </option>
        </select>
-       <input class="jmol" id="color_on" value="on" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["color_menu"]]["on"])' type="button">
+       <input class="jmol" id="color_on" value="on" onclick='$("#color_legend").css("display","none"); Jmol.script(jmolJSnet3D, script_base[menu_state["color_menu"]]["on"])' type="button">
        <input class="jmol" id="color_chooser_node" size="16" value="burlywood" onclick='javascript:jaColorChooser(color_chooser_action,"node")' style="background-color:burlywood" readonly="readonly" type="text">
+       <div id="color_legend">
+       </div>
 </div>
 
         <h4 class="advanced_block" style="display: none"><span class="expander" onClick='jaShowControl("coloring_label","toggle")'><img class="expander" id="coloring_label_show" src="plus.gif" style="display: none;"><img class="expander" id="coloring_label_hide" src="minus.gif"> Node Label<span class="atlasCommentItalic">(selected nodes)</span></span></h4>
@@ -2721,6 +3174,9 @@ console.log(jmolCommand);
           <label class="jsnet3d nodevisibilityGroup">Hide selected:</label>
         &nbsp;<input class="jmol" id="nodevisibility_hide_only" value="only" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["hide_only"])' type="button"><span id="nodevisibility_controls_adv" class="advanced_inline" style="display:none"><input class="jmol" id="nodevisibility_hide_add" value="&nbsp;+&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["hide_add"])' type="button"><input class="jmol" id="nodevisibility_hide_subtract" value="&nbsp;-&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["hide_subtract"])' type="button"><input class="jmol" id="nodevisibility_hide_and" value="&nbsp;&amp;&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["hide_and"])' type="button"><input class="jmol" id="node_visibility_hide_not" value="not" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["nodevisibility_menu"]]["hide_not"])' type="button"></span>
         </div>
+        <span style="margin-left: 1em; font-weight: bold;">Action:</span>
+        <input title="Display all nodes" class="jmol" id="nodevisibility_display_all" value="display all nodes" onclick='Jmol.script(jmolJSnet3D, "display all;");' type="button">
+        <input title="Hide all nodes"    class="jmol" id="nodevisibility_hide_all"    value="hide all nodes"    onclick='Jmol.script(jmolJSnet3D, "hide all;");'    type="button">
         </div>
 
 
@@ -2739,6 +3195,9 @@ console.log(jmolCommand);
           <label class="jsnet3d edgevisibilityGroup">Hide selected:</label>
         &nbsp;<input class="jmol" id="edgevisibility_hide_only" value="only" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["hide_only"])' type="button"><span id="edgevisibility_controls_adv" class="advanced_inline" style="display:none"><input class="jmol" id="edgevisibility_hide_add" value="&nbsp;+&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["hide_add"])' type="button"><input class="jmol" id="edgevisibility_hide_subtract" value="&nbsp;-&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["hide_subtract"])' type="button"></span>
         </div>
+        <span style="margin-left: 1em; font-weight: bold;">Action:</span>
+        <input title="Display all nodes" class="jmol" id="edgevisibility_display_all" value="display all edges" onclick='Jmol.script(jmolJSnet3D, "var allBonds={all}.bonds; display @allBonds;");' type="button">
+        <input title="Hide all nodes"    class="jmol" id="edgevisibility_hide_all"    value="hide all edges"    onclick='Jmol.script(jmolJSnet3D, "var allBonds={all}.bonds; hide @allBonds;");'    type="button">
         </div>
 
 
@@ -2754,10 +3213,6 @@ console.log(jmolCommand);
         &nbsp;&nbsp;<input class="jmol" id="snapshot" value="snapshot" onclick='snapshot_command="set echo waitmessage hidden; image id snapshot_" + Math.ceil(Math.random() * 100000) + " " + document.getElementById("applet_width").value + " " + document.getElementById("applet_height").value; Jmol.script(jmolJSnet3D, snapshot_command)' type="button">
         <h4 style="margin-top: 0.3em; "><span class="expander" onClick='jaShowControl("stereo","toggle")'><img class="expander" id="stereo_show" src="plus.gif" style="display: none;"><img class="expander" id="stereo_hide" src="minus.gif"> Stereo</span></h4>
         <div id="stereo_controls" style="margin-left: 1em;">
-        <div class="jsnet3d advanced_block">
-          <label class="jsnet3d stereoGroup">3D-Beamer:</label>
-        &nbsp;<input class="jmol" id="edgevisibility_display_only" value="only" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["display_only"])' type="button"><span id="edgevisibility_controls_adv" class="advanced_inline" style="display:none"><input class="jmol" id="edgevisibility_display_add" value="&nbsp;+&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["display_add"])' type="button"><input class="jmol" id="edgevisibility_display_subtract" value="&nbsp;-&nbsp;" onclick='Jmol.script(jmolJSnet3D, script_base[menu_state["edgevisibility_menu"]]["display_subtract"])' type="button"></span>
-         </div>
           <span style="margin-left: 1em; font-weight: bold;">Action:</span>
         <input class="jmol" id="stereo_side_by_side" value="side by side" onclick='Jmol.script(jmolJSnet3D, "stereo 5;")' type="button"><input class="jmol" id="stereo_side_by_side_condensed" value="side by side condensed" onclick='Jmol.script(jmolJSnet3D, "stereo DTI;")' type="button"><input class="jmol" id="stereo_cross_eyed" value="cross eyed" onclick='Jmol.script(jmolJSnet3D, "stereo -5;")' type="button"><input class="jmol" id="stereo_redblue" value="red/blue" onclick='Jmol.script(jmolJSnet3D, "stereo 3 redblue; color hover white; background silver; color hover white; color hover white;")' type="button"><input class="jmol" id="stereo_redcyan" value="red/cyan" onclick='Jmol.script(jmolJSnet3D, "stereo 3 redcyan; background silver; color hover white; color hover white;")' type="button"><input class="jmol" id="stereo_redgreen" value="red/green" onclick='Jmol.script(jmolJSnet3D, "stereo 3 redgreen; background silver; color hover white; color hover white;")' type="button"><input class="jmol" id="stereo_3dbeamer_on" value="3D beamer mode on" onclick='jaSetFullscreen("on"); jaSet3dBeamerMode("on")' type="button"><input class="jmol" id="stereo_3dbeamer_off" value="3D beamer mode off" onclick='jaSetFullscreen("off"); jaSet3dBeamerMode("off")' type="button"><input class="jmol" id="stereo_off" value="stereo off" onclick='Jmol.script(jmolJSnet3D, "stereo off;color hover black;")' type="button">
         </div>
@@ -2766,11 +3221,13 @@ console.log(jmolCommand);
 
         <h4><span class="expander" onClick='jaShowControl("miscellaneous","toggle")'><img class="expander" id="miscellaneous_show" src="plus.gif" style="display: none;"><img class="expander" id="miscellaneous_hide" src="minus.gif"> Miscellaneous</span></h4>
         <div id="miscellaneous_controls" style="margin-left: 1em;">
-         <input class="jmol" id="label_off" value="all labels off" onclick='Jmol.script(jmolJSnet3D, "define ~prev selected; select all; label hide; select ~prev;")' type="button">
+         <input class="jmol" id="all_labels_off" value="all labels off" onclick='Jmol.script(jmolJSnet3D, "define ~prev selected; select all; label hide; select ~prev;")' type="button">
          <input class="jmol" id="label_on" value="show labels" onclick='Jmol.script(jmolJSnet3D, "displayLabel(\"show\");")' type="button">
-         &nbsp;&nbsp;<input class="jmol" id="label_off" value="hide labels" onclick='Jmol.script(jmolJSnet3D, "label hide;")' type="button">
-         &nbsp;&nbsp;<input class="jmol" id="zoom_selected" value="zoom selected atoms" onclick='Jmol.script(jmolJSnet3D, "zoomto (selected) 0;")' type="button">
-         &nbsp;&nbsp;<input class="jmol" id="high_quality_rendering" value="high-quality rendering" onclick='Jmol.script(jmolJSnet3D, "set antialiasDisplay on;")' type="button"><input class="jmol" id="medium_quality_rendering" value="medium-quality rendering" onclick='Jmol.script(jmolJSnet3D, "set antialiasDisplay off;")' type="button"><input class="jmol" id="full_detail_zoom" value="full-detail zoom/rotation" onclick='Jmol.script(jmolJSnet3D, "set platformSpeed 8;")' type="button"><input class="jmol" id="reduced_detail_zoom" value="reduced-detail zoom/rotation" onclick='Jmol.script(jmolJSnet3D, "set platformSpeed 2;")' type="button">
+         &nbsp;&nbsp;<input class="jmol" id="label_off"       value="hide labels" onclick='Jmol.script(jmolJSnet3D, "label hide;")' type="button">
+         &nbsp;&nbsp;<input class="jmol" id="label_front_on"  value="labels at front ON" onclick='Jmol.script(jmolJSnet3D, "set labelFront on;")' type="button">
+         &nbsp;&nbsp;<input class="jmol" id="label_front_off" value="labels at front OFF" onclick='Jmol.script(jmolJSnet3D, "set labelFront off;")' type="button">
+         <br><input class="jmol" id="zoom_selected"   value="zoom/center selected atoms" onclick='Jmol.script(jmolJSnet3D, "zoomto (selected) 0;")' type="button">
+         &nbsp;&nbsp;<input class="jmol" id="stop_command"   value="stop command" onclick='Jmol.script(jmolJSnet3D, "!quit; set echo waitmessage 0% 100%; echo \"COMMAND STOPPED MANUALLY\";")' type="button">
          </div>
 
         <h4><span class="expander" onClick='jaShowControl("script","toggle")'><img class="expander" id="script_show" src="plus.gif" style="display: none;"><img class="expander" id="script_hide" src="minus.gif"> Script</span><span class="atlasComment"><a id="script_info_link" href='javascript:idbShow("script_info")' target="_self" style="display:inline">Example Commands</a></span></h4>
@@ -2784,14 +3241,13 @@ console.log(jmolCommand);
               <span id="script_info" style="display:none">
 <table class="jmol" cellpadding="0" cellspacing="2">
 <tbody><tr><th class="jmol" align="left" bgcolor="#dddddd" valign="top">Example Command</th><th class="jmol" align="left" bgcolor="#dddddd" valign="top">Action</th></tr>
-<tr><td class="jmol" align="left" valign="top">printNodeInfo 10</td><td class="jmol" align="left" valign="top">print node information in log area</td></tr>
-<tr><td class="jmol" align="left" valign="top">select [ALA]:A</td><td class="jmol" align="left" valign="top">select all 'ALA' residues (Alanines) in chain 'A'</td></tr>
-<tr><td class="jmol" align="left" valign="top">select 5-10</td><td class="jmol" align="left" valign="top">select residue range 5 to 10 in all chains</td></tr>
-<tr><td class="jmol" align="left" valign="top">select 5-10:A</td><td class="jmol" align="left" valign="top">select residue range 5 to 10 in chain 'A'</td></tr>
-<tr><td class="jmol" align="left" valign="top">select protein &amp; not helix &amp; not sheet</td><td class="jmol" align="left" valign="top">select non-helix/non-sheet protein parts</td></tr>
-<tr><td class="jmol" align="left" valign="top">set fontsize 20</td><td class="jmol" align="left" valign="top">set label size to 20 (allowed range: 1-58)</td></tr>
-<tr><td class="jmol" align="left" valign="top">ssbonds 100</td><td class="jmol" align="left" valign="top">show SS bonds with a radius of 100 units (=0.4Å)</td></tr>
-<tr><td class="jmol" align="left" valign="top">wireframe 100</td><td class="jmol" align="left" valign="top">show bonds with a radius of 100 units (=0.4Å)</td></tr>
+<tr><td class="jmol" align="left" valign="top">printNodeInfo 10</td><td class="jmol" align="left" valign="top">print node information of node with nodeNumber 10 in log area</td></tr>
+<tr><td class="jmol" align="left" valign="top">select [AF_*]</td><td class="jmol" align="left" valign="top">select all ageing factor/putative ageing factor nodes</td></tr>
+<tr><td class="jmol" align="left" valign="top">select 5-10</td><td class="jmol" align="left" valign="top">select nodes with nodeNumber from 5 to 10</td></tr>
+<tr><td class="jmol" align="left" valign="top">select [OB_*] and not [OB_HOM]</td><td class="jmol" align="left" valign="top">select all observation nodes, except homology observation nodes</td></tr>
+<tr><td class="jmol" align="left" valign="top">set fontsize 20</td><td class="jmol" align="left" valign="top">set label size of selected nodes to 20 (allowed range: 1-58)</td></tr>
+<tr><td class="jmol" align="left" valign="top">set label "Example"</td><td class="jmol" align="left" valign="top">set label of selected nodes to "Example"</td></tr>
+<tr><td class="jmol" align="left" valign="top">wireframe 50</td><td class="jmol" align="left" valign="top">set edge radius of selected nodes to 50 units (=0.2Å)</td></tr>
 </tbody></table>
 
 
@@ -2841,15 +3297,14 @@ control buttons (two-step mechanism).
              jmol_height = Math.min(screen.height,2000);
            }
            applet_type = "java";
+           applet_check = Jmol.getApplet("jmolJSnet3D", Info, true);
            build_initial_subsets_command = " script jsnet3d/jsnet3d-build_initial_subsets.txt;";
-           url_check = window.location.href.match(/html5/i);
-           if (url_check == "HTML5" || url_check == "html5") {
+           if (!applet_check._isJava) {
              applet_type = "html5";
-             build_initial_subsets_command = " script jsnet3d/jsnet3d-restore_initial_subsets.txt;";
+             build_initial_subsets_command = "script jsnet3d/jsnet3d-restore_initial_subsets.txt;";
            }
            start_jmolscript = "initTime=now(); print \"NOTE: initializing viewer, please wait...\"; script jsnet3d/jsnet3d.spt; ";
            initialize_jmolscript = build_initial_subsets_command + " set echo waitmessage off; var initMessage = 'NOTE: JSnet3D initialization finished (time=' + format('%.1f', now(initTime) / 1000) + ' sec)'; logMsg([level: \"info\", msg: initMessage]);";
-
            Info.width  = jmol_width;
            Info.height = jmol_height;
            Info.script = start_jmolscript;
@@ -2869,6 +3324,7 @@ control buttons (two-step mechanism).
           <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_select" value="select" onclick='javascript:jaSwitchMouseMode(this.value)'> select</label>
           <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_label" value="label" onclick='javascript:jaSwitchMouseMode(this.value)'> label</label>
           <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_move" value="move" onclick='javascript:jaSwitchMouseMode(this.value)'> move</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_visibility" value="visibility" onclick='javascript:jaSwitchMouseMode(this.value)'> visibility</label>
           <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_change_position" value="changePosition" onclick='javascript:jaSwitchMouseMode(this.value)'> change position</label>
          </div>
         <div class="jsnet3d mouseMode mouseSelect">
@@ -2880,6 +3336,14 @@ control buttons (two-step mechanism).
           <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_mode_select_node_type" value="nodeType" onclick='javascript:jaSwitchMouseMode("select")'> node type</label>
           <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_mode_select_region" value="region" onclick='javascript:jaSwitchMouseMode("select")'> window region</label>
          </div>
+        <div class="jsnet3d mouseMode mouseVisibility">
+          <label class="jsnet3d mouseactionGroup">Visibility mode:</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_visibility_mode" id="mouseaction_mouse_visibility_mode_only" value="only" checked="checked" onclick='javascript:jaSwitchMouseMode("visibility")'> only</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_visibility_mode" id="mouseaction_mouse_visibility_mode_add" value="add" onclick='javascript:jaSwitchMouseMode("visibility")'> add</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_visibility_mode" id="mouseaction_mouse_visibility_mode_subtract" value="subtract" onclick='javascript:jaSwitchMouseMode("visibility")'> subtract</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_visibility_mode" id="mouseaction_mouse_visibility_mode_and" value="and" onclick='javascript:jaSwitchMouseMode("visibility")'> AND</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_visibility_mode" id="mouseaction_mouse_visibility_mode_not" value="not" onclick='javascript:jaSwitchMouseMode("visibility")'> NOT</label>
+         </div>
         <div class="jsnet3d mouseMode mouseChangePosition">
           <label class="jsnet3d mouseactionGroup">Change position mode:</label>
           <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_change_position_mode" id="mouseaction_mouse_change_position_mode_node" value="node" checked="checked" onclick='javascript:jaSwitchMouseMode("changePosition")'> node</label>
@@ -2889,8 +3353,8 @@ control buttons (two-step mechanism).
         <div class="jsnet3d mouseMode mouseDefault">
           <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2">Left-click <span class="i">(node)</span> :</label><label class="jsnet3d">show detailed node information in the 'Node Info' section</label>
          </div>
-        <div class="jsnet3d mouseMode mouseDefault">
-          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2">MIDDLE-click + drag <span class="i">(anywhere)</span> :</label><label class="jsnet3d">move all nodes along the X/Y-axes</label>
+        <div class="jsnet3d mouseMode mouseDefault mouseModeCenter">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseModeCenter2">MIDDLE-click + drag <span class="i">(anywhere)</span> :</label><label class="jsnet3d">move all nodes along the X/Y-axes</label>
          </div>
         <div class="jsnet3d mouseMode mouseCenterNode">
           <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseCenterNode2">LEFT-click <span class="i">(node)</span> :</label><label class="jsnet3d">set rotation center at the clicked node, move it to the window centre</label>
@@ -2903,6 +3367,9 @@ control buttons (two-step mechanism).
          </div>
         <div class="jsnet3d mouseMode mouseMove">
           <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseMove2">LEFT-click + drag <span class="i">(anywhere)</span> :</label><label class="jsnet3d">move all nodes along the X/Y-axes </label>
+         </div>
+        <div class="jsnet3d mouseMode mouseVisibility">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseVisibility2">Left-click <span class="i">(node)</span> :</label><label class="jsnet3d">display only/add/subtract this node and its neighbours (according to the hover range neighbour depth setting)</label>
          </div>
 
         <div class="jsnet3d mouseMode mouseChangePosition">
@@ -2935,20 +3402,23 @@ control buttons (two-step mechanism).
           <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseSelect2">ALT_SHIFT-LEFT-click <span class="i">(node)</span> :</label><label class="jsnet3d">remove this node/node+neighbours/subnetwork/node type from the current selection</label>
          </div>
 
-        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseLabel mouseChangePosition">
-          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseLabel2 mouseChangePosition2">LEFT-click + drag <span class="i">(near right border)</span> :</label><label class="jsnet3d">zoom in/out</label>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseLabel mouseChangePosition mouseVisibility">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseLabel2 mouseChangePosition2 mouseVisibility2">LEFT-click + drag <span class="i">(near right border)</span> :</label><label class="jsnet3d">zoom in/out</label>
          </div>
-        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseLabel mouseChangePosition">
-          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseLabel2 mouseChangePosition2">LEFT-click + drag <span class="i">(not near right border)</span> :</label><label class="jsnet3d">rotate all nodes around the X/Y-axes</label>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseLabel mouseChangePosition mouseVisibility">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseLabel2 mouseChangePosition2 mouseVisibility2">LEFT-click + drag <span class="i">(not near right border)</span> :</label><label class="jsnet3d">rotate all nodes around the X/Y-axes</label>
          </div>
-        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseMove mouseChangePosition">
-          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseMove2 mouseChangePosition2">SHIFT-LEFT-click + drag <span class="i">(no node/edge)</span> :</label><label class="jsnet3d">zoom in/out</label>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseMove mouseChangePosition mouseVisibility">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseMove2 mouseChangePosition2 mouseVisibility">SHIFT-LEFT-click + drag <span class="i">(no node/edge)</span> :</label><label class="jsnet3d">zoom in/out</label>
          </div>
-        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseSelect mouseMove mouseChangePosition">
-          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseSelect2 mouseMove2 mouseChangePosition2">CTRL-LEFT-click + drag <span class="i">(no node/edge)</span> :</label><label class="jsnet3d">move all nodes along the X/Y-axes</label>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseSelect mouseMove mouseChangePosition mouseVisibility">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseSelect2 mouseMove2 mouseChangePosition2 mouseVisibility2">CTRL-LEFT-click + drag <span class="i">(no node/edge)</span> :</label><label class="jsnet3d">move all nodes along the X/Y-axes</label>
          </div>
-        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseSelect mouseLabel mouseMove mouseChangePosition">
-          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseSelect2 mouseLabel2 mouseMove2 mouseChangePosition2">Mousewheel :</label><label class="jsnet3d">zoom in/out</label>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseSelect mouseMove mouse mouseVisibility">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseSelect2 mouseMove2 mouseChangePosition2 mouseVisibility2">ALT-LEFT-click + drag <span class="i">(anywhere)</span> :</label><label class="jsnet3d">rotate all nodes around the Z-axis.</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseSelect mouseLabel mouseMove mouseChange mouseVisibility">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseSelect2 mouseLabel2 mouseMove2 mouseChangePosition2 mouseVisibility2">Mousewheel :</label><label class="jsnet3d">zoom in/out</label>
          </div>
 
         <div class="jsnet3d mouseMode mouseMove" style="margin-top: 1em; margin-left: 1em;"><b>Note:</b> Mouse mode 'move' is needed only on systems where 'MIDDLE-click + drag' doesn't work to move.</div>
@@ -2986,7 +3456,7 @@ control buttons (two-step mechanism).
 <div class="menuBottom" id="menuBottomBar">
 <table class="Menu" cellpadding="0" cellspacing="0">
   <tbody><tr>
-    <td class="menuBarLeft"><nobr>&nbsp;</nobr></td>
+    <td class="menuBarLeft"><nobr>&nbsp;<a class="menu" target="_blank" href="docs/janet-documentation.html" id="documentation_link" >Documentation</a> | <a class="menu" target="_blank" href="janet.zip" id="download_link">Download</a></nobr></td>
     <td class="menuBarCenter"><nobr>&nbsp;</nobr></td>
     <td class="menuBarRight"><nobr>&nbsp;<a class="menu" target="_blank" href="http://www.stolaf.edu/academics/chemapps/jmol/docs/">Jmol Script Commands</a> | <a class="menu" target="_blank" href="http://wiki.jmol.org/index.php/MouseManual">Jmol Mouse Manual</a> | <a class="menu" target="_blank" href="http://wiki.jmol.org/">Jmol Wiki</a></nobr></td>
    </tr>
@@ -3000,10 +3470,10 @@ control buttons (two-step mechanism).
             <nobr>controls:</nobr>
           </td>
           <td class="menuButton">
-            <nobr><span class="menuButton" onClick='idbExpandAll("hide")'>collapse</span></nobr>
+            <nobr><span class="menuButton" onClick='idbExpandAll("hide")'>collapse&nbsp;all</span></nobr>
           </td>
           <td class="menuButton">
-            <nobr><span class="menuButton" onClick='idbExpandAll("show")'>expand</a></nobr>
+            <nobr><span class="menuButton" onClick='idbExpandAll("show")'>expand&nbsp; all</a></nobr>
           </td>
         </tr>
       </tbody></table>

@@ -1,0 +1,1313 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../janet.css" type="text/css" media="all">
+    <link rel="SHORTCUT ICON" type="image/x-icon" href="../favicon.ico">
+    <script src="data/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="data/toc.js" type="text/javascript"></script>
+
+    <title>JANet Documentation - Jmol AgeFactDB Network-viewer</title>
+    <style>
+      h1.janet-doc {
+        counter-reset: h2counter;
+      }
+      h2.janet-doc {
+        counter-reset: h3counter;
+      }
+      h3.janet-doc {
+        counter-reset: h4counter;
+      }
+      h4.janet-doc {
+        counter-reset: h5counter;
+      }
+
+      h2.janet-doc:before {
+        counter-increment: h2counter;
+        content:  counter(h2counter) ". ";
+        font-weight: normal;
+      }
+
+      h3.janet-doc:before {
+        counter-increment: h3counter;
+        content: counter(h2counter) "." counter(h3counter) ". ";
+        font-weight: normal;
+      }
+
+      h4.janet-doc:before {
+        counter-increment: h4counter;
+        content: counter(h2counter) "." counter(h3counter) "." counter(h4counter) ". ";
+        font-weight: normal;
+      }
+
+      h5.janet-doc:before {
+        counter-increment: h5counter;
+        content: counter(h2counter) "." counter(h3counter) "." counter(h4counter) "." counter(h5counter) ". ";
+        font-weight: normal;
+      }
+
+      span.janet-doc-chapter-start {
+        counter-reset: figCounter;
+      }
+      span.janet-doc-figcaption-title:before {
+        counter-increment: figCounter;
+        content: "Figure " counter(h2counter) "." counter(figCounter);
+        font-weigt: bold;
+        color: rgb(255,100,25);
+        margin-right: 1.5ex;
+      }
+
+      #TOC > ul {
+        counter-reset: toc2counter;
+        color: rgb(255,100,25);
+      }
+      #TOC > ul > li > ul {
+        counter-reset: toc3counter;
+      }
+      #TOC > ul > li > ul > li > ul {
+        counter-reset: toc4counter;
+      }
+      #TOC > ul > li > ul > li > ul > li > ul {
+        counter-reset: toc5counter;
+      }
+
+      #TOC > ul > li:before {
+        content: counter(toc2counter) ". ";
+        counter-increment: toc2counter;
+        font-weight: bold;
+      }
+
+      #TOC > ul > li > ul > li:before {
+        content: counter(toc2counter) "." counter(toc3counter) ". ";
+        counter-increment: toc3counter;
+        font-weight: bold;
+      }
+
+      #TOC > ul > li > ul > li > ul > li:before {
+        counter-increment: toc4counter;
+        content: counter(toc2counter) "." counter(toc3counter) "." counter(toc4counter) ". ";
+        font-weight: bold;
+      }
+
+      #TOC > ul > li > ul > li > ul > li > ul > li:before {
+        counter-increment: toc5counter;
+        content: counter(toc2counter) "." counter(toc3counter) "." counter(toc4counter) "." counter(toc5counter) ". ";
+        font-weight: bold;
+      }
+
+
+      li {
+        margin-top: 0.3em;
+      }
+    </style>
+
+  </head>
+
+  <body class="janet-doc">
+    <script type="text/javascript">
+      var jaToggleWidthList  = [];
+      var jaToggleCursorList = [];
+
+      function jaToggleWidth(domId) {
+        var selector = "#" + domId;
+        var width    = $(selector).css("width");
+        var maxWidth = $(selector).css("max-width");
+        var cursor   = $(selector).css("cursor");
+
+        if (jaToggleWidth[domId]) {
+          $(selector).css("width", jaToggleWidth[domId]);
+          $(selector).css("cursor", jaToggleCursorList[domId]);
+          jaToggleWidth[domId]      = width;
+          jaToggleCursorList[domId] = cursor;
+        } else {
+          var naturalWidth = document.getElementById(domId).naturalWidth;
+          if (maxWidth != "none") {
+            $(selector).css("width", maxWidth);
+            $(selector).css("cursor", "zoom-out");
+            jaToggleWidth[domId] = width;
+            jaToggleCursorList[domId] = "zoom-in";
+          } else {
+            $(selector).css("width", naturalWidth);
+            $(selector).css("cursor", "zoom-out");
+            jaToggleWidth[domId] = width;
+            jaToggleCursorList[domId] = "zoom-in";
+
+          }
+        }
+      }
+
+      function jaToggleSection(event) {
+        var target = $(event.target);
+
+        if (target.is("h1,h2,h3,h4,h5")) {
+          var expander = target.prev();
+          var content  = target.next();
+
+          if (expander.is("span.expand")) {
+            if (content.is("div")) {
+              if (content.css("display") == "none") {
+                content.css("display", "block");
+                expander.html("&ndash;");
+              } else {
+                content.css("display", "none");
+                expander.html("+");
+              }
+            }
+          }
+        } else {
+          if (target.is("#TOCHeadLine")) {
+            var selector = "#TOC > ul";
+            var expander = target.prev();
+            if (expander.is("span.expand")) {
+              var content  = $(selector);
+              if (content.is("ul")) {
+                if (content.css("display") == "none") {
+                  content.css("display", "block");
+                  expander.html("&ndash;");
+                } else {
+                  content.css("display", "none");
+                  expander.html("+");
+                }
+              }
+            }
+          } else {
+            if (target.is("span.expand")) {
+              var expander = target;
+              var content  = target.next().next();
+              if (content.is("div")) {
+                if (content.css("display") == "none") {
+                  content.css("display", "block");
+                  expander.html("&ndash;");
+                } else {
+                  content.css("display", "none");
+                  expander.html("+");
+                }
+              }
+            }
+          }
+        }
+      }
+
+      function jaExpandAll(action) {
+        $("h2,h3,h4,h5,#TOCHeadLine").each(function() {
+          var target = $(this);
+console.log(target.type);
+          if (target.is("h1,h2,h3,h4,h5")) {
+            var expander = target.prev();
+            var content  = target.next();
+  
+            if (expander.is("span.expand")) {
+              if (content.is("div")) {
+                if (action == "show") {
+                  content.css("display", "block");
+                  expander.html("&ndash;");
+                } else {
+                  content.css("display", "none");
+                  expander.html("+");
+                }
+              }
+            }
+          } else {
+            if (target.is("#TOCHeadLine")) {
+              var selector = "#TOC > ul";
+              var expander = target.prev();
+              if (expander.is("span.expand")) {
+                var content  = $(selector);
+                if (content.is("ul")) {
+                  if (action == "show") {
+                    content.css("display", "block");
+                    expander.html("&ndash;");
+                  } else {
+                    content.css("display", "none");
+                    expander.html("+");
+                  }
+                }
+              }
+            } else {
+              if (target.is("span.expand")) {
+                var expander = target;
+                var content  = target.next().next();
+                if (content.is("div")) {
+                  if (action == "show") {
+                    content.css("display", "block");
+                    expander.html("&ndash;");
+                  } else {
+                    content.css("display", "none");
+                    expander.html("+");
+                  }
+                }
+              }
+            }
+          }
+          
+        });
+      }
+
+      function jaReadCounterInfo(domId) {
+        var selector = '#' + domId + "_title";
+        var content = window.getComputedStyle(document.querySelector(selector), '::before').getPropertyValue('content');
+        var content2 = window.getComputedStyle(document.querySelector(selector), '::before').getPropertyValue('counter-increment');
+        console.log("domId=" + domId + "  counterInfo=" + content);
+      }
+
+      function jaShowControl(sectionName,action) {      /* show or hide control elements - modified for JANet documentation (removed check for controlDomId) */
+        var controlDomId = sectionName + "_controls";
+        var showDomId    = sectionName + "_show";
+        var hideDomId    = sectionName + "_hide";
+
+          if (document.getElementById(showDomId)) {
+            if (document.getElementById(hideDomId)) {
+              switch(action) {
+                case "show":
+                  document.getElementById(controlDomId).style.display = "block";
+                  document.getElementById(showDomId).style.display    = "none";
+                  document.getElementById(hideDomId).style.display    = "inline";
+                  break;
+                case "hide":
+                  document.getElementById(controlDomId).style.display = "none";
+                  document.getElementById(showDomId).style.display    = "inline";
+                  document.getElementById(hideDomId).style.display    = "none";
+                  break;
+                case "toggle":
+                  if (document.getElementById(controlDomId).style.display == "none") {
+                    document.getElementById(controlDomId).style.display = "block";
+                    document.getElementById(showDomId).style.display    = "none";
+                    document.getElementById(hideDomId).style.display    = "inline";
+                  } else {
+                    document.getElementById(controlDomId).style.display = "none";
+                    document.getElementById(showDomId).style.display    = "inline";
+                    document.getElementById(hideDomId).style.display    = "none";
+                  }
+                  break;
+              }
+            } else {
+              console.log("ERROR: DOM node with ID '" + hideDomId + "' NOT FOUND in method 'jaShowControl'");
+            }
+          } else {
+            console.log("ERROR: DOM node with ID '" + showDomId + "' NOT FOUND in method 'jaShowControl'");
+          }
+      }
+
+      function jaAdjustOptionLabelWidth(cssClass, mode) {
+        var maxWidth = 0;
+        if (!mode) {
+          mode = "changeDisplay";
+        }
+        if (mode == "changeDisplay") {
+          $(cssClass).css('display', 'inline');
+        }
+        $(cssClass).each(function() {
+           var currentWidth = $(this).outerWidth(true);
+           maxWidth = Math.max(maxWidth, currentWidth);
+          });
+        $(cssClass).css('width', maxWidth);
+        if (mode == "changeDisplay") {
+          $(cssClass).css('display', 'inline-block');
+        }
+      }
+
+      $(document).ready(function() {
+        jaAdjustOptionLabelWidth(".generalOptionGroup");
+        jaAdjustOptionLabelWidth(".selectGroup");
+        jaAdjustOptionLabelWidth(".mouseactionGroup");
+        jaAdjustOptionLabelWidth(".mouseLabel2");
+      });
+
+
+
+    </script>
+    <h1 class="janet-doc">JANet Documentation</h1>
+    <div id="mainContent">
+      <div class="janet-block"> <!-- Extra 'div' needed before each headline to prevent headline (style="display: inline-block", needed for settin +/- in front) to move to the end of a collapsed headline above -->
+      <span class="expand">&ndash;</span><h2 class="janet-doc" id="introduction">Introduction</h2>
+      <div class="janet-doc-level2"><span class="janet-doc-chapter-start"></span>
+
+        <div class="janet-block">
+        <span id="" class="expand">&ndash;</span><h3 class="janet-doc" id="janet_description">JANet Description</h3>
+        <div class="janet-doc-level2">
+          <p>JANet (<span style="font-weight: bold;">J</span>mol <span style="font-weight: bold;">A</span>geFactDB <span style="font-weight: bold;">Net</span>work-viewer) is a specialized Jmol-based 3D network viewer for the visualization of ageing-related network data from <a href="http://agefactdb.jenage.de">AgeFactDB</a>.</p>
+          <figure class="janet-doc">
+            <img src="data/janet-home_screenshot.png" class="janet-doc" id="janet_home_screenshot" style="width: 400px;" onClick='jaToggleWidth("janet_home_screenshot")'>
+            <figcaption class="janet-doc">
+               <span class="janet-doc-figcaption-title" id="janet_home_screenshot_title">JANet Web Browser Interface.</span>
+                Screenshot of the web browser interface of JANet, partially collapsed.
+            </figcaption>
+          </figure>
+
+          <div class="janet-block">
+          <span id="" class="expand">&ndash;</span><h4 class="janet-doc" id="janet_features">Selected Features</h4>
+          <div class="janet-doc-level2">
+            <ul class="janet-doc">
+              <li>Interactive 3D network visualization<span class="jaComment">(rotate, zoom, etc.)</span>
+                <ul class="janet-doc">
+                  <li>2D representation</li>
+                  <li>Stereo representation<span class="jaComment">(e.g.: side by side, red/cyan)</span></li>
+                  <li>3D beamer mode <span class="jaComment">(condensed side by side stereo, converted for shutter glasses)</span></li>
+                </ul>
+              </li>
+              <li>Ageing-related network data (AgeFactDB)
+                <ul class="janet-doc">
+                  <li>Lifespan observations</li>
+                  <li>Ageing factors</li>
+                  <li>Augmentation nodes<span class="jaComment">(e.g.: allele types, citations)</span></li>
+                </ul>
+              </li>
+              <li>Augmentation with external domain knowledge
+                <ul class="janet-doc">
+                  <li>Gene Ontology (GO)</li>
+                  <li>KEGG Pathways</li>
+                </ul>
+              </li>
+              <li>Genes of interest analysis<span class="jaComment">(e.g.: differentially expressed genes)</span></li>
+              <li>Scripting language
+                <ul class="janet-doc">
+                  <li>Jmol scripting language</li>
+                  <li>JANet-specific API</li>
+                </ul>
+              </li>
+             </ul>
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="janet_requirements">Requirements</h4>
+          <div class="janet-doc-level2">
+            <ul class="janet-doc">
+              <li>8 GB main memory</li>
+              <li>Web browser with activated Javascript</li>
+            </ul>
+            <p>Recommended:
+            <ul class="janet-doc">
+              <li>16 GB main memory</li>
+              <li>64-bit Java system</li>
+              <li>Web browser which runs 64-bit Java applets<span class="jaComment">(e.g.: Safari, Internet Explorer, Waterfox)</span></li>
+            </ul>
+            </p>
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="janet_requirements">Availability</h4>
+          <div class="janet-doc-level2">
+            <p>JANet is available at the web address <a href="http://sysbio.uni-ulm.de/?Software:JANet">http://sysbio.uni-ulm.de/?Software:JANet</a>.</p>
+            <p>It can be started directly from this server or downloaded for local installation, including all necessary network data.</p>
+            <p>It can also be downloaded from the GitHub repository JANet at <a href="https://github.com/molwizard/JANet">https://github.com/molwizard/JANet</a>.</p>
+          </div>
+          </div>
+
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="janet_installation">Installation</h4>
+          <div class="janet-doc-level2">
+            <p>The viewer can be started directly from the server at
+            <a href="http://sysbio.uni-ulm.de/software/janet">http://sysbio.uni-ulm.de/software/janet</a> or downloaded including all
+            necessary network data for local installation
+            (<a href="http://sysbio.uni-ulm.de/software/janet/janet.zip">http://sysbio.uni-ulm.de/software/janet/janet.zip</a>).</p>
+            <p>For a local installation there are two options:
+            <ol class="janet-doc">
+              <li>Extract the archive somewhere in the file system.</li>
+              <li>Install a web server locally and extract the archive somewhere below the server root directory.</li>
+            </ol>
+            </p>
+            <p><span class="jaHigh">Option 1:</span>  JANet can be started by opening the file<span class="jaName">index.html</span> from the top level directory
+            in a web browser as a local file.
+            <br>In some browsers, like Safari, this requires to switch off a default restriction for local file usage.
+            <br>The Javascript version of JANet will not work in browsers that prevent loading local binary files using Javascript, like Safari and Opera.</p>
+            <p><span class="jaHigh">Option 2:</span> JANet can be started by adding the relative directory path of the top-level viewer directory to the server
+            name<span class="jaName">localhost</span> for the local web server and open the web address in a web browser. (Example:  http://localhost/tools/janet)</p>
+          </div>
+          </div>
+
+
+        </div>
+        </div>
+
+        <div class="janet-block">
+        <span class="expand">&ndash;</span><h3 class="janet-doc" id="jmol_jsmol">Jmol/JSmol</h3>
+        <div class="janet-doc-level2">
+          <p>JANet is based on the molecular viewer Jmol, written in Java, and it's Javascript variant JSmol.</p>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="jmol">Jmol</h4>
+          <div class="janet-doc-level2">
+            <p><a href="https://sourceforge.net/projects/jmol/">Jmol</a> is a popular open source molecular viewer in the field of 3D chemical and biomolecular structures.</p>
+            <p>Chemical structures consisting of atoms and bonds resemble very well network data with nodes and edges. Therefore many functions for visualizing network data are available also in Jmol. These include basic options like rendering nodes and edges in different colors and sizes, attaching labels, counting edges per node, and identifying not connected subnetworks. In addition, there are also more advanced options like a very sophisticated node selection system. And finally there is available a JavaScript-like <a href="https://chemapps.stolaf.edu/jmol/docs/">scripting language</a>  that enables the extension of Jmol by user-defined functions and even the replacement of built-in functions.</p>
+            <p>Jmol is mainly used as a Java applet in a web browser. But there exists also a standalone Java version suitable for batch processing. The browser integration offers the flexibility to build a customized user interface, extending the built-in user interface.</p>
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="jsmol">JSmol</h4>
+          <div class="janet-doc-level2">
+             <p><a href="https://sourceforge.net/projects/jsmol/">JSmol</a> is a Javascript/HTML5 version of Jmol that is compiled automatically from the Jmol Java code to JavaScript, using an adapted version of the Java2Script Eclipse plugin.</p>
+             <p>The advantage is that it works on platforms<span class="jaComment">(e.g.: iPhone, iPad, Android)</span> and in browsers<span class="jaComment">(e.g.: Chrome, Firefox)</span> that don't support Java or Java applets.</p>
+             <p>It offers almost all features of the Java version, but in comparison it is about 5 times<span class="jaComment">(e.g.: rotation, zoom, running built-in commands)</span> up to about 30 times<span class="jaComment">(e.g.: network layout generation)</span> slower. </p>
+          </div>
+          </div>
+
+        </div>
+        </div>
+
+
+        <div class="janet-block">
+        <span class="expand">&ndash;</span><h3 class="janet-doc" id="agefactdb">AgeFactDB</h3>
+        <div class="janet-doc-level2">
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="agefactdb_description">Description</h4>
+          <div class="janet-doc-level2">
+             <p>AgeFactDB (<a href="http://agefactdb.jenage.de">http://agefactdb.jenage.de</a>) is a database aimed at the collection and integration
+             of ageing phenotype data including lifespan information.</p>
+             <p>Ageing factors are considered to be genes, chemical compounds or other factors such as dietary restriction, whose action results
+             in a changed lifespan or another ageing phenotype.</p>
+             <p>Any information related to the effects of ageing factors is called an observation and is presented on observation pages. To provide concise access to the complete information for a particular ageing factor, corresponding observations are also summarized on ageing factor pages.</p>
+             <p>In a first step, ageing-related data were primarily taken from existing databases such as the Ageing Gene Database--GenAge,
+             the Lifespan Observations Database and the Dietary Restriction Gene Database--GenDR. In addition, it was started to include
+             new ageing-related information.</p>
+             <p>Based on homology data taken from the HomoloGene Database, AgeFactDB also provides observation and ageing factor pages of genes
+             that are homologous to known ageing-related genes. These homologues are considered as candidate or putative ageing-related genes.</p>
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="ageing_factors">Ageing Factors</h4>
+          <div class="janet-doc-level2">
+            <p>Currently there are implemented three types of ageing factors: Gene, Chemical Compound, and Other Ageing Factor.</p>
+
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="ageing_factors_gene">Gene</h5>
+            <div class="janet-doc-level2">
+              <p>If available, the NCBI Gene ID is used for the identification of genes, to avoid duplicate entries with different names.</p>
+              <p>If it is not provided, it is tried to assign it automatically using the synonym database GPSDB  and the NCBI Gene database.
+              If multiple NCBI Gene IDs might match, no NCBI Gene ID is assigned and only gene symbol and species are used for the integration</p>
+              <p>Internally always gene symbol, species, and NCBI Gene ID are used to identify a gene. Depending on the information provided by
+              the data source, GPSDB, and NCBI Gene it is possible that the same gene symbol/species combination is included multiple times into AgeFactDB,
+              with and without one or more different NCBI Gene IDs.</p>
+            </div>
+            </div>
+
+
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="ageing_fctors_chemical_compound">Chemical Compound</h5>
+            <div class="janet-doc-level2">
+               <p>Chemical compounds are currently identified by the name who was used in the AgeFactDB source databases. No synonym information is used yet within AgeFactDB.</p>
+            </div>
+            </div>
+
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="ageing_factors_other_factor">Other Factor</h5>
+            <div class="janet-doc-level2">
+              <p>Other factors are for example dietary restriction and heat shock.</p>
+              <p>Similar to chemical compounds they are currently only identified by their name. Because it is difficult to judge the slight differences
+              that might be involved for example between 'dietary restriction' and 'caloric restriction', it wasn't done any unification yet.
+            </div>
+            </div>
+
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="putative_ageing_factors">Putative Ageing Factors</h4>
+          <div class="janet-doc-level2">
+            <p>In addition to genes with experimental ageing relevance evidence, AgeFactDB includes also genes homologous to these genes as putative ageing factors.
+            They are identified by a homology analysis based on the HomoloGene database from the NCBI.</p>
+            <p>In contrast to other ageing-related databases, where homologous genes are just named inside a gene page, they are included in the same way as
+            the genes with experimental ageing relevance evidence. This way the full features are also available for the putative ageing factors.</p>
+            <p>Ageing factors are discriminated from putative ageing factors inside the AgeFactDB web interface by a color coding system shown in the Figure below. Green indicates experimental evidence with an effect on ageing, red indicates
+            experimental evidence with no effect on ageing, and blue indicates computational ageing relevance evidence. The color of all observations
+            assigned to an ageing factor determine the color of the ageing factor, with the following priority:  green, red, blue. In addition to the
+            major color, all other assigned colors are also indicated as small squares.</p>
+            <figure class="janet-doc">
+              <img class="janet-doc" src="data/ageing_relevance_evidence.png" id="ageing_relevance_evidence_codes" style="width: 400px;" onClick='jaToggleWidth("ageing_relevance_evidence_codes")'>
+              <figcaption class="janet-doc">
+                 <span class="janet-doc-figcaption-title">Ageing Relevance Evidence Color Codes.</span>
+                Color coding system to indicate the type of ageing relevance evidence available for ageing factors.
+                <br>The priority for assigning a color to the ageing factor is indicated by the number:
+                <ul class="janet-doc">
+                  <li>Highest priority &ndash; 1</li>
+                  <li>Lowest priority &ndash; 3</li>
+              </figcaption>
+            </figure>
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="observations">Observations</h4>
+          <div class="janet-doc-level2">
+            <p>Currently there are implemented three types of observations:
+            <ul class="janet-doc">
+              <li>Ageing Phenotype Data Type 1</li>
+              <li>Ageing Phenotype Data Type 2</li>
+              <li>Homology Analysis</li>
+            </ul>
+            </p>
+            <p>The names are the 'official' names used in the web interface. Initially, the first two types were named 'phenotype' and 'lifespan'.
+            But this didn't really fit, because lifespan is also a phenotype and because some phenotype observations also contained lifespan data.
+            So it was switched to a technical distinction:
+            <ul class="janet-doc">
+              <li>Data Type 1 - free-text ageing phenotype observations</li>
+              <li>Data Type 2 - structured ageing phenotype observations</li>
+              <li>Homology analysis - structured computational observations.</li>
+            </ul></p>
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="unification">Unification</h4>
+          <div class="janet-doc-level2">
+            <p>The same genes might have been integrated into two different source databases or even the same source database with different names.</p>
+            <p>It was tried to resolve this by using the gene/protein synonym database GPSDB and integrate the gene into AgeFactDB using the name
+            marked as preferred name in GPSDB.</p>
+            <p>All name changes are listed in a table within the <a href="http://agefactdb.jenage.de/cgi-bin/jaDB.cgi?VIEW=release">release page</a>.
+            A partial list of the ageing factor name changes as a result of the unification is shown below:</p>
+            <figure class="janet-doc">
+              <img class="janet-doc" src="data/name_changes.png" id="agefactdb_name_changes" style="width: 400px;" onClick='jaToggleWidth("agefactdb_name_changes")'>
+              <figcaption class="janet-doc">
+                 <span class="janet-doc-figcaption-title">Unification of Ageing Factor Names.</span>
+                 Extract from the AgeFactDB release page table showing changes in ageing factor names during the import from other databases.
+              </figcaption>
+            </figure>
+          </div>
+          </div>
+
+        </div>
+        </div>
+
+        <div class="janet-block">
+        <span class="expand">&ndash;</span><h3 class="janet-doc" id="network_data">Network Data</h3>
+        <div class="janet-doc-level2">
+          <p>The lifespan observation data from AgeFactDB was transformed into a network data representation.</p>
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="lo_af_nodes">Lifespan Observation/Ageing Factor Nodes</h4>
+          <div class="janet-doc-level2">
+            <p>Each lifespan observation (LO) and each ageing factor (AF) is represented by a network node. Ageing factors involved in a specific lifespan observation are each linked to it by an edge. This facilitates to understand the often very complex system of observations involving overlapping sets of ageing factors at different conditions.</p>
+          </div>
+          </div>
+          
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="annotation_nodes">Annotation Nodes</h4>
+          <div class="janet-doc-level2">
+            <p>Cruical annotation data is not just attached to an observation or ageing factor, visible for example while hovering a node. Instead it expands the network as annotation node (ANN).</p>
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h5 class="janet-doc" id="annotation_nodes_lo">AgeFactDB Annotation Nodes</h5>
+          <div class="janet-doc-level2">
+            <p>JANet currently supports the following types of annotation nodes from AgeFactDB data:</p>
+              <ul class="janet-doc janet-level2">
+                <li>Allele Type (ALT)</li>
+                <li>Citation (CIT)</li>
+                <li>Species (SP)</li>
+              </ul>
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h5 class="janet-doc" id="annotation_nodes_external">Expert Knowledge Annotation Nodes</h5>
+          <div class="janet-doc-level2">
+            <p>In addition to AgeFactDB-based annotation nodes, JANet also supports annotation nodes based on expert knowledge from other databases:</p>
+              <ul class="janet-doc janet-level2">
+                <li>Gene Ontology(GO)</li>
+                <li>KEGG Metabolic Pathways (extracted from the BioSystems database)</li>
+              </ul>
+          </div>
+          </div>
+
+
+        </div>
+        </div>
+
+        <div class="janet-block">
+        <span class="expand">&ndash;</span><h3 class="janet-doc" id="network_layout_algorithms">Network Layout Algorithms</h3>
+        <div class="janet-doc-level2">
+          <p>3D network visualization requires to define a position in the three-dimensional space for each node, called a network layout.
+          Spring-force algorithms provide often useful layouts. In these algorithms connected nodes attract each other and unconnected nodes repel each other.
+          The attracting and repelling forces are calculated like for spring forces in physics. As a start, the nodes are usually placed on random positions. The 
+          forces are then calculated for each node pair in an iterative process to define new node positions, until an equilibrium is reached or a fixed number
+          of iterations.</p>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="network_layout_algorithms_fr">Fruchterman-Reingold</h4>
+          <div class="janet-doc-level2">
+            <p>JANet uses the Fruchterman-Reingold algorithm in an adapted version for 3D layout, implemented in the Jmol scripting language.
+            It generates good layouts for small to medium sized networks, up to a few hundred nodes.</p>
+          </div>
+          </div>
+          
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="network_layout_algorithms_fmmm">FMMM - Fast Multipole Multilevel Method</h4>
+          <div class="janet-doc-level2">
+            <p>For larger networks the FMMM (Fast Multipole Multilevel Method) algorithm used in BioLayout Express 3D, another 3D network viewer, provides
+            better layouts than the Fruchterman-Reingold algorithm. It is not implemented in JANet yet, but JANet provides export/import options that enable to use
+            BioLayout Express 3D as an external layout generation tool for larger networks.</p>
+          </div>
+          </div>
+          
+        </div>
+        </div>
+
+        <div class="janet-block">
+        <span class="expand">&ndash;</span><h3 class="janet-doc" id="vis_techniques">Visualization Techniques</h3>
+        <div class="janet-doc-level2">
+          <p>JANet provides several visualization techniques for lifespan observation (LO) networks of ageing factors (AFs).</p>
+          <p>Node color and size are used there
+          to speed-up the lookup of node properties by visual perception for all nodes at once. Generally these properties are the node type and the qualitative
+          and quantitative lifespan change.</p>
+          <p>The edge color is usually inherited from the node of a pair whose color carries specific information for the other
+          node. For AF/LO edges this is the LO node, whose color usually indicates the direction of the lifespan change (increased, decreasd, none).</p>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="vis_techniques-direct_neighbourhood">Direct Neighbourhood</h4>
+          <div class="janet-doc-level2">
+            <p>The direct neighbourhood network provides a compact view of the effects of all LOs in which an AF is involved directly.</p>
+
+            <figure class="janet-doc">
+              <img class="janet-doc" src="data/vis_technique-direct_neighbourhood.png" id="vis_technique-direct_neighbourhood" style="width: 200px;max-width: 600px;" onClick='jaToggleWidth("vis_technique-direct_neighbourhood")'>
+              <figcaption class="janet-doc">
+                <span class="janet-doc-figcaption-title">Visualization Technique &ndash; Direct Neighbourhood.</span>
+                For focusing on a specific AF only the direct neighbourhood of the AF is visualized. This includes the AF in the focus (AF<sub>1</sub>), all directly linked LOs (LO<sub>1</sub>, LO<sub>2</sub>, LO<sub>3</sub>), and all other AFs linked directly to these LOs (AF<sub>2</sub>, AF<sub>3</sub>).
+                <p>Color scheme:
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(255,0,255,0.6)">&nbsp;</span>AF, 
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(154,205,50,0.6)">&nbsp;</span>LO - increased lifespan,
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(255,0,0,0.6)">&nbsp;</span>LO - decreased lifespan</p>
+             </figcaption>
+            </figure>
+
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="vis_techniques-complete_neighbourhood">Complete Neighbourhood</h4>
+          <div class="janet-doc-level2">
+            <p>The complete neighbourhood network provides an overview on all experimentally analyzed AF combinations and their effects on lifespan, originating from the AF in the focus.</p>
+
+            <figure class="janet-doc">
+              <img class="janet-doc" src="data/vis_technique-complete_neighbourhood.png" id="vis_technique-complete_neighbourhood" style="width: 400px; max-width: 1200px;" onClick='jaToggleWidth("vis_technique-complete_neighbourhood")'>
+              <figcaption class="janet-doc">
+                <span class="janet-doc-figcaption-title">Visualization Technique &ndash; Complete Neighbourhood.</span>
+                For a more comprehensive view the direct neighbourhood network is extended iteratively by including further AFs (AF<sub>4</sub>, AF<sub>5</sub>) that were observed together with the neighbours (AF<sub>2</sub>, AF<sub>3</sub>) of the AF in the focus (AF<sub>1</sub>) and their LOs (LO<sub>4</sub>, LO<sub>5</sub>, LO<sub>6</sub>, LO<sub>7</sub>, LO<sub>8</sub>).
+                <p>Color scheme:
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(255,0,255,0.6)">&nbsp;</span>AF, 
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(154,205,50,0.6)">&nbsp;</span>LO - increased lifespan,
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(255,0,0,0.6)">&nbsp;</span>LO - decreased lifespan</p>
+             </figcaption>
+            </figure>
+
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="vis_techniques-augmentation_via_annotation">Augmentation via Annotation Nodes</h4>
+          <div class="janet-doc-level2">
+            <p>The augmented network provides additional information on either the AFs or the LOs or both by the integration as additional annotation nodes.
+            This provides a quicker access to the additional information and leads to a semantic clustering of the AFs and LOs.</p>
+
+            <figure class="janet-doc">
+              <img class="janet-doc" src="data/vis_technique-augmentation_via_annotation.png" id="vis_technique-augmentation_via_annotation" style="width: 520px;" onClick='jaToggleWidth("vis_technique-augmentation_via_annotation")'>
+              <figcaption class="janet-doc">
+                <span class="janet-doc-figcaption-title">Visualization Technique &ndash; Augmentation via Annotation Nodes.</span>
+                Additional information for AF and LO nodes is integrated by annotation nodes (ANN<sub>1</sub>, ANN<sub>2</sub>). They provide the information directly in a visual form and result in a reorganization of the network layout.
+                <p>Color scheme:
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(255,0,255,0.6)">&nbsp;</span>AF, 
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(154,205,50,0.6)">&nbsp;</span>LO - increased lifespan,
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(255,0,0,0.6)">&nbsp;</span>LO - decreased lifespan, 
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(210,180,140,0.6)">&nbsp;</span>annotation</p>
+             </figcaption>
+            </figure>
+
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="vis_techniques-data_transfer">Data Transfer betwen Nodes</h4>
+          <div class="janet-doc-level2">
+            <p>The data transfer between nodes is especially useful for reducing the complexity of a network by removing the nodes from which data was transferred. The transfer enables to retain some information from the removed nodes.</p>
+
+            <figure class="janet-doc">
+              <img class="janet-doc" src="data/vis_technique-data_transfer.png" id="vis_technique-data_transfer" style="width: 260px; max-width: 800px;" onClick='jaToggleWidth("vis_technique-data_transfer")'>
+              <figcaption class="janet-doc">
+                <span class="janet-doc-figcaption-title">Visualization Technique &ndash; Data Transfer betwen Nodes.</span>
+                The data transfer between nodes can help to reduce the complexity of a network by removing nodes while retaining some of their data. Here all 8 LOs from the augmented complete neighbourhood network were removed after transforming the directions of the lifespan changes into a new color scheme for the 5 AFs.
+                <p>Color scheme:
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(210,180,140,0.6)">&nbsp;</span>annotation, 
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(154,205,50,0.6)">&nbsp;</span>AF - linked only to LOs with increased lifespan,, 
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(255,140,0,0.6)">&nbsp;</span>AF - linked to LOs with highly mixed lifespan changes (increased and decreased > 20%)</p>
+             </figcaption>
+            </figure>
+
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="vis_techniques-multi_species">Multispecies Technique</h4>
+          <div class="janet-doc-level2">
+            <p>In contrast to genes, chemical compounds and other AFs can be linked to LOs of multiple species. This requires to augment such networks by species nodes (SP) that are linked to the corresponding LOs. The links between the AFs and the species nodes were left out. This will result in a much clearer and less complex network view, grouping the network clearly according to the involved organisms.</p>
+            <p>Because of the importance of the species information in these networks and the additional restriction to one type of species links a separate technique was defined.</p>
+
+            <figure class="janet-doc">
+              <img class="janet-doc" src="data/vis_technique-multi_species.png" id="vis_technique-multi_species" style="width: 300px; max-width:900px;" onClick='jaToggleWidth("vis_technique-multi_species")'>
+              <figcaption class="janet-doc">
+                <span class="janet-doc-figcaption-title">Visualization Technique &ndash; Multispecies Technique.</span>
+                A special case of essential augmentation with species nodes for networks focusing on AFs that can be linked to multiple species, like chemical compounds. For a clearer view the AFs are linked only indirectly to the species nodes by the LOs:
+                <ul class="janet-doc">
+                  <li> AF<sub>1</sub> to SP<sub>1</sub> via LO<sub>1</sub>, to SP<sub>2</sub> via LO<sub>2</sub>, and to SP<sub>3</sub> via LO<sub>3</sub> and LO<sub>4</sub></li>
+                  <li>AF<sub>2</sub> to SP<sub>1</sub> via LO<sub>1</sub></li>
+                  <li> AF<sub>3</sub> to SP<sub>3</sub> via LO<sub>4</sub></li>
+                </ul>
+                <p>Color scheme:
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(255,0,255,0.6)">&nbsp;</span>AF, 
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(154,205,50,0.6)">&nbsp;</span>LO - increased lifespan,
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(255,0,0,0.6)">&nbsp;</span>LO - decreased lifespan, 
+<span style="margin-left: 1.5ex; margin-right: 0.7ex; padding-right: 2ex; background-color: rgba(240,240,65,0.6)">&nbsp;</span>species</p>
+             </figcaption>
+            </figure>
+
+          </div>
+          </div>
+
+        </div>
+        </div>
+
+      </div>
+      </div>  <!-- Introduction end -->
+
+      <div class="janet-block">
+      <span class="expand">&ndash;</span><h2 class="janet-doc" id="janet_interface">JANet Web Browser Interface</h2>
+      <div class="janet-doc-level2"><span class="janet-doc-chapter-start"></span>
+
+        <div class="janet-block">
+        <span id="" class="expand">&ndash;</span><h3 class="janet-doc" id="janet_interface_overview">Overview</h3>
+        <div class="janet-doc-level2">
+          <p>JANet has a web browser interface with two major components: the Jmol/JSmol graphics window and the control elements surrounding it.</p>
+          <figure class="janet-doc">
+            <img src="data/janet-interface_collapsed.png" class="janet-doc" id="janet_interface_collapsed" style="width: 400px;" onClick='jaToggleWidth("janet_interface_collapsed")'>
+            <figcaption class="janet-doc">
+               <span class="janet-doc-figcaption-title">JANet Web Browser Interface.</span>
+                Screenshot of the JANet web browser interface with collapsed subsections and an inactive graphics window.
+            </figcaption>
+          </figure>
+
+          <p>After loading JANet, the graphics window is not activated yet, indicated by the arrow on a blue background at the bottom left of the
+             graphics window. This enables to customize JANet first and change for example the network data set, loaded automatically after the activation.
+             The graphics window gets activated either manually (by clicking at it) or by using control elements that require the graphics window.
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="basic_principles">Basic Principles</h4>
+          <div class="janet-doc-level2">
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="basic_principles_network_data_organization">Network Data Organization</h5>
+            <div class="janet-doc-level2">
+              <p>As default network data all ageing factors/putative ageing factors, all lifespan observations, all homology analysis observations,
+              and their connections are loaded. In addition, GO (Gene Ontology) term and KEGG pathway nodes and their connections to ageing factors
+              can be loaded.</p>
+              <p>The loaded network data can be filtered to build so-called subsets. A subset is an independant network with an individual layout
+              and visual representation.</p>
+              <p>Most actions are working only on the currently displayed subset. Exceptions are for example the genes of interest analysis and
+              the subset generation.</p>
+            </div>
+            </div>
+
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="basic_principles_action_on_selection">Action on Selection</h5>
+            <div class="janet-doc-level2">
+              <p>Generally, actions like node coloring and rendering work only on the currently selected nodes of the currently displayed subset.
+              This enables to change node properties individually to create custom views.</p>
+              <p></p>
+            </div>
+            </div>
+
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="basic_principles_interface_types">Basic and Advanced Interface</h5>
+            <div class="janet-doc-level2">
+              <p>The user can switch at any time between two interface types:</p>
+
+              <div class="jsnet3dGlobalOptions janet-doc-example">
+                <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Interface type:</label>
+                <label class="jsnet3d"><input type="radio" name="interface_type" id="interface_type_basic" value="basic" checked="checked"> basic</label>
+                <label class="jsnet3d"><input type="radio" name="interface_type" id="interface_type_advanced" value="advanced">advanced</label>
+              </div>
+
+              <p>The default <span class="janet-doc-term">basic interface</span> provides the basic functionality. It is designed to reduce
+              the manual work by several automatisms and to reduce the complexity of the interface. The <span class="janet-doc-term">advanced interface</span>
+              offers additional options and provides more flexibility by reducing automatisms.</p>
+
+            <figure class="janet-doc">
+              <div class="janet-doc-figure">
+              <p><span class="janet-doc-term" style="font-size: 100%;">A) Basic Interface</span></p>
+
+        <div id="select_controls" style="margin-left: 1em; "> <!-- JANet code start -->
+          <div class="jsnet3d">
+            <label class="jsnet3d selectGroup">Node type:</label>
+            <select class="jmol" id="select_node_type_menu">
+              <option value="select_ageingfactor" selected="selected">Ageing Factor</option>
+              <option value="select_ageingfactorputative">Putative Ageing Factor</option>
+              <option value="select_ageingfactorboth">Ageing Factor or Putative Ageing Factor</option>
+              <option value="select_gene">Ageing Factor - Gene</option>
+              <option value="select_compound">Ageing Factor - Compound</option>
+              <option value="select_otherfactor">Ageing Factor - Other Factor</option>
+              <option value="select_observation">Observation</option>
+              <option value="select_observationlifespan">Lifespan Observation</option>
+              <option value="select_observationincreased">Lifespan Observation - increased</option>
+              <option value="select_observationdecreased">Lifespan Observation - decreased</option>
+              <option value="select_observationnone">Lifespan Observation - unchanged</option>
+              <option value="select_observationhomology">Homology Analysis Observation</option>
+              <option value="select_species">Species</option>
+              <option value="select_alleletype">Allele type</option>
+              <option value="select_citation">Citation</option>
+              <option value="select_goterm">GO term</option>
+              <option value="select_gotermprocess">GO Process Term</option>
+              <option value="select_gotermfunction">GO Function Term</option>
+              <option value="select_gotermcompartment">GO Compartment Term</option>
+              <option value="select_keggpw">KEGG Pathway</option>
+              <option value="select_keggpwgene">KEGG Pathway Gene</option>
+          </select>
+        &nbsp;<input class="jmol basic_inline" id="select_node_type_only" value="select"  type="button">
+          </div>
+
+          <div class="jsnet3d">
+            <label class="jsnet3d selectGroup">Species:</label>
+            <select class="jmol" id="select_species_menu">
+              <option value="select_A_gambiae">Anopheles gambiae</option>
+              <option value="select_A_thaliana">Arabidopsis thaliana</option>
+              <option value="select_B_taurus">Bos taurus</option>
+              <option value="select_C_elegans">Caenorhabditis elegans</option>
+              <option value="select_C_remanei">Caenorhabditis remanei</option>
+              <option value="select_C_albicans">Candida albicans</option>
+              <option value="select_C_lupus">Canis lupus familiaris</option>
+              <option value="select_C_capitata">Ceratitis capitata</option>
+              <option value="select_D_rerio">Danio rerio</option>
+              <option value="select_D_melanogaster" selected="selected">Drosophila melanogaster</option>
+              <option value="select_D_pseudoobscura">Drosophila pseudoobscura</option>
+              <option value="select_E_gossypii">Eremothecium gossypii</option>
+              <option value="select_E_coli">Escherichia coli</option>
+              <option value="select_G_gallus">Gallus gallus</option>
+              <option value="select_H_sapiens">Homo sapiens</option>
+              <option value="select_K_lactis">Kluyveromyces lactis</option>
+              <option value="select_M_mulatta">Macaca mulatta</option>
+              <option value="select_M_oryzae">Magnaporthe oryzae</option>
+              <option value="select_M_auratus">Mesocricetus auratus</option>
+              <option value="select_M_musculus">Mus musculus</option>
+              <option value="select_N_crassa">Neurospora crassa</option>
+              <option value="select_N_furzeri">Nothobranchius furzeri</option>
+              <option value="select_O_sativa">Oryza sativa</option>
+              <option value="select_P_troglodytes">Pan troglodytes</option>
+              <option value="select_P_anserina">Podospora anserina</option>
+              <option value="select_R_norvegicus">Rattus norvegicus</option>
+              <option value="select_S_cerevisiae">Saccharomyces cerevisiae</option>
+              <option value="select_S_pombe">Schizosaccharomyces pombe</option>
+            </select>
+        &nbsp;<input class="jmol basic_inline" id="select_species_only" value="select" type="button">
+          </div>
+
+          <div class="jsnet3d">
+            <label class="jsnet3d selectGroup">Miscellaneous:</label>
+            <select class="jmol" id="select_miscellaneous_menu">
+              <option value="select_all" selected="selected">All Nodes</option>
+              <option value="select_none">No Node</option>
+              <option value="select_displayed">Displayed Nodes</option>
+              <option value="select_neighbour">Neighbour Node of Selected Nodes</option>
+              <option value="select_singleneighbour">Single-neighbour Node</option>
+              <option value="select_goi">Gene of Interest</option>
+              <option value="select_goihom">Gene of Interest Homology Base</option>
+              <option value="select_goihomboth">Gene of Interest or Homology Base</option>
+            </select>
+        &nbsp;<input class="jmol basic_inline" id="select_miscellaneous_only" value="select"  type="button">
+          </div>
+
+        </div> <!-- JANet code end -->
+
+              <p><span class="janet-doc-term" style="font-size: 100%;">B) Advanced Interface</span></p>
+
+        <div id="select_controls" style="margin-left: 1em; ">  <!-- JANet code start -->
+          <div class="jsnet3d">
+            <label class="jsnet3d selectGroup">Node type:</label>
+            <select class="jmol" id="select_node_type_menu2">
+              <option value="select_ageingfactor" selected="selected">Ageing Factor</option>
+              <option value="select_ageingfactorputative">Putative Ageing Factor</option>
+              <option value="select_ageingfactorboth">Ageing Factor or Putative Ageing Factor</option>
+              <option value="select_gene">Ageing Factor - Gene</option>
+              <option value="select_compound">Ageing Factor - Compound</option>
+              <option value="select_otherfactor">Ageing Factor - Other Factor</option>
+              <option value="select_observation">Observation</option>
+              <option value="select_observationlifespan">Lifespan Observation</option>
+              <option value="select_observationincreased">Lifespan Observation - increased</option>
+              <option value="select_observationdecreased">Lifespan Observation - decreased</option>
+              <option value="select_observationnone">Lifespan Observation - unchanged</option>
+              <option value="select_observationhomology">Homology Analysis Observation</option>
+              <option value="select_species">Species</option>
+              <option value="select_alleletype">Allele type</option>
+              <option value="select_citation">Citation</option>
+              <option value="select_goterm">GO term</option>
+              <option value="select_gotermprocess">GO Process Term</option>
+              <option value="select_gotermfunction">GO Function Term</option>
+              <option value="select_gotermcompartment">GO Compartment Term</option>
+              <option value="select_keggpw">KEGG Pathway</option>
+              <option value="select_keggpwgene">KEGG Pathway Gene</option>
+          </select>
+        &nbsp;<input class="jmol advanced_inline"id="select_node_type_only2" value="only" type="button"><span id="select_node_type_controls_adv" class="advanced_inline"><input class="jmol" id="select_node_type_add" value="&nbsp;+&nbsp;" type="button"><input class="jmol" id="select_node_type_subtract" value="&nbsp;-&nbsp;" type="button"><input class="jmol" id="select_node_type_and" value="&nbsp;&amp;&nbsp;" type="button"><input class="jmol" id="select_node_type_not" value="not" type="button"></span>
+          </div>
+
+          <div class="jsnet3d">
+            <label class="jsnet3d selectGroup">Species:</label>
+            <select class="jmol" id="select_species_menu2">
+              <option value="select_A_gambiae">Anopheles gambiae</option>
+              <option value="select_A_thaliana">Arabidopsis thaliana</option>
+              <option value="select_B_taurus">Bos taurus</option>
+              <option value="select_C_elegans">Caenorhabditis elegans</option>
+              <option value="select_C_remanei">Caenorhabditis remanei</option>
+              <option value="select_C_albicans">Candida albicans</option>
+              <option value="select_C_lupus">Canis lupus familiaris</option>
+              <option value="select_C_capitata">Ceratitis capitata</option>
+              <option value="select_D_rerio">Danio rerio</option>
+              <option value="select_D_melanogaster" selected="selected">Drosophila melanogaster</option>
+              <option value="select_D_pseudoobscura">Drosophila pseudoobscura</option>
+              <option value="select_E_gossypii">Eremothecium gossypii</option>
+              <option value="select_E_coli">Escherichia coli</option>
+              <option value="select_G_gallus">Gallus gallus</option>
+              <option value="select_H_sapiens">Homo sapiens</option>
+              <option value="select_K_lactis">Kluyveromyces lactis</option>
+              <option value="select_M_mulatta">Macaca mulatta</option>
+              <option value="select_M_oryzae">Magnaporthe oryzae</option>
+              <option value="select_M_auratus">Mesocricetus auratus</option>
+              <option value="select_M_musculus">Mus musculus</option>
+              <option value="select_N_crassa">Neurospora crassa</option>
+              <option value="select_N_furzeri">Nothobranchius furzeri</option>
+              <option value="select_O_sativa">Oryza sativa</option>
+              <option value="select_P_troglodytes">Pan troglodytes</option>
+              <option value="select_P_anserina">Podospora anserina</option>
+              <option value="select_R_norvegicus">Rattus norvegicus</option>
+              <option value="select_S_cerevisiae">Saccharomyces cerevisiae</option>
+              <option value="select_S_pombe">Schizosaccharomyces pombe</option>
+            </select>
+        &nbsp;<input class="jmol advanced_inline" id="select_species_only2" value="only" type="button"><span id="select_species_controls_adv" class="advanced_inline" ><input class="jmol" id="select_species_add" value="&nbsp;+&nbsp;" type="button"><input class="jmol" id="select_species_subtract" value="&nbsp;-&nbsp;" type="button"><input class="jmol" id="select_species_and" value="&nbsp;&amp;&nbsp;" type="button"><input class="jmol" id="select_species_not" value="not" type="button"></span>
+          </div>
+
+          <div class="jsnet3d advanced_block">
+            <label class="jsnet3d selectGroup">Property value:</label>
+            <select class="jmol" id="select_property_value_menu">
+              <option value="ageingFactorId">ageingFactorId</option>
+              <option value="ageingFactorName">ageingFactorName</option>
+              <option value="ageingFactorType">ageingFactorType</option>
+              <option value="alleleType">alleleType</option>
+              <option value="alleleTypes">alleleTypes</option>
+              <option value="alleleTypesBase">alleleTypesBase</option>
+              <option value="baseEntryStableIds">baseEntryStableIds</option>
+              <option value="citationId">citationId</option>
+              <option value="homologeneId">homologeneId</option>
+              <option value="homologyAnalysisStatus">homologyAnalysisStatus</option>
+              <option value="infoKey">infoKey</option>
+              <option value="labelCustom">labelCustom</option>
+              <option value="labelLong">labelLong</option>
+              <option value="labelShort">labelShort</option>
+              <option value="lifespanChange">lifespanChange</option>
+              <option value="lifespanDataAvailable">lifespanDataAvailable</option>
+              <option value="lifespanEffectSignificant">lifespanEffectSignificant</option>
+              <option value="lifespanMeasure">lifespanMeasure</option>
+              <option value="ncbiGeneId">ncbiGeneId</option>
+              <option value="nodeId">nodeId</option>
+              <option value="nodeKey">nodeKey</option>
+              <option value="nodeNumber" selected="selected">nodeNumber</option>
+              <option value="nodeSubType">nodeSubType</option>
+              <option value="nodeSubTypeId">nodeSubTypeId</option>
+              <option value="nodeType">nodeType</option>
+              <option value="nodeTypeId">nodeTypeId</option>
+              <option value="observationId">observationId</option>
+              <option value="observationType">observationType</option>
+              <option value="species">species</option>
+              <option value="speciesShortcut">speciesShortcut</option>
+              <option value="subTypeInfoKey">subTypeInfoKey</option>
+              <option value="subTypeInfoKeys">subTypeInfoKeys</option>
+              <option value="subnetworkNumber">subnetworkNumber</option>
+              <option value="temperatureInfoKey">temperatureInfoKey</option>
+              <option value="x">x</option>
+              <option value="y">y</option>
+              <option value="z">z</option>
+            </select>
+        &nbsp;<label class="jsnet3d"> <span class="i">value</span> <input class="jmol" type="text" id="select_property_value" size="12" value=""></label><input class="jmol" id="select_property_value_only" value="only" type="button"><input class="jmol" id="select_property_value_add" value="&nbsp;+&nbsp;" type="button"><input class="jmol" id="select_property_value_subtract" value="&nbsp;-&nbsp;" type="button"><input class="jmol" id="select_property_value_and" value="&nbsp;&amp;&nbsp;" type="button"><input class="jmol" id="select_property_value_not" value="not" type="button">
+          </div>
+
+          <div class="jsnet3d advanced_block">
+            <label class="jsnet3d selectGroup">Degree:</label>
+        &nbsp;<label class="jsnet3d"> <span class="i">minimum</span> <input class="jmol" type="text" id="select_degree_min_value" size="4" value=""></label>
+        &nbsp;<label class="jsnet3d"> <span class="i">maximum</span> <input class="jmol" type="text" id="select_degree_max_value" size="4" value=""></label>
+        <input class="jmol" id="select_property_value_only" value="only" type="button"><input class="jmol" id="select_degree_add" value="&nbsp;+&nbsp;" type="button"><input class="jmol" id="select_degree_subtract" value="&nbsp;-&nbsp;" type="button"><input class="jmol" id="select_degree_and" value="&nbsp;&amp;&nbsp;" type="button"><input class="jmol" id="select_degree_not" value="not" type="button">
+          </div>
+
+          <div class="jsnet3d">
+            <label class="jsnet3d selectGroup">Miscellaneous:</label>
+            <select class="jmol" id="select_miscellaneous_menu2">
+              <option value="select_all" selected="selected">All Nodes</option>
+              <option value="select_none">No Node</option>
+              <option value="select_displayed">Displayed Nodes</option>
+              <option value="select_neighbour">Neighbour Node of Selected Nodes</option>
+              <option value="select_singleneighbour">Single-neighbour Node</option>
+              <option value="select_goi">Gene of Interest</option>
+              <option value="select_goihom">Gene of Interest Homology Base</option>
+              <option value="select_goihomboth">Gene of Interest or Homology Base</option>
+            </select>
+        &nbsp;<input class="jmol advanced_inline" id="select_miscellaneous_only2" value="only" type="button"><span id="select_miscellaneous_controls_adv" class="advanced_inline"><input class="jmol" id="select_miscellaneous_add" value="&nbsp;+&nbsp;" type="button"><input class="jmol" id="select_miscellaneous_subtract" value="&nbsp;-&nbsp;" type="button"><input class="jmol" id="select_miscellaneous_and" value="&nbsp;&amp;&nbsp;" type="button"><input class="jmol" id="select_miscellaneous_not" value="not" type="button"></span>
+          </div>
+
+        </div> <!-- JANet code end -->
+
+              </div>
+
+              <figcaption class="janet-doc">
+                <span class="janet-doc-figcaption-title">Node selection options in the basic versus advanced interface.</span>
+                <p>A) In the <span class="janet-doc-term">basic interface</span> there are available three separate selection menus (Node type, Species, Miscellaneous). As soon as a value is selected in one of these menus, the corresponding nodes are selected and all other nodes are deselected (<span class="janet-doc-term">one-step mechanism</span>). For each selection menu there is also a button (select) for starting the selection if the desired value was already selected earlier.</p>
+                <p>B) In the <span class="janet-doc-term">advanced interface</span> there are available two additional selection criteria (Property value, Degree) and five buttons (only, +, -, &, not) for each criterium instead of one. After selecting a value in one of the menus or typing a value, nothing will happen yet. Additionally, it is required to press one of the five corresponding buttons to start the selection process (<span class="janet-doc-term">two-step mechanism</span>). This separation of value selection and actual node selection, together with the boolean operations provided by the new buttons, enables to build complex selection rules.</p>
+             </figcaption>
+            </figure>
+
+            </div>
+            </div>
+
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="basic_principles_treeviewer_like">Treeviewer-like Structure</h5>
+            <div class="janet-doc-level2">
+              <p>The options are arranged in a treeviewer-like structure. Subsections can be expanded/collapsed by clicking at the <span class="expand">+</span>/<span class="expand">&ndash;</span> pictograms or the subsection titles. This enables to keep the large number of control elements more compact, adapted to the current needs of the user.</p>
+              <p>At the bottom left of the interface there are two buttons (collapse all, expand all) to collapse and exand all subsections at once.</p>
+            </div>
+            </div>
+
+          </div>
+          </div>
+
+          <div class="janet-block">
+          <span class="expand">&ndash;</span><h4 class="janet-doc" id="janet_interface_main_sections">Main Sections</h4>
+          <div class="janet-doc-level2">
+            <p>The control elements are organized into five main sections, separated by horizontal lines.</p>
+
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="main_sections_general">General Options</h5>
+            <div class="janet-doc-level2">
+              <p>In the section at the top left there are options for changing the general viewer behaviour and for creating standard views:</p>
+              <div class="janet-doc-example">
+
+      <!-- JANet code start -->
+        <div class="jsnet3dGlobalOptions" style="margin-top:0.5ex; margin-bottom:0.3ex;">
+      <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Interface type:</label>
+          <label class="jsnet3d"><input type="radio" name="interface_type" id="interface_type_basic" value="basic" checked="checked"> basic</label>
+          <label class="jsnet3d"><input type="radio" name="interface_type" id="interface_type_advanced" value="advanced" >advanced</label>
+        <a title="Show Jena3D help page" id="help_link" class="help" href="http://jena3d.fli-leibniz.de/doc/Jena3D_help.html" target="_blank" style="display: none;">Help</a>
+       </div>
+       <div>
+       <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Standard views:</label>
+            <ul class="jsnet3d">
+              <li style="text-align:left"><input title="" class="jmol" id="view_default" value="Default" style="display:inline" type="button"></li>
+              <li><input class="jmol" id="view_gene_of_interest" value="Genes of interest" type="button"></li>
+              <li><input class="jmol" id="view_labelled" value="Labelled" type="button"></li>
+          </ul>
+       </div>
+       <div>
+       <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Hover mode:</label>
+         <label class="jsnet3d"><input type="radio" name="hover_mode" id="hover_mode_enhance" value="enhance" checked="checked" > enhance connected nodes</label>
+         <label class="jsnet3d"><input type="radio" name="hover_mode" id="hover_mode_only" value="only" > show only connected nodes</label>
+       </div>
+       <div>
+       <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Hover range:</label>
+         <label class="jsnet3d"><input type="radio" name="hover_range" id="hover_range_neighbour" value="neighbours" checked="checked" > neighbours</label>
+         <label class="jsnet3d"><input type="radio" name="hover_range" id="hover_range_subnetwork" value="subnetwork" > subnetwork</label>
+       </div>
+       <div>
+         <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel generalOptionGroup">Miscellaneous:</label>
+       <label><input title="Rotate automatically around Y-axis (on/off)" class="jmol" id="spin_checkbox" value="on" type="checkbox">spin</label>
+        <label><input title="Mark selected atoms by a yellow halo (on/off)" class="jmol" id="selected_checkbox" value="selected" type="checkbox" checked="checked">mark&nbsp;selected&nbsp;part</label>
+        <label><input title="Zoom and center selected atoms automatically (after using a control)" class="jmol" id="autozoom_checkbox" value="on" type="checkbox">auto&nbsp;zoom/center</label>
+
+   <span id="description_info" style="display:none"><p>
+</p><table class="atlasNormal" valign="left" style="font-size:100%;" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr><th class="atlasNormalSide">Uploaded file</th><th class="atlasNormalSide">&nbsp;:&nbsp;&nbsp;</th><td class="atlasNormalSide"></td><td>&nbsp;</td></tr>
+
+</tbody></table><p></p>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;<i>[&nbsp;<a href="javascript:idbShow('description_info')" target="_self">close entry info</a>&nbsp;]</i>
+        </span>
+       </div>
+      <!-- JANet code end -->
+
+              </div>
+            </div>
+            </div>
+
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="main_sections_data_organization">Data Organization and Analysis</h5>
+            <div class="janet-doc-level2">
+              <p>In the second section there are controls for loading network data, handling subsets, building network layouts, and analyzing user-provided genes of interest:</p>
+              <div class="janet-doc-example">
+
+      <!-- JANet code start -->
+        <h4><span class="expander" ><img class="expander" id="genesofinterest_show" src="../plus.gif" > Genes of Interest</span>  <a title="Show or hide 'Genes of Interest' information" id="genesofinterest_info_link" href="javascript:idbShow('genesofinterest_info', 'block')" target="_self" style="display:inline; margin-left: 2em;">Info</a></h4>
+
+        <h4><span class="expander" ><img class="expander" id="networkdata_show" src="../plus.gif"> Network Data</span></h4>
+        <h4><span class="expander" ><img class="expander" id="subset_show" src="../plus.gif" style="display: none;"><img class="expander" id="subset_hide" src="../minus.gif"> Subsets<span class="atlasComment">(<span id="subset_count">2</span>)</span></span></h4>
+        <div id="subset_controls" style="margin-left: 1.4em;">
+          <h4><span class="expander" ><img class="expander"id="displaysubset_show"  src="../plus.gif"> Display</span></h4>
+          <h4><span class="expander" ><img class="expander" id="managesubset_show" src="../plus.gif"> Management</span></h4>
+        </div>
+        <h4><span class="expander" ><img class="expander" id="layout_show" src="../plus.gif"> Layout</span></h4>
+
+
+       </div>
+      <!-- JANet code end -->
+
+            </div>
+            </div>
+
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="main_sections_subset_specific">Subset-specific Controls</h5>
+            <div class="janet-doc-level2">
+              <p>The third section is intended for susbset-specific controls and information. Currently only the node info obtained after left-clicking at a node in the mouse mode default is included here:</p>
+              <div class="janet-doc-example">
+
+      <!-- JANet code start -->
+        <h4><span class="expander" onClick='jaShowControl("nodeinfo","toggle")'><img class="expander" id="nodeinfo_hide" src="../minus.gif"> Node Info</span></h4>
+        <div id="nodeinfo_controls" style="margin-left: 1em;">
+
+<table class="jsnet3dVertical"><tbody><tr class="jsnet3dVertical"><th class="jsnet3dVertical">ageingFactorId:</th><td class="jsnet3dVertical">AF_005765</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">ageingFactorName:</th><td class="jsnet3dVertical">daf-2</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">ageingFactorType:</th><td class="jsnet3dVertical">gene</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">baseEntryStableIds:</th><td class="jsnet3dVertical">AF_005765; AF_007543</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">homologyAnalysisStatus:</th><td class="jsnet3dVertical">not added</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">infoKey:</th><td class="jsnet3dVertical">ageingFactorId</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">labelCustom:</th><td class="jsnet3dVertical">Gene: daf-2, Caenorhabditis elegans; (AF_005765)</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">labelLong:</th><td class="jsnet3dVertical">Gene: daf-2, C. elegans; (AF_005765, #4619)</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">labelShort:</th><td class="jsnet3dVertical">daf-2</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">lifespanDataAvailable:</th><td class="jsnet3dVertical">true</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">ncbiGeneId:</th><td class="jsnet3dVertical">175410</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">nodeId:</th><td class="jsnet3dVertical">AF_005765</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">nodeKey:</th><td class="jsnet3dVertical">ageingFactorId; AF_005765</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">nodeNumber:</th><td class="jsnet3dVertical">4619</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">nodeSubType:</th><td class="jsnet3dVertical">gene</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">nodeSubTypeId:</th><td class="jsnet3dVertical">AF_GEN</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">nodeType:</th><td class="jsnet3dVertical">ageingFactor</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">nodeTypeId:</th><td class="jsnet3dVertical">F</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">species:</th><td class="jsnet3dVertical">Caenorhabditis elegans</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">speciesShortcut:</th><td class="jsnet3dVertical">C. elegans</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">subTypeInfoKey:</th><td class="jsnet3dVertical">ageingFactorType</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">subTypeInfoKeys:</th><td class="jsnet3dVertical">ageingFactorType</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">subnetworkNumber:</th><td class="jsnet3dVertical">1</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">temperature:</th><td class="jsnet3dVertical">0</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">x:</th><td class="jsnet3dVertical">113.81852</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">y:</th><td class="jsnet3dVertical">87.25108</td></tr><tr class="jsnet3dVertical"><th class="jsnet3dVertical">z:</th><td class="jsnet3dVertical">157.26854</td></tr></tbody></table>
+        </div>
+
+       </div>
+      <!-- JANet code end -->
+              <p>Other subset-specific stuff might be added here in future versions of JANet.</p>
+            </div>
+            </div>
+
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="main_sections_subset_unspecific">Subset-unspecific Controls</h5>
+            <div class="janet-doc-level2">
+              <p>The last section at the left side contains subset-unspecific controls for manipulating individual nodes and edges, controling graphics window properties, scripting, and logging:</p>
+              <div class="janet-doc-example">
+
+      <!-- JANet code start -->
+
+        <h4><span class="expander"><img class="expander"id="select_show" s src="../plus.gif"> Node Selection<span class="atlasCommentItalic">(currently selected nodes: <span id="selection_count" style="white-space: pre;">135 of 9560</span>&nbsp;)</span></span></h4>
+        <h4><span class="expander"><img class="expander" id="rendering_show" src="../plus.gif"> Rendering</span></h4>
+       <h4><span class="expander"><img class="expander" id="coloring_show" src="../plus.gif"> Coloring</span></h4>
+        <h4><span class="expander"><img class="expander" id="visibility_show" src="../plus.gif"> Visibility</span></h4>
+        <h4><span class="expander"><img class="expander" id="graphics_show" src="../plus.gif"> Graphics&nbsp;Window</span></h4>
+        <h4><span class="expander"><img class="expander" id="miscellaneous_show" src="../plus.gif"> Miscellaneous</span></h4>
+        <h4><span class="expander"><img class="expander" id="script_show" src="../plus.gif"> Script</span><span class="atlasComment"><a id="script_info_link" href='javascript:idbShow("script_info")' target="_self" style="display:inline">Example Commands</a></span></h4>
+        <h4><span class="expander"><img class="expander" id="log_show" src="../plus.gif"> Log</span></h4>
+
+
+       </div>
+      <!-- JANet code end -->
+
+
+            </div>
+            </div>
+
+            <div class="janet-block">
+            <span class="expand">&ndash;</span><h5 class="janet-doc" id="main_sections_mouse_action">Mouse Action Controls</h5>
+            <div class="janet-doc-level2">
+              <p>Below the graphics window there are the mouse action controls for switching between different mouse modes and submodes:<p>
+              <div class="janet-doc-example">
+
+      <!-- JANet code start -->
+        <div class="jsnet3d">
+          <label class="jsnet3d mouseactionGroup">Mouse mode:</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_default" value="default"> default</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_center_node" value="centerNode" > center</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_select" value="select" > select</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_label" value="label"  checked="checked"> label</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_move" value="move" > move</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_visibility" value="visibility" > visibility</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_mode" id="mouseaction_mouse_mode_change_position" value="changePosition"> change position</label>
+         </div>
+              </div>
+              <div class="janet-doc-level2">
+                <div class="janet-doc-example">
+        <div class="jsnet3d mouseMode mouseSelect">
+          <label class="jsnet3d mouseactionGroup">Select mode:</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_select_mode_node" value="node" checked="checked"> node</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_select_mode_neighbours" value="neighbours"> neighbours</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_select_mode_neighbours_no_others" value="neighboursNoOthers"> single-neighbour neighbours</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_select_mode_subnetwork" value="subnetwork"> subnetwork</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_mode_select_node_type" value="nodeType"> node type</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_select_mode" id="mouseaction_mouse_mode_select_region" value="region"> window region</label>
+         </div>
+              </div>
+              </div>
+              <div class="janet-doc-level2">
+              <div class="janet-doc-example">
+        <div class="jsnet3d mouseMode mouseVisibility">
+          <label class="jsnet3d mouseactionGroup">Visibility mode:</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_visibility_mode" id="mouseaction_mouse_visibility_mode_only" value="only" checked="checked"> only</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_visibility_mode" id="mouseaction_mouse_visibility_mode_add" value="add"> add</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_visibility_mode" id="mouseaction_mouse_visibility_mode_subtract" value="subtract"> subtract</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_visibility_mode" id="mouseaction_mouse_visibility_mode_and" value="and"> AND</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_visibility_mode" id="mouseaction_mouse_visibility_mode_not" value="not"> NOT</label>
+         </div>
+              </div>
+              </div>
+              <div class="janet-doc-level2">
+              <div class="janet-doc-example">
+        <div class="jsnet3d mouseMode mouseChangePosition">
+          <label class="jsnet3d mouseactionGroup">Change position mode:</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_change_position_mode" id="mouseaction_mouse_change_position_mode_node" value="node" checked="checked" onclick='javascript:jaSwitchMouseMode("changePosition")'> node</label>
+          <label class="jsnet3d"><input type="radio" name="mouseaction_mouse_change_position_mode" id="mouseaction_mouse_change_position_mode_selected_nodes" value="selectedNodes" onclick='javascript:jaSwitchMouseMode("changePosition")'> currently selected nodes</label>
+         </div>
+      <!-- JANet code end -->
+
+                </div>
+              </div>
+
+              <p>They enable to change the actions of the mouse pointer on different mouse events like clicking and dragging, also in combination
+              with modifier keys (shift, command, control, alt).</p>
+              <p>The section also contains an overview on the available mouse actions for the current mouse mode:</p>
+              <div class="janet-doc-example">
+
+      <!-- JANet code start -->
+        <div class="jsnet3d mouseMode mouseLabel">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseLabel2">LEFT-click <span class="i">(node)</span> :</label><label class="jsnet3d">show/hide label at node (toggles the node label display)</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseLabel">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseLabel2">SHIFT-LEFT-click + drag<span class="i">(node label)</span> :</label><label class="jsnet3d">move node label</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseLabel mouseChangePosition mouseVisibility">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseLabel2 mouseChangePosition2 mouseVisibility2">LEFT-click + drag <span class="i">(near right border)</span> :</label><label class="jsnet3d">zoom in/out</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseLabel mouseChangePosition mouseVisibility">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseLabel2 mouseChangePosition2 mouseVisibility2">LEFT-click + drag <span class="i">(not near right border)</span> :</label><label class="jsnet3d">rotate all nodes around the X/Y-axes</label>
+         </div>
+        <div class="jsnet3d mouseMode mouseDefault mouseCenterNode mouseSelect mouseLabel mouseMove mouseChange mouseVisibility">
+          <label class="jsnet3dGroup jsnet3dInterfaceOptionLabel mouseDefault2 mouseCenterNode2 mouseSelect2 mouseLabel2 mouseMove2 mouseChangePosition2 mouseVisibility2">Mousewheel :</label><label class="jsnet3d">zoom in/out</label>
+         </div>
+      <!-- JANet code end -->
+
+              </div>
+
+              <p>Unfortunately, it depends on the system configuration like operating system (Windows, MacOS, Linux), web browser
+              (Internet Explorer, Safari, Firefox), network viewer type (Java, Javascript), and the number of mouse buttons, which actions are actually
+              available. Some of the actions can be triggered in different ways to make them available on a wider range of systems.</p>
+            </div>
+            </div>
+
+          </div>
+          </div>
+
+        </div>
+        </div>
+
+      </div>
+      </div>
+
+    </div>
+
+<hr class="separator">
+<span class="menuButton" style="margin-left: 3ex; float: left; " onClick='jaExpandAll("hide")'>collapse all</span>
+<span class="menuButton" style="margin-left: 2ex; float: left;" onClick='jaExpandAll("show")'>expand all</span>
+
+<div style="text-align: center; margin-top: 0.2em; font-size: 80%;">
+<!-- Created: Tue Feb 17 12:59:33 CET 2015 -->
+<!-- hhmts start -->
+Last modified: Fri Nov 17 11:21:33 CET 2017
+<!-- hhmts end -->
+    <script>
+      $("h2,h3,h4,h5").click(jaToggleSection);
+      $("span.expand").click(jaToggleSection);
+    </script>
+  </body>
+</html>

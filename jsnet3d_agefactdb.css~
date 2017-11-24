@@ -1,0 +1,295 @@
+/* *** Style Sheet definitions for 'JSnet3D-AgFactDB' adapted from 'JenaLib' V.31/07/2017, by Rolf Huehne *** */
+
+/* General Text */
+BODY { background-color:white; font-family: Helvetica,Arial,Switzerland,'Swiss 721',Futura,Univers,sans-serif; }
+/* Headlines */
+/*   general settings for all defined headline types */ 
+H1, H2, H3, H4, H5 { width: 100%; text-align: justify; margin: 0%; border: 0;color: rgb(255,100,25); font-style: normal; font-weight: bold; font-family: Helvetica,Arial,Switzerland,'Swiss 721',Futura,Univers,sans-serif; }
+/*   special settings */
+H1 { font-size: 155%; }
+H2 { font-size: 135%; }
+H3 { font-size: 115%; }
+H4 { font-size: 100%; }
+H5 { font-size: 100%;}
+
+LABEL { white-space: nowrap; }
+
+/* Preformatted Text for SCOP info (.scop) */
+PRE.scop { font-size: 120%; }
+
+.green { color: white; background: #003300; width: 100%; }
+.gray { background: #A9A9A9;  }
+.silver { background: #C0C0C0;  }
+.gainsboro { background: #DCDCDC;  }
+.bw { color: black; background: white; }
+
+.red { color: red; }
+
+HR.sBlue { margin-top: 1ex; margin-bottom: 1.4ex; padding-top: 0px; padding-bottom: 0px; height: 2px; border: 0px; color: rgb(0, 0, 255); background-color: rgb(0, 0, 255); width: 100%; text-align: left;}
+HR.sGrey { margin-left: 3ex; margin-top: 1ex; margin-bottom: 1.4ex; padding-top: 0px; padding-bottom: 0px; height: 2px;  border: 0px;color: rgb(160, 160, 160); background-color: rgb(160, 160, 160); width: 60ex; text-align: left;}
+HR.separator, HR.separatorSmall { margin-top: 1.4ex; margin-bottom: 1ex; padding-top: 0px; padding-bottom: 0px; height: 0.6ex; border: 0px; color: rgb(255, 100, 25); background-color: rgb(255, 100, 25); width: 100%; text-align: left;}
+HR.separatorSmall { margin-top: 0.6ex; height: 0.2ex; width: 90%; }
+
+
+/* Show/Hide Link (expander) */
+A.expander:link, A.expander:visited, A.expander:active    { border-style:none; border-width:0px; text-decoration:none; padding-left:4px; }
+IMG.expander { border-style:none; border-width:0px; vertical-align:baseline; margin-top:1px; margin-right:2px;}
+.expander { cursor:pointer; }
+
+H2.atlas { background-color:#ff6419; white-space:pre; margin-top:10px; padding-top:1px; width:auto; }
+H3.atlas { margin-top:3px; width:auto; }
+
+DIV.atlasComment, DIV.atlasCommentItalic  { margin-left:18px; margin-top:3px; font-size:100% }
+DIV.atlasCommentItalic { font-style:italic }
+DIV.atlasImageLink { margin-left:18px; margin-top:3px; }
+SPAN.atlasComment, SPAN.atlasCommentItalic  { margin-left:18px; font-size:100%; font-weight: normal; }
+SPAN.atlasCommentItalic { font-style:italic }
+SPAN.help { font-size:90%; font-style:italic; color:red; }
+SPAN.atlasGray { color: rgb(120,120,120) }
+
+/* ### Thumbnail Images ### */
+IMG.gif_info    { z-index:-1; margin-top:0px; width:auto; border-style:solid; border-width:3px; border-top-width:3px; border-color:#ff6419; padding:0px; vertical-align:top;}
+SPAN.gifControl { padding-left:3px; padding-right:5px; padding-top:1px; padding-bottom:1px; border-style:solid;  border-width:0px; border-color:#ff6419; margin-left:2px; margin-top:0px; margin-bottom:0px; color:black; font-weight:bold; }
+
+INPUT:hover { background-color: #ffdcba; }
+/* INPUT[type="radio"], INPUT[type="checkbox"] { vertical-align: bottom; } */
+
+/* ### Tables ### */
+
+/* Standard Table*/
+TH { text-align: center; }
+TD { text-align: left; font-size: small; font-style: normal; }
+
+/* Atlas page Header table */
+TABLE.atlasHeader { margin-top:0px; margin-bottom:0px; width:100%; border-style:none; border-width:0px; border-spacing:0px; padding:0px; } 
+/*   general settings */
+TH.atlasHeader, TD.atlasHeader { text-align: left; vertical-align: top; font-size: 100%; font-style: normal; }
+/*   special settings */
+TH.atlasHeader { font-weight: bold; }
+TD.atlasHeader { font-weight: normal; }
+
+/* Menu Button Table (e.g.: 'expand','collapse') */
+TABLE.menuButton    { margin-top:0px; margin-bottom:0px; margin-left:2px; border-spacing:7px; vertical-align:bottom; text-align:left; }
+TD.menuButton       { font-size: 100%; font-weight:normal; background-color:#ff6419; color:white; vertical-align:bottom; border-style: solid; border-width: 0px; text-decoration: none; padding-left:3px; padding-right:3px; }
+TD.menuButtonHidden { font-size: 100%; font-weight:normal; background-color:white; color:white; vertical-align:bottom; border-style: solid; border-width: 0px; text-decoration: none; padding-left:3px; padding-right:3px; }
+A.menuButton:link, A.menuButton:visited, A.menuButton:active    { text-decoration:none; color:white; }
+
+/* Top Menu Part1 (outer frame) */
+TABLE.menuTopPart1    { margin-top:0px;  margin-bottom:-3px; width:100%; border-style:none; border-width:0px; border-spacing:0px; vertical-align:bottom; text-align:right; }
+
+/* Bottom Menu Part1 (outer frame) */
+TABLE.menuBottomPart1 { margin-top:-3px; margin-bottom:0px;  width:100%; border-style:none; border-width:0px; border-spacing:0px; vertical-align:bottom; text-align:right; }
+
+/* Top Menu actual Menu Table */
+TABLE.menuTopMenu    { background-color:#ff6419; margin-top:4px;  margin-bottom:-3px; border-style:none; border-width:0px; border-spacing:3px; vertical-align:bottom; text-align:right; right:0px; }
+
+/* Bottom Menu actual Menu Table */
+TABLE.menuBottomMenu { background-color:#ff6419; margin-top:-5px; margin-bottom:0px;  border-style:none; border-width:0px; border-spacing:3px; vertical-align:bottom; text-align:right; right:0px; }
+
+/* Top or Bottom Menu (common formats) */
+TABLE.menu       { border-style:none; border-width:0px; border-spacing:0px; vertical-align:middle; text-align:right; width:100%; margin-top:0px; margin-bottom:0px;}
+TD.menu, TD.menuText { font-size:small; font-weight:normal; background-color:#ffffff; }
+TD.menuText:hover    { font-size:small; font-weight:normal; }
+TD.menuBarLeft   { font-size:135%; font-style:normal; text-align:left;  font-weight:bold; color:white; background-color:#ff6419; vertical-align:middle; }
+TD.menuBarCenter { font-size:135%; font-style:normal; text-align:left;  font-weight:bold; color:black; background-color:#ff6419; vertical-align:middle; width: 100%; padding-left:20px; }
+TD.menuBarRight  { font-size:135%; text-align:right; color:white; background-color:#ff6419; width:auto; padding-right:10px; vertical-align:middle; position:relative; }
+A.menu:link, A.menu:visited, A.menu:active    { text-decoration:none; color:blue; }
+DIV.menuTop      { background-color:#ff6419; margin-top:0px; padding-top:1px; width:100%; }
+DIV.menuBottom   { background-color:#ff6419; margin-top:0px; padding-top:1px; width:100%; }
+SPAN.menu        { color:#ac2121; font-style:normal; }
+
+/* Frame table for Home */
+TABLE.homeFrame { margin-left:28px; margin-top:0px; margin-bottom:0px;  border-style:none; border-width:0px; border-spacing:0px; }
+DIV.homeFrame   { margin-left:28px; margin-top:0px; margin-bottom:0px;  border-style:none; border-width:0px; }
+/*   general settings */
+TH.homeNormal, TD.homeNormal,TH.homeSpacer { text-align: left; vertical-align: top; font-size: 100%; font-style: normal; }
+/*   special settings */
+TH.homeNormal { font-weight: bold;   padding-left:3px; padding-top:2px; padding-right:3px; padding-bottom:2px;}
+TD.homeNormal { font-weight: normal; padding-left:3px; padding-top:2px; padding-right:3px; padding-bottom:2px;}
+/*   spacer row */
+TH.homeSpacer { padding-top:0px; padding-bottom:0px; font-size:50%}
+
+/* Frame table for Atlas pages */
+TABLE.atlasFrame { z-index: 1; margin-left:24px; margin-top:4px; margin-bottom:0px;  border-style:none; border-width:0px; border-spacing:2px; }
+DIV.atlasFrame   { z-index: 1; margin-left:24px; margin-top:4px; margin-bottom:0px;  border-style:none; border-width:0px; }
+
+/*   general settings */
+TH.atlasNormal, TD.atlasNormal, TH.atlasNormalSpacer, TD.atlasNormalSpacer, TD.atlasNumeric { text-align: left; vertical-align: top; font-size: 100%; font-style: normal; }
+/*   special settings */
+TH.atlasNormal  { font-weight: bold;   padding-left:3px; padding-top:2px; padding-right:3px; padding-bottom:2px;}
+TD.atlasNormal  { font-weight: normal; padding-left:3px; padding-top:1px; padding-right:3px; padding-bottom:0px;}
+TD.atlasNumeric { font-weight: normal; padding-left:3px; padding-top:1px; padding-right:3px; padding-bottom:0px; text-align:right; }
+/*   spacer row */
+TH.atlasNormalSpacer,TD.atlasNormalSpacer { padding-top:0px; padding-bottom:0px; font-size:50%; }
+
+/*   general settings */
+TH.atlasNormalSide, TD.atlasNormalSide { text-align: left; vertical-align: top; font-size: 100%; font-style: normal; padding-left:3px; padding-top:1px; padding-right:3px; padding-bottom:0px;}
+/*   special settings */
+TH.atlasNormalSide { font-weight: bold; }
+TD.atlasNormalSide { font-weight: normal; }
+
+/* Rep/Non-Rep (RNR) Tables */
+/*   general settings */
+TH.rnr, TH.rnrF, TD.rnr, TD.rnrF{ font-size:100%; }
+
+TH.rnrR { vertical-align:middle; text-align:center; padding-left:1ex; padding-right:1ex; }
+TH.rnrC { vertical-align:middle; text-align:center; padding-left:1ex; padding-right:1ex; }
+TH.rnr  { vertical-align:middle; text-align:left;   padding-left:1ex; padding-right:0.5ex; padding-top:0.1ex; padding-bottom:0.1ex; background-color:#DDDDDD;}
+
+TD.rnr  { vertical-align:top;    text-align:right;  padding-left:0.5ex; padding-right:0.5ex; padding-top:0.1ex; padding-bottom:0.1ex; }
+TD.rnrF { vertical-align:top;    text-align:right;  padding-left:0.5ex; padding-right:0.5ex; padding-top:0.1ex; padding-bottom:0.1ex; font-family:monospace; }
+
+/* ### Individual Styles ### */
+
+/* General */
+
+/*   Menu */
+#menuTopPart1     { margin-top:0px;  margin-bottom:-2px; margin-right:0px;}
+#menuBottomPart1  { margin-top:-2px; margin-bottom:0px;  margin-right:0px; }
+
+#menuTopBar       { margin-top:0px;  }
+#menuBottomBar    { margin-top:10px; }
+
+#menuVisualization { font-size:80%; text-align:right; width:auto; margin-right:5px; position:relative; }
+#menuTopSpacer, #menuBottomSpacer { width:100%; }
+
+
+
+/* Atlas page */
+#jlLogo           { border-style:none; padding-bottom:2px; }
+#cellSelectEntry  { vertical-align:middle; text-align:right; padding-right:5px; }
+
+#gif_info         { float:right; z-index:-1; margin-top:0px; width:auto; border-style:solid; border-width:3px; border-top-width:0px; border-color:#ff6419; padding:0px; }
+#gif_show         { float:right; }
+#gif_hide         { float:right; margin-top:2px; margin-right:2px; }
+#gifReplacement   { padding-left:5px; padding-right:5px; border-style:solid;  border-width:3px; border-top-width:0px; border-color:#ff6419; margin-left:2px; color:black; font-weight:bold; }
+
+/* PDB info table type 1 (.info1) */
+/*   general settings */
+TH.info1, TD.info1 { text-align: left; vertical-align: top; font-size: 100%; font-style: normal; }
+/*   special settings */
+TH.info1 { font-weight: bold; }
+TD.info1 { font-weight: normal; }
+
+/* PDB info table type 2 (.info2) */
+TABLE.info2 { margin-left:14px; margin-top:4px; }
+/*   general settings */
+TH.info2, TD.info2 { text-align: left; vertical-align: top; font-size: small; font-style: normal; }
+/*   special settings */
+TH.info2 { font-weight: bold; }
+TD.info2 { font-weight: normal; }
+
+/* SNP info table (.snp) */
+/*   general settings */
+TH.snp, TD.snp { text-align: left; vertical-align: top; font-style: normal; }
+/*   special settings */
+TH.snp     { font-weight: bold; }
+TD.snp     { font-weight: normal; }
+
+/* GO table (.go) */
+/* TABLE.go { margin-left: 14pt; } */
+/*   general settings */
+TH.go, TD.go { text-align: left; vertical-align: top; font-size: 100%; font-style: normal; }
+/*   special settings */
+TH.go { font-weight: bold; }
+TD.go { font-weight: normal; }
+
+/* Jmol GUI */
+BODY.jmol  { font-size:10pt; font-family: Helvetica,Arial,Switzerland,'Swiss 721',Futura,Univers,sans-serif;}
+INPUT.jmol { font-size:100%; padding:0px 3px 0px 3px }
+INPUT.jmol:hover { background-color: #ffdcba; }
+SELECT.jmol, TEXTAREA.jmol { font-size:100%; }
+TABLE.jmol { margin-left:14px; margin-top:4px; }
+TH.jmol, TD.jmol { text-align: left; vertical-align: top; font-style: normal; }
+/*   special settings */
+TH.jmol     { font-weight: bold;   padding-left:3px; padding-top:2px; padding-right:3px; padding-bottom:2px; }
+TD.jmol     { font-weight: normal; padding-left:3px; padding-top:1px; padding-right:3px; padding-bottom:0px; }
+
+
+/* Tree Browser */
+TD.treeList { font-weight: normal; padding-left:3px; padding-top:1px; padding-right:20px; padding-bottom:0px; }
+.cl, .class { font-style: normal; font-size: 136%; font-weight: bold; }
+.cf, .arch, .clan  { font-style: normal; font-size: 128%; font-weight: bold; }
+.sf         { font-style: normal; font-size: 122%; font-weight: bold; }
+.fa, .topol, .family { font-style: normal; font-size: 116%; font-weight: bold; }
+.dm, .homol { font-style: normal; font-size: 108%; font-weight: bold; }
+.sp { font-style: italic; font-size: 100%; font-weight: bold; }
+.px { font-family: Helvetica,Arial,Switzerland,'Swiss 721',Futura,Univers,sans-serif;}
+.pdb { color: black; font-style: italic;}
+.il { color: blue; font-weight: bold;}
+.norm { font-weight: normal; font-style: normal;}
+.atlasGray { color: rgb(120,120,120) }
+TABLE.treeFrame { margin-left:24px; margin-top:0px; margin-bottom:4px;  border-style:none; border-width:0px; border-spacing:2px; }
+
+DIV.menuButton  { cursor:pointer; font-size: 100%; font-weight:normal; background-color:#ff6419; color:white; vertical-align:bottom; border-style: solid; border-width: 0px; text-decoration: none; padding-left:3px; padding-right:3px; }
+DIV.expander { cursor:pointer; }
+A.treeLevel:link, A.treeLevel:active { color: black; }
+
+/* QuickSearch */
+
+TABLE.search_output_info { margin-left:48px; margin-bottom:8px; table-layout:fixed;}
+
+TD.search_output_info, TH.search_output_info, TD.search_output_normal, TH.search_output_normal { vertical-align: top; font-size: 100%; font-style: normal; padding-left:0px; padding-top:0px; padding-right:6px; padding-bottom:0px; }
+TD.search_output_normal {text-align: left; font-weight:normal; }
+TH.search_output_normal {text-align: left; font-weight:bold; }
+TD.search_output_info {text-align: left; font-weight:normal; }
+TH.search_output_info {text-align: right; font-weight:bold; }
+.idb_col { width:10ex;}
+.no_of_hits_col { width:2ex; }
+.title_col {  }
+.hit_title_col { width:15ex; }
+.colon_col { width:1ex; }
+.hit_info_col { }
+.pipe { color:black; text-decoration:none; }
+.warning {font-weight:bold; color:red; font-size:110%;}
+.H_I_G_H_L_I_G_H_T_1 { font-weight:bold; color:red; }
+.H_I_G_H_L_I_G_H_T_2 { font-weight:bold; color:rgb(50,146,195); }
+.H_I_G_H_L_I_G_H_T_3 { font-weight:bold; color:rgb(147,67,35); }
+.H_I_G_H_L_I_G_H_T_4 { font-weight:bold; color:rgb(198,14,62); }
+.H_I_G_H_L_I_G_H_T_5 { font-weight:bold; color:rgb(46,123,53); }
+
+
+.il {
+	background: #ffffff;
+	color: black;
+}
+
+
+/* Jena3D Viewer */
+IMG.j3d       { padding: 2px; border-style: none; border-width: 0px; text-decoration: none; }
+IMG.j3d:hover { background-color: #ff6419; }
+
+A:link    { color: #0000FF; text-decoration: none; }
+A:active  { color: #FF0000; text-decoration: none; }
+A:visited { color: #0000FF; text-decoration: none; }
+A:hover   { color: #0000FF; text-decoration: underline; }
+
+/* Help Links - always the same color */
+A.help:link    { color: #FF0000; }
+A.help:active  { color: #FF0000; }
+A.help:visited { color: #FF0000; }
+
+.b { color:#0000ff; font-weight:bold; }
+.i { color:#000000; font-style:italic; }
+
+.drei {font-size: 130%;}
+
+@media print
+{ 
+  A:link    { color: #0000FF; text-decoration: underline; }
+  A:active  { color: #FF0000; text-decoration: underline; }
+  A:visited { color: #ba00c1; text-decoration: underline; }
+
+}
+
+/* JSnet3D Viewer */
+ul.jsnet3d { margin-left: 0em; margin-top: 0em; margin-bottom: 0em; padding-left: 0em; list-style: none; list-style-type: none; display: inline; }
+ul.jsnet3d > li { margin-left: 0.1em; display: inline; }
+
+label.jsnet3dGroup { margin-left: 0.2em; margin-right: 0.1em; font-weight: bold; }
+label.jsnet3d { margin-left: 0.2em; margin-right: 0.1em; font-weight: normal; text-align: right; }
+
+div.jsnet3d { margin-top:0.5ex; margin-bottom:0.3ex; margin-left: 1em; }
+
+.jsnet3dInterfaceOptionLabel { text-align: right; }
+#jmolJSnet3D_appletinfotableDiv { border-color: rgb(255, 100, 25) !important; border-width: 2px !important; border-style: solid !important; }

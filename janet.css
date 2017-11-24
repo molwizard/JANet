@@ -90,7 +90,7 @@ TABLE.menuBottomMenu { background-color:#ff6419; margin-top:-5px; margin-bottom:
 TABLE.menu       { border-style:none; border-width:0px; border-spacing:0px; vertical-align:middle; text-align:right; width:100%; margin-top:0px; margin-bottom:0px;}
 TD.menu, TD.menuText { font-size:small; font-weight:normal; background-color:#ffffff; }
 TD.menuText:hover    { font-size:small; font-weight:normal; }
-TD.menuBarLeft   { font-size:135%; font-style:normal; text-align:left;  font-weight:bold; color:white; background-color:#ff6419; vertical-align:middle; }
+TD.menuBarLeft   { font-size:135%; font-style:normal; text-align:left;  color:white; background-color:#ff6419; vertical-align:middle; }
 TD.menuBarCenter { font-size:135%; font-style:normal; text-align:left;  font-weight:bold; color:black; background-color:#ff6419; vertical-align:middle; width: 100%; padding-left:20px; }
 TD.menuBarRight  { font-size:135%; text-align:right; color:white; background-color:#ff6419; width:auto; padding-right:10px; vertical-align:middle; position:relative; }
 A.menu:link, A.menu:visited, A.menu:active    { text-decoration:none; color:blue; }
@@ -286,11 +286,17 @@ A.help:visited { color: #FF0000; }
 ul.jsnet3d { margin-left: 0em; margin-top: 0em; margin-bottom: 0em; padding-left: 0em; list-style: none; list-style-type: none; display: inline; }
 ul.jsnet3d > li { margin-left: 0.1em; display: inline; }
 
+ul.janet-doc { margin-left: 3ex; margin-top: 0.5ex; margin-bottom: 0.5ex; padding-left: 0em; }
+ul.janet-doc > li { margin-left: 0.5ex; }
+
 label.jsnet3dGroup { margin-left: 0.2em; margin-right: 0.1em; font-weight: bold; }
 label.jsnet3d { margin-left: 0.2em; margin-right: 0.1em; font-weight: normal; text-align: right; }
 
-div.jsnet3d { margin-top:0.5ex; margin-bottom:0.3ex; margin-left: 1em; }
+div.jsnet3d, #TOC { margin-top:0.5ex; margin-bottom:0.3ex; margin-left: 1em; }
 
+h5.janetColorLegend { margin: 1ex; }
+ul.janetColorLegend { list-style: none; margin-top: 0.8ex; }
+ul.janetColorLegend li { display: inline-block; width: 12ex; padding:1ex; text-align: center; }
 
 .jsnet3dInterfaceOptionLabel { text-align: right; }
 /* #jmol_location > div { border-color: rgb(255, 100, 25); border-width: 0.6ex; border-style: solid; } */
@@ -309,3 +315,125 @@ body { margin: 0ex; padding: 0.6ex; }
 
 table.color_chooser { margin-left: 2em; }
 td.color_chooser { font-size: large; }
+
+/* ### BEGIN LIST ### */
+ul, ul.janet-doc {
+  list-style-image: url("led-orange-small.gif");
+}
+/* END LIST  */
+
+ol.janet-doc-letter { list-style-type: upper-alpha; }
+
+.janet-level2 {
+  margin-left: 0.9em;
+}
+
+.janet-level3 {
+  margin-left: 1.4em;
+}
+
+.janet-level4 {
+  margin-left: 1.9em;
+}
+
+.janet-level5 {
+  margin-left: 2.4em;
+}
+
+.janet-doc-level2 {
+  margin-left: 5ex;
+}
+
+div.janet-doc-example {
+  margin: 0.5ex;
+  margin-left: 2.2ex;
+  padding: 0.8ex;
+  border: 4px solid rgb(240,240,240);
+  display: inline-block;
+}
+
+ol.janet-doc-level1 {
+  margin-top: 0.5ex;
+  font-weight: bold;
+  list-style-type: decimal;
+}
+
+ol.janet-doc {
+  margin-top: 0.3ex;
+  list-style-type: decimal;
+}
+
+
+
+/*   general settings for all defined headline types */ 
+H1.janet-doc, H2.janet-doc, H3.janet-doc, H4.janet-doc, H5.janet-doc { margin-top: 1ex; margin-left: 0.3ex; margin-bottom: 0.6ex; display: inline-block; }
+img.janet-doc { margin: 1ex; padding: 0.8ex; width:96%; max-width: 1600px; border: 6px solid rgb(240,240,240); display: block; cursor: zoom-in; }
+H2.janet-doc, H3.janet-doc, H4.janet-doc, H5.janet-doc { cursor: pointer; }
+
+.TOCHeadLine { width: auto; text-align: left; margin: 0%; border: 0;color: rgb(255,100,25); font-style: normal; font-weight: bold; font-family: Helvetica,Arial,Switzerland,'Swiss 721',Futura,Univers,sans-serif; }
+
+.TOCHeadLine { font-size: 135%; margin-left: 0ex; }
+#TOCHeadLine { cursor: pointer; }
+
+#TOC a, #TOC a:visited { color: rgb(255,100,25); }
+
+#TOC { line-height: 2.2ex; margin-top: 1ex; margin-left: 0ex; }
+
+#TOC  ul { margin-left: 2.5ex; margin-top: 0em; margin-bottom: 0em; padding-left: 0em; }
+#TOC  ul li { margin-left: 0.5ex; }
+#TOC > ul { margin-top: 1.2ex; margin-left: 4ex; }
+
+:target {
+   background: greenyellow;
+   padding-left: 0.5ex;
+   padding-right: 0.5ex
+}
+
+p { margin-top: 1ex; margin-bottom: 1ex; max-width: 120ex; margin: 0.5em; }
+
+body.janet-doc { font-size: 13pt; line-height: 2.4ex; }
+span.jaComment { margin-left:1ex; font-size:100%; font-weight: normal; font-style: italic; }
+span.jaName    { margin-left:1ex; font-style: italic; }
+span.jaHigh    { font-style: italic; }
+
+span.expand    { display: inline-block;
+                 background-color: rgb(255,133,74);
+                 color: white;
+                 padding-left: 0.7ex;
+                 padding-right: 0.7ex;
+                 padding-top: 0ex;
+                 padding-bottom: 0ex;
+                 margin-left: 1ex;
+                 margin-right: 0.5ex;
+                 font-weight: bold;
+                 vertical-align: 0.3ex;
+                 cursor: pointer;
+               }
+
+#TOC span.expand { font-size: 75%; }
+
+span.janet-doc-figcaption-title {
+  font-weight: bold;
+  font-style: normal;
+  color: rgb(255,100,25);
+  display: block;
+  margin-bottom: 0.5ex;
+}
+
+figure.janet-doc {
+  font-weight: normal;
+  font-style: italic;
+}
+
+span.janet-doc-term { background-color: rgb(251,255,78);
+                      padding-left: 0.7ex;
+                      padding-right: 0.7ex;
+                    }
+
+div.janet-doc-figure { margin: 1ex;
+                       padding: 2ex;
+                       border: 6px solid rgb(240,240,240);
+                       font-style: normal;
+                       font-size: 90%;
+                       display: inline-block;
+                     }

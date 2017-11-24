@@ -38,7 +38,7 @@
 \setcounter{tocdepth}{3}
 \setcounter{secnumdepth}{3}
 
-\hyphenation{AgeFactDB JenAge JenAgeWiki HomoloGene PubMed Cytoscape BioLayout FMMM HTML life-span stand-alone}
+\hyphenation{AgeFactDB JenAge JenAgeWiki HomoloGene PubMed Cytoscape BioLayout FMMM HTML life-span stand-alone visuali-zation}
 
 \definecolor{afdb}{RGB}{255,100,25}
 \definecolor{bglight}{RGB}{240,240,240}
@@ -48,7 +48,8 @@
 }
 
 % Simplified hyperref referencing
-%\newcommand{\rhref}{1}{in \autoref{#1} on \autopageref{#1}}
+\newcommand{\rhref}[1]{in \autoref{#1} on \autopageref{#1}}
+\newcommand{\rhsref}[1]{(see \autoref{#1} on \autopageref{#1})}
 
 % PDF comments
 \pdfcommentsetup{draft}
@@ -97,7 +98,22 @@
 \chapter{Introduction}
 \label{chap:introduction}
 
+\section{JANet}
+\label{sec:janet}
+JANet (\textbf{J}mol \textbf{A}geFactDB \textbf{Net}work-viewer) is a specialized Jmol-based 3D network viewer for the
+visualization of ageing-related network data from AgeFactDB \rhsref{sec:agefactdb}).
 
+\subsection{Features}
+\label{subsec:janet_features}
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item Gene
+\item Compound
+\item Other Ageing Factor
+\end{enumerate}
+
+
+\section{Jmol/JSmol}
+\label{sec:jmol}
 
 \chapter{Background}
 \label{chap:background}
@@ -164,7 +180,7 @@ The same genes might have been integrated into two different source databases or
 
 It was tried to resolve this by using the gene/protein synonym database GPSDB and integrate the gene into AgeFactDB using the name marked as preferred name in GPSDB.
 
-All name changes are listed in a table within the \href{http://agefactdb.jenage.de/cgi-bin/jaDB.cgi?VIEW=release}{release page}, shown partially in Figure \ref{fig:name_changes} on page \pageref{fig:name_changes}.
+All name changes are listed in a table within the \href{http://agefactdb.jenage.de/cgi-bin/jaDB.cgi?VIEW=release}{release page}, shown partially \rhref{fig:name_changes}.
 
  \begin{figure*}[!ht]
       \includegraphics[width=0.96\textwidth]{data/name_changes.png}
