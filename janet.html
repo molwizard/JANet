@@ -788,14 +788,27 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
             static.edgevisibility_display_all        = "Display all edges";
             static.edgevisibility_hide_all           = "Hide all edges";
 
-            static.graphics_show = "Expand subsection";
-            static.graphics_hide = "Collapse subsection";
-            static.applet_width  = "Choose graphics window/snapshot width (pixel)";
-            static.applet_height = "Choose graphics window/snapshot height (pixel)";
-            static.resize        = "Resize the graphics window to the chosen width and height";
-            static.maximize      = "Maximize the graphics window size according to the current browser window size";
-            static.default_size  = "Set the graphics window size to the default size";
-            static.snapshot      = "Create a snapshot image of the graphics window of the chosen width and height to a new window/overlay";
+            static.graphics_show   = "Expand subsection";
+            static.graphics_hide   = "Collapse subsection";
+            static.applet_width    = "Choose graphics window/snapshot width (pixel)";
+            static.applet_height   = "Choose graphics window/snapshot height (pixel)";
+            static.resize          = "Resize the graphics window to the chosen width and height";
+            static.maximize        = "Maximize the graphics window size according to the current browser window size";
+            static.default_size    = "Set the graphics window size to the default size";
+            static.snapshot        = "Create a snapshot image of the graphics window of the chosen width and height to a new window/overlay";
+            static.graphics_export = "Export graphics window content (2D image, 3D vector object, molecular)";
+
+            static.graphics_export_format_png    = "Export as 2D image in 'Portable Network Graphics' format (.png)";
+            static.graphics_export_format_pngt   = "Export as 2D image in 'Portable Network Graphics' format with tranparent background (.png)";
+            static.graphics_export_format_jpg    = "Export as 2D image in 'JPEG' format (.jpg)";
+            static.graphics_export_format_pdf    = "Export as 2D image in 'PDF' format (.pdf)";
+            static.graphics_export_format_gif    = "Export as 2D image in 'GIF' format (.gif)";
+            static.graphics_export_format_gift   = "Export as 2D image in 'GIF' format with transparent background (.gif)";
+            static.graphics_export_format_obj    = "Export as 3D object in 'WafeFront Object' format (.obj)";
+            static.graphics_export_format_u3d    = "Export as 3D object in 'X3D' format (.x3d)";
+            static.graphics_export_format_idtf   = "Export as 3D object in 'IDTF' format (.idtf,.idtf.tex)";
+            static.graphics_export_format_povray = "Export as 3D object in 'PovRay' format (.pov,.ini)";
+            static.graphics_export_format_mmcif  = "Export as molecule in 'mmCIF' format (.mmcif)";
 
             static.stereo_show                   = "Expand subsection";
             static.stereo_hide                   = "Collapse subsection";
@@ -2092,6 +2105,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
         document.getElementById('rendering_node_size_type').checked=true;
         document.getElementById('rendering_edge_size_uniform').checked=true;
         document.getElementById('edgevisibility_selection_mode_or').checked=true;
+        document.getElementById('graphics_export_format_png').checked=true;
         document.getElementById('mouseaction_mouse_mode_default').checked=true;
         document.getElementById('mouseaction_mouse_select_mode_node').checked=true;
         document.getElementById('mouseaction_mouse_visibility_mode_only').checked=true;
@@ -2107,6 +2121,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
         jaAdjustOptionLabelWidth(".renderingGroup");
         jaAdjustOptionLabelWidth(".nodevisibilityGroup");
         jaAdjustOptionLabelWidth(".edgevisibilityGroup");
+        jaAdjustOptionLabelWidth(".graphicsGroup");
         jaAdjustOptionLabelWidth(".mouseactionGroup");
 
         idbExpandAll("hide");
@@ -2515,6 +2530,65 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
               console.log("Layout default action - UNDEFINED");
               break;
           }
+        }
+
+        function jaExportGraphics(exportFormat) {
+          if (exportFormat == "") {
+            exportFormat = "PNG";
+          }
+
+          var jmolCommands = ["set echo waitmessage hidden"];
+          var jmolCommand  = "";
+          var filenameBase = 'networkData..currentSubsetKey';
+          var filename     = "";
+          var extension    = "." + exportFormat.toLowerCase();
+
+          var formatToExtension = new Array();
+          formatToExtension["PNGT"]   = ".png";
+          formatToExtension["GIFT"]   = ".gif";
+          formatToExtension["POVRAY"] = ".pov";
+
+          if (formatToExtension[exportFormat]) {
+            extension = formatToExtension[exportFormat];
+          }
+
+          jmolCommand = ' var filename = ' + filenameBase + ' + "' + extension + '"';
+          jmolCommands.push(jmolCommand);
+
+
+          switch(exportFormat) {
+            case "IDTF":
+              jmolCommand = 'write ' + exportFormat + ' @filename';
+              jmolCommands.push(jmolCommand);
+              break;
+            case 'OBJ':
+              jmolCommand = 'write ' + exportFormat + ' @filename';
+              jmolCommands.push(jmolCommand);
+              break;
+            case 'POVRAY':
+              jmolCommand = 'write ' + exportFormat + ' @filename';
+              jmolCommands.push(jmolCommand);
+              break;
+            case 'X3D':
+              jmolCommand = 'write ' + exportFormat + ' @filename';
+              jmolCommands.push(jmolCommand);
+              break;
+            case "MMCIF":
+              jmolCommand = 'if (networkData..subsets.[networkData..currentSubsetKey]..mmcifData == "") { buildMmcifData(networkData); }';
+              jmolCommands.push(jmolCommand);
+              jmolCommand = 'mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData';
+              jmolCommands.push(jmolCommand);
+              jmolCommand = 'write var mmcifData @filename';
+              jmolCommands.push(jmolCommand);
+              break;
+            default:
+              jmolCommand = "write image " + exportFormat + " " + document.getElementById("applet_width").value + " " + document.getElementById("applet_height").value + " @filename";
+              jmolCommands.push(jmolCommand);
+              break;
+          }
+
+          var jmolCommandString = jmolCommands.join("; ") + ";";
+          Jmol.script(jmolJSnet3D, jmolCommandString)
         }
 
         function jaGetRadioGroupValue(groupName) {
@@ -3206,11 +3280,33 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
 
         <h4><span class="expander" onClick='jaShowControl("graphics","toggle")'><img class="expander" id="graphics_show" src="plus.gif" style="display: none;"><img class="expander" id="graphics_hide" src="minus.gif"> Graphics&nbsp;Window</span></h4>
        <div id="graphics_controls" style="margin-left: 1em;">
-        <input class="jmol" id="applet_width" size="4" maxlength="5" value="600" type="text">&nbsp;x&nbsp;<input class="jmol" id="applet_height" size="4" maxlength="5" value="600" type="text">&nbsp;pixel&nbsp;
+
+        <div class="jsnet3d">
+          <label class="jsnet3d graphicsGroup">Window size :</label>
+          <input class="jmol" id="applet_width" size="4" maxlength="5" value="600" type="text">&nbsp;x&nbsp;<input class="jmol" id="applet_height" size="4" maxlength="5" value="600" type="text">&nbsp;pixel
+         </div>
+        <div class="jsnet3d advanced_block" style="margin-bottom: 0.6ex;">
+          <label class="jsnet3d graphicsGroup">Export format :</label>
+          <label class="jsnet3d"><input type="radio" name="graphics_export_format" id="graphics_export_format_png"    value="PNG" checked="checked"> PNG</label>
+          <label class="jsnet3d"><input type="radio" name="graphics_export_format" id="graphics_export_format_pngt"   value="PNGT"> PNG (transparent background)</label>
+          <label class="jsnet3d"><input type="radio" name="graphics_export_format" id="graphics_export_format_jpg"    value="JPG"> JPG</label>
+          <label class="jsnet3d"><input type="radio" name="graphics_export_format" id="graphics_export_format_pdf"    value="PDF"> PDF</label>
+          <label class="jsnet3d"><input type="radio" name="graphics_export_format" id="graphics_export_format_gif"    value="GIF"> GIF</label>
+          <label class="jsnet3d"><input type="radio" name="graphics_export_format" id="graphics_export_format_gift"   value="GIFT"> GIF (transparent background)</label>
+          <label class="jsnet3d"><input type="radio" name="graphics_export_format" id="graphics_export_format_mmcif"  value="MMCIF"> MMCIF</label>
+          <label class="jsnet3d"><input type="radio" name="graphics_export_format" id="graphics_export_format_obj"    value="OBJ"> OBJ</label>
+          <label class="jsnet3d"><input type="radio" name="graphics_export_format" id="graphics_export_format_u3d"    value="U3D"> U3D</label>
+          <label class="jsnet3d"><input type="radio" name="graphics_export_format" id="graphics_export_format_idtf"   value="IDTF"> IDTF</label>
+          <label class="jsnet3d"><input type="radio" name="graphics_export_format" id="graphics_export_format_povray" value="POVRAY"> POV</label>
+         </div>
+        <span style="margin-left: 1em; font-weight: bold;">Action:</span>
         &nbsp;&nbsp;<input class="jmol" id="resize" value="resize" onclick='Jmol.resizeApplet(jmolJSnet3D,[document.getElementById("applet_width").value, document.getElementById("applet_height").value]); Jmol.script(jmolJSnet3D, "refresh;");' type="button">
         &nbsp;&nbsp;<input class="jmol" id="maximize" value="maximize" onclick='document.getElementById("applet_width").value = idbGetWidth(); document.getElementById("applet_height").value = idbGetHeight(); Jmol.resizeApplet(jmolJSnet3D,[document.getElementById("applet_width").value, document.getElementById("applet_height").value]); Jmol.script(jmolJSnet3D, "refresh;");' type="button">
         <input class="jmol" id="default_size" value="default size" onclick='document.getElementById("applet_width").value = jmol_width_default; document.getElementById("applet_height").value = jmol_height_default; Jmol.resizeApplet(jmolJSnet3D,[document.getElementById("applet_width").value, document.getElementById("applet_height").value]); Jmol.script(jmolJSnet3D, "refresh;");' type="button">
         &nbsp;&nbsp;<input class="jmol" id="snapshot" value="snapshot" onclick='snapshot_command="set echo waitmessage hidden; image id snapshot_" + Math.ceil(Math.random() * 100000) + " " + document.getElementById("applet_width").value + " " + document.getElementById("applet_height").value; Jmol.script(jmolJSnet3D, snapshot_command)' type="button">
+        &nbsp;&nbsp;<input class="jmol" id="graphics_export" value="export" onclick='jaExportGraphics(jaGetRadioGroupValue("graphics_export_format"));' type="button">
+
+
         <h4 style="margin-top: 0.3em; "><span class="expander" onClick='jaShowControl("stereo","toggle")'><img class="expander" id="stereo_show" src="plus.gif" style="display: none;"><img class="expander" id="stereo_hide" src="minus.gif"> Stereo</span></h4>
         <div id="stereo_controls" style="margin-left: 1em;">
           <span style="margin-left: 1em; font-weight: bold;">Action:</span>
