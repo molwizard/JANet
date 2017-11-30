@@ -4168,6 +4168,7 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
   var subsetNameExtension = "";
   var skipLayout          = false;
   var skipLayoutReason    = " (switched off manually in layout options)";
+  var speciesIncluded     = false;
 
   if (mode.find("skipLayout","im") == "skipLayout") {
     skipLayout = true;
@@ -4184,6 +4185,9 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
         var extraNodeTypeId = networkData..networkDefinition..translations..typeToTypeId.[extraNodeType];
         if (extraNodeTypeId != "") {
           extension = extension + "_" + extraNodeTypeId;
+        }
+        if (extraNodeType == "species") {
+          speciesIncluded = true;
         }
         switch(extraNodeType) {
           case "homology_analysis":
@@ -4209,23 +4213,9 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
         }
       }
     }
-    subsetKey = subsetBaseName + extension;
-    if (subsetKeys[subsetKey] == "") {
-      subsetKeys[subsetKey] = 1;
-      subsetNameExtension   = "";
-    } else {
-      subsetKeys[subsetKey]++;
-      var number = subsetKeys[subsetKey];
-      subsetKey = subsetKey + "-" + number;
-      subsetNameExtension = " - " + number;
-    }
 
-    logMsg([level: "info", msg: "action='" + action + "'  nodeId='" + nodeId + "'  subsetKey='" + subsetKey + "'  subsetNameExtension='" + subsetNameExtension + "'"]);
-
-    if (action == "add") {
-    layoutOptions.tiled = false;
     nodeKey     = "ageingFactorId||" + nodeId;
-    nodeInfo = networkData..subsets..full..nodeInfo.[nodeKey];
+    nodeInfo    = networkData..subsets..full..nodeInfo.[nodeKey];
     nodeName    = nodeInfo..ageingFactorName.replace("'","`");
     nodeSubType = nodeInfo..nodeSubType;
     speciesInfo = nodeInfo..species;
@@ -4248,6 +4238,32 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
     } else {
       speciesShortcut = speciesInfo;
     }
+
+    if (nodeSubType != "gene") {
+      if (!speciesIncluded) {
+        var extraNodeTypeId = networkData..networkDefinition..translations..typeToTypeId..species;
+        if (extraNodeTypeId != "") {
+          extension = extension + "_" + extraNodeTypeId;   # 'species' is included automatically in subset for compounds/other_factors
+        }
+
+      }
+    }
+
+    subsetKey = subsetBaseName + extension;
+    if (subsetKeys[subsetKey] == "") {
+      subsetKeys[subsetKey] = 1;
+      subsetNameExtension   = "";
+    } else {
+      subsetKeys[subsetKey]++;
+      var number = subsetKeys[subsetKey];
+      subsetKey = subsetKey + "-" + number;
+      subsetNameExtension = " - " + number;
+    }
+
+    logMsg([level: "info", msg: "action='" + action + "'  nodeId='" + nodeId + "'  subsetKey='" + subsetKey + "'  subsetNameExtension='" + subsetNameExtension + "'"]);
+
+    if (action == "add") {
+    layoutOptions.tiled = false;
 
     mmcifData = "";
     logMsg([level: "info", msg: "Processing ageing factor '" +  nodeName + " " + species + " - " + nodeId + "'..."]);
@@ -4376,7 +4392,17 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
       javascript @javascriptCommand;
 
       #############
-      var optionExtension = " (" + subsetType + " + " + extraNodeTypeString.replace("||", " + ") + ")";
+      var extraNodeTypeStringExtended = extraNodeTypeString;
+      if (nodeSubType != "gene") {
+        if (!speciesIncluded) {
+          if (extraNodeTypeString == "") {
+            extraNodeTypeStringExtended = "species";
+          } else {
+            extraNodeTypeStringExtended = extraNodeTypeString + "||" + "species";
+          }
+        }
+      }
+      var optionExtension = " (" + subsetType + " + " + extraNodeTypeStringExtended.replace("||", " + ") + ")";
       var subsetName = networkData..currentSubsetKey;
       if (extraNodeTypeString == "") {
         optionExtension = " (" + subsetType + ")";
@@ -4384,9 +4410,6 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
       if (nodeSubType == "gene") {
         subsetName =  nodeName + ' ' + speciesShortcut2 + ' - ' + nodeId + optionExtension + subsetNameExtension;
       } else {
-        if (optionExtension.find("species") > 0) {
-          optionExtension = optionExtension.replace(" + species", "");
-        }
         subsetName = nodeName + ' - ' + nodeId + optionExtension + subsetNameExtension;
       }
       networkData..subsets.[networkData..currentSubsetKey]..subsetName = subsetName;
