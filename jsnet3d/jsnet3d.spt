@@ -4325,9 +4325,11 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
       networkData..importFormat = "coordinateTSV";
       networkData..importFilename = "data/agefactdb-" + networkData..currentSubsetKey + "-coordinates.txt";
       networkData..importSubsetKey = networkData..currentSubsetKey;
+      var currentImportCoordinateScalingFactor = networkData..importCoordinateScalingFactor;
       networkData..importCoordinateScalingFactor = 1.0;
       importSubsetCoordinates(networkData);
-    
+      networkData..importCoordinateScalingFactor = currentImportCoordinateScalingFactor;
+
       # Convert into molecular format and visualize
       buildMmcifData(networkData);
       mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;

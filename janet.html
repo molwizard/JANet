@@ -2355,11 +2355,19 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
             }
 
             if (fileList.length > 0) {
+              var importScalingFactor = 0.1;
+              if (document.getElementById("layout_import_scaling_factor")) {
+                importScalingFactor = document.getElementById("layout_import_scaling_factor").value;
+                if (importScalingFactor == 0) {
+                  importScalingFactor = 0.1;
+                  document.getElementById("layout_import_scaling_factor").value = importScalingFactor;
+                }
+              }
               var typeKey = typesLoaded.sort().join("_");
               var fileString = '"' + fileList.join('", "') + '"';
               var jmolCommand = 'logMsg([level: "iError", msg: "network data COULD NOT BE LOADED"]);';
 
-              var jmolCommandLoad = 'var startTime = now(); networkData..mode="new"; networkData..deleteRawDataAfterParsing=true; networkData..typesLoaded="' + typeKey + '"; networkData..networkType="agefactdb"; networkData..fileType="tsv"; networkData..fileList = [' + fileString + ']; loadNetworkData(networkData); var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)"; logMsg([level: "info", msg: "finished loading and parsing network data" + timeMessage]); updateStandardSubsetManagementMenu(networkData);';
+              var jmolCommandLoad = 'var startTime = now(); networkData..mode="new"; networkData..deleteRawDataAfterParsing=true; networkData..typesLoaded="' + typeKey + '"; networkData..networkType="agefactdb"; networkData..importCoordiateScaligFactor=' + importScalingFactor + '; networkData..fileType="tsv"; networkData..fileList = [' + fileString + ']; loadNetworkData(networkData); var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)"; logMsg([level: "info", msg: "finished loading and parsing network data" + timeMessage]); updateStandardSubsetManagementMenu(networkData);';
 
               if (applet_type == "java") {
                 jmolCommand = jmolCommandLoad;
@@ -2386,6 +2394,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
                 jmolCommands.push(' }');
                 jmolCommands.push('updateStandardSubsetManagementMenu(networkData);');
                 jmolCommands.push('set platformSpeed 2');
+                jmolCommands.push('networkData..importCoordiateScaligFactor=' + importScalingFactor + ';');
                 jmolCommand = jmolCommands.join(" ");
                 jmolCommands = new Array();
               }
@@ -2492,6 +2501,7 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
           var importFormat        = "";
           var exportFormat        = "";
           var importFile          = "";
+          var importScalingFactor = 0.1;
           var exportFile          = "";
           var jqueryExpression    = "";
           var jmolCommand         = "";
@@ -2520,7 +2530,14 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
             case "import":
               if (importFormat != "undefined") {
                 importFile = document.getElementById("layout_import_file").value;
-                jmolCommand = 'networkData..importSubsetKey=networkData..currentSubsetKey; networkData..importFormat="' + importFormat + '"; networkData..importFilename="' + importFile + '"; networkData..importApplyCoordinates=true; importSubsetCoordinates(networkData);'
+                if (document.getElementById("layout_import_scaling_factor")) {
+                  importScalingFactor = document.getElementById("layout_import_scaling_factor").value;
+                  if (importScalingFactor == 0) {
+                    importScalingFactor = 0.1;
+                    document.getElementById("layout_import_scaling_factor").value = importScalingFactor;
+                  }
+                }                
+                jmolCommand = 'networkData..importSubsetKey=networkData..currentSubsetKey; networkData..importFormat="' + importFormat + '"; networkData..importFilename="' + importFile + '"; networkData..importCoordiateScaligFactor=' + importScalingFactor + '; networkData..importApplyCoordinates=true; importSubsetCoordinates(networkData); zoomto {all} 0;'
                 Jmol.script(jmolJSnet3D, jmolCommand);
               } else {
                 alert("ERROR: import format not defined");
@@ -2821,6 +2838,10 @@ all_control_names.push("select","visibility","rendering","coloring","coloring_no
         <div class="jsnet3d">
           <label class="jsnet3d layoutGroup">Import file:</label>
             <label class="jsnet3d"><input type="text" id="layout_import_file" size="60" value="default-biolayout.layout"> <span class="i">(including path)</span></label>
+         </div>
+        <div class="jsnet3d advanced_block">
+          <label class="jsnet3d layoutGroup">Import scaling factor:</label>
+            <label class="jsnet3d"><input type="text" id="layout_import_scaling_factor" size="6" value="0.1"></label>
          </div>
           <span style="margin-left: 1em; font-weight: bold;">Action:</span>
               <input title="Build layout "             class="jmol" id="layout_build"     value="build"     onclick='jaManageLayout("build");' type="button">
