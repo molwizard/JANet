@@ -2947,7 +2947,9 @@ function showNodeInfo(dataHashref) {
   }
 
   var javascriptCommand = "jaShowControl('nodeinfo', 'show'); $(\"#" + domNodeId + "\").html('" + htmlNodeInfo + "')";
-  javascript @javascriptCommand;
+  if (_applet) {
+    javascript @javascriptCommand;
+  }
 }
 
 function showNodeInfo_OLD(dataHashref) {
@@ -2960,7 +2962,9 @@ function showNodeInfo_OLD(dataHashref) {
   }
 
   var javascriptCommand = "jaShowControl('nodeinfo', 'show'); $(\"#" + domNodeId + "\").html('" + htmlNodeInfo + "')";
-  javascript @javascriptCommand;
+  if (_applet) {
+    javascript @javascriptCommand;
+  }
 }
 
 function selectByDegree(dataHashref, maxValue, selectMode, action, outputType) {
@@ -3542,7 +3546,20 @@ function logMsg(data) {
                        "debug2": ["log", "jsconsole"],
                        "debug3": ["log", "jsconsole"],
                        "mixed":  ["log", "sconsole", "jsconsole"]
-                     };
+  };
+  if (!_applet) {
+    levelChannels = {"error":  ["log", "sconsole"],
+                     "iError": ["log", "sconsole"],
+                     "warn":   ["log", "sconsole"],
+                     "info":   ["log", "sconsole"],
+                     "debug":  ["log"],
+                     "debug2": ["log"],
+                     "debug3": ["log"],
+                     "mixed":  ["log", "sconsole"]
+    };
+  };
+
+
 
   # Define channel to method translation
   var channelMethods = {"log": "log",
@@ -4128,9 +4145,11 @@ function resetGuiAfterLoadNetworkData(mode) {   # SPECIFIC FOR JSNET3D-AGEFACTDB
 
       var subsetName        = "Full";
       var optionHtml        = '<option value="full">Full</option>';
-      var x                 = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
-      var javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "');";
-      javascript @javascriptCommand;
+      if (_applet) {
+        var x                 = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
+        var javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "');";
+        javascript @javascriptCommand;
+      }
 
 
       if (networkData..subsets.[networkData..currentSubsetKey].type == "hash") {
@@ -4141,7 +4160,9 @@ function resetGuiAfterLoadNetworkData(mode) {   # SPECIFIC FOR JSNET3D-AGEFACTDB
       networkData..subsets.[networkData..currentSubsetKey]..subsetName = subsetName;
 
       javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "');";
-      javascript @javascriptCommand;
+      if (_applet) {
+        javascript @javascriptCommand;
+      }
     } else {
       logMsg([level: "info", msg: "   no network data found for full subset - SKIPPED SUBSET GENERATION"]);
     }
@@ -4269,6 +4290,7 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
     logMsg([level: "info", msg: "Processing ageing factor '" +  nodeName + " " + species + " - " + nodeId + "'..."]);
     logMsg("filterExtension=" + filterExtension);
 
+
     # Filter network data
     networkData..currentSubsetKey = subsetKey;
     networkData..nodeFilter = [filterExpression: "ageingFactorId='" + nodeId + "'"];
@@ -4391,7 +4413,9 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
         networkData..subsets.[networkData..currentSubsetKey]..storedSelection = {all};    
       }
       javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "');";
-      javascript @javascriptCommand;
+      if (_applet) {
+        javascript @javascriptCommand;
+      }
 
       #############
       var extraNodeTypeStringExtended = extraNodeTypeString;
@@ -4417,13 +4441,15 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
       networkData..subsets.[networkData..currentSubsetKey]..subsetName = subsetName;
       optionHtml = '<option value="' + subsetKey + '">' + subsetName + '</option>';
   
-      if (subsetFileNumber == 1) {
-        var x = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
-      } else {
-        var x = javascript("document.getElementById('displaysubset_menu').innerHTML = document.getElementById('displaysubset_menu').innerHTML + '" + optionHtml + "';");
+      if (_applet) {
+        if (subsetFileNumber == 1) {
+          var x = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
+        } else {
+          var x = javascript("document.getElementById('displaysubset_menu').innerHTML = document.getElementById('displaysubset_menu').innerHTML + '" + optionHtml + "';");
+        }
+        javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "'); menu_state['displaysubset_menu'] = '" + networkData..currentSubsetKey + "';";
+        javascript @javascriptCommand;
       }
-      javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "'); menu_state['displaysubset_menu'] = '" + networkData..currentSubsetKey + "';";
-      javascript @javascriptCommand;
       var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)";
       logMsg([level: "info", msg: "finished building subset '" + networkData..currentSubsetKey + "'" + timeMessage]);
   
@@ -8975,8 +9001,9 @@ function colorByDegree(nodeBitset, mode, colorList) {   # available modes: absol
   legend = legend + '</ul>';
   var domId = "color_legend";
   var javascriptCommand = '$("#'+ domId + '").html(\'' + legend + '\'); $("#'+ domId + '").css("display","block")';
-  javascript @javascriptCommand;
-
+  if (_applet) {
+    javascript @javascriptCommand;
+  }
 }
 
 function setSizeByChange(type, scalingFactor, nodeBitset) {  # types: node, edge
@@ -9391,19 +9418,23 @@ function manageGenesOfInterest(dataHashref) {
     }
 
     javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "');";
-    javascript @javascriptCommand;
+    if (_applet) {
+      javascript @javascriptCommand;
+    }
 
     # Extend displaysubset menu
     networkData..subsets.[networkData..currentSubsetKey]..subsetType = "goi_overview";
     networkData..subsets.[networkData..currentSubsetKey]..subsetName = currentSubsetName;
     optionHtml = '<option value="' + currentSubsetKey + '">' + currentSubsetName + '</option>';
-    if (subsetFileNumber == 1) {
-      var x = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
-    } else {
-      var x = javascript("document.getElementById('displaysubset_menu').innerHTML = document.getElementById('displaysubset_menu').innerHTML + '" + optionHtml + "';");
+    if (_applet) {
+      if (subsetFileNumber == 1) {
+        var x = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
+      } else {
+        var x = javascript("document.getElementById('displaysubset_menu').innerHTML = document.getElementById('displaysubset_menu').innerHTML + '" + optionHtml + "';");
+      }
+      javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
+      javascript @javascriptCommand;
     }
-    javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
-    javascript @javascriptCommand;
     var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)";
 
     logMsg([level: "info", msg: "finished building genes of interest overview subset '" + networkData..currentSubsetKey + "'" + timeMessage]);
@@ -9610,7 +9641,9 @@ show fullGeneKeys;
     tableHtml = separator +matchComment + tableHtml + separator;
     var command = "$(\"#genesofinterest_info_content\").html('" + tableHtml + "')";
     #print command;
-    var x = javascript("" + command);
+    if (_applet) {
+      var x = javascript("" + command);
+    }
 
     fullSubset..genesOfInterest                  = [subsetFilter: subsetFilter, matchOnly: matchOnly, activated: true, matchCount: geneNumber];
     fullSubset..genesOfInterest..nodeIds         = resultNodeInfo.array("id").select("(nodeId)");
@@ -10183,7 +10216,9 @@ function updateStandardSubsetManagementMenu(dataHashref) {
     }
     var optionHtmlSorted = optionHtml.sort;
     var firstOptionData = optionHtmlSorted.split('"');
-    x = javascript("document.getElementById('standardsubset_menu').innerHTML = '" + optionHtml.sort.join("") + "';  menu_state['standardsubset_menu'] = '" + firstOptionData[2] + "'; idbSetSelected(document.getElementById('standardsubset_menu'),menu_state['standardsubset_menu']);");
+    if (_applet) {
+      x = javascript("document.getElementById('standardsubset_menu').innerHTML = '" + optionHtml.sort.join("") + "';  menu_state['standardsubset_menu'] = '" + firstOptionData[2] + "'; idbSetSelected(document.getElementById('standardsubset_menu'),menu_state['standardsubset_menu']);");
+    }
   }
 
 
@@ -10416,11 +10451,15 @@ function initPick(mode) {
 }
 
 function showGui() {
-  javascript jaDisplayGui("show");
+  if (_applet) {
+    javascript jaDisplayGui("show");
+  }
 }
 
 function hideGui() {
-  javascript jaDisplayGui("hide");
+  if (_applet) {
+    javascript jaDisplayGui("hide");
+  }
 }
 
 function displayLabel(action) {
