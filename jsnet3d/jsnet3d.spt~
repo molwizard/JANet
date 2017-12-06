@@ -2,7 +2,7 @@
 ############################
 ### Global Jmol settings ###
 ############################
-load menu "jsnet3d/menu-jsnet3d.txt";
+load menu "jsnet3d/menu-janet.txt";
 set autobond off;
 set bondmode or;
 set antialiasdisplay on;
@@ -926,8 +926,6 @@ function hashToTsvLine(dataHashref) {
           switch(currentInfo[infoKey].type) {
             case "string":
               infoData = currentInfo[infoKey];
-              infoData = infoData.replace("||", "; ");
-              infoData = infoData.replace("|", "; ");
               break;
             case "hash":
               switch(infoKey) {
@@ -1176,7 +1174,7 @@ function parseNetworkTsvData(dataHashref) {
       msg = msg + "ERROR: parameter 'dataHashref..networkDefinitions' NOT PROVIDED in call of method 'parseNetworkTsvData'\n";
     } else {
       if (dataHashref..networkDefinitions.[networkType].type != "hash") {
-        msg = msg + "ERROR: no network definition found for network type '" + networkType + "' (" + dataHashref..networkType + ") in method 'parseNetworkTsvData'\n";
+        msg = msg + "ERROR: no network definition found for network type '" + networkType + "' in method 'parseNetworkTsvData'\n";
       } else {
         if (dataHashref..networkDefinitions.[networkType]..nodeColumns.type != "hash") {
           # Maybe network definitions just were not parsed yet
@@ -2949,7 +2947,9 @@ function showNodeInfo(dataHashref) {
   }
 
   var javascriptCommand = "jaShowControl('nodeinfo', 'show'); $(\"#" + domNodeId + "\").html('" + htmlNodeInfo + "')";
-  javascript @javascriptCommand;
+  if (_applet) {
+    javascript @javascriptCommand;
+  }
 }
 
 function showNodeInfo_OLD(dataHashref) {
@@ -2962,7 +2962,9 @@ function showNodeInfo_OLD(dataHashref) {
   }
 
   var javascriptCommand = "jaShowControl('nodeinfo', 'show'); $(\"#" + domNodeId + "\").html('" + htmlNodeInfo + "')";
-  javascript @javascriptCommand;
+  if (_applet) {
+    javascript @javascriptCommand;
+  }
 }
 
 function selectByDegree(dataHashref, maxValue, selectMode, action, outputType) {
@@ -3544,7 +3546,20 @@ function logMsg(data) {
                        "debug2": ["log", "jsconsole"],
                        "debug3": ["log", "jsconsole"],
                        "mixed":  ["log", "sconsole", "jsconsole"]
-                     };
+  };
+  if (!_applet) {
+    levelChannels = {"error":  ["log", "sconsole"],
+                     "iError": ["log", "sconsole"],
+                     "warn":   ["log", "sconsole"],
+                     "info":   ["log", "sconsole"],
+                     "debug":  ["log"],
+                     "debug2": ["log"],
+                     "debug3": ["log"],
+                     "mixed":  ["log", "sconsole"]
+    };
+  };
+
+
 
   # Define channel to method translation
   var channelMethods = {"log": "log",
@@ -4130,9 +4145,11 @@ function resetGuiAfterLoadNetworkData(mode) {   # SPECIFIC FOR JSNET3D-AGEFACTDB
 
       var subsetName        = "Full";
       var optionHtml        = '<option value="full">Full</option>';
-      var x                 = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
-      var javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "');";
-      javascript @javascriptCommand;
+      if (_applet) {
+        var x                 = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
+        var javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "');";
+        javascript @javascriptCommand;
+      }
 
 
       if (networkData..subsets.[networkData..currentSubsetKey].type == "hash") {
@@ -4143,7 +4160,9 @@ function resetGuiAfterLoadNetworkData(mode) {   # SPECIFIC FOR JSNET3D-AGEFACTDB
       networkData..subsets.[networkData..currentSubsetKey]..subsetName = subsetName;
 
       javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "');";
-      javascript @javascriptCommand;
+      if (_applet) {
+        javascript @javascriptCommand;
+      }
     } else {
       logMsg([level: "info", msg: "   no network data found for full subset - SKIPPED SUBSET GENERATION"]);
     }
@@ -4170,6 +4189,7 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
   var subsetNameExtension = "";
   var skipLayout          = false;
   var skipLayoutReason    = " (switched off manually in layout options)";
+  var speciesIncluded     = false;
 
   if (mode.find("skipLayout","im") == "skipLayout") {
     skipLayout = true;
@@ -4186,6 +4206,9 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
         var extraNodeTypeId = networkData..networkDefinition..translations..typeToTypeId.[extraNodeType];
         if (extraNodeTypeId != "") {
           extension = extension + "_" + extraNodeTypeId;
+        }
+        if (extraNodeType == "species") {
+          speciesIncluded = true;
         }
         switch(extraNodeType) {
           case "homology_analysis":
@@ -4211,23 +4234,9 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
         }
       }
     }
-    subsetKey = subsetBaseName + extension;
-    if (subsetKeys[subsetKey] == "") {
-      subsetKeys[subsetKey] = 1;
-      subsetNameExtension   = "";
-    } else {
-      subsetKeys[subsetKey]++;
-      var number = subsetKeys[subsetKey];
-      subsetKey = subsetKey + "-" + number;
-      subsetNameExtension = " - " + number;
-    }
 
-    logMsg([level: "info", msg: "action='" + action + "'  nodeId='" + nodeId + "'  subsetKey='" + subsetKey + "'  subsetNameExtension='" + subsetNameExtension + "'"]);
-
-    if (action == "add") {
-    layoutOptions.tiled = false;
     nodeKey     = "ageingFactorId||" + nodeId;
-    nodeInfo = networkData..subsets..full..nodeInfo.[nodeKey];
+    nodeInfo    = networkData..subsets..full..nodeInfo.[nodeKey];
     nodeName    = nodeInfo..ageingFactorName.replace("'","`");
     nodeSubType = nodeInfo..nodeSubType;
     speciesInfo = nodeInfo..species;
@@ -4251,9 +4260,36 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
       speciesShortcut = speciesInfo;
     }
 
+    if (nodeSubType != "gene") {
+      if (!speciesIncluded) {
+        var extraNodeTypeId = networkData..networkDefinition..translations..typeToTypeId..species;
+        if (extraNodeTypeId != "") {
+          extension = extension + "_" + extraNodeTypeId;   # 'species' is included automatically in subset for compounds/other_factors
+        }
+
+      }
+    }
+
+    subsetKey = subsetBaseName + extension;
+    if (subsetKeys[subsetKey] == "") {
+      subsetKeys[subsetKey] = 1;
+      subsetNameExtension   = "";
+    } else {
+      subsetKeys[subsetKey]++;
+      var number = subsetKeys[subsetKey];
+      subsetKey = subsetKey + "-" + number;
+      subsetNameExtension = " - " + number;
+    }
+
+    logMsg([level: "info", msg: "action='" + action + "'  nodeId='" + nodeId + "'  subsetKey='" + subsetKey + "'  subsetNameExtension='" + subsetNameExtension + "'"]);
+
+    if (action == "add") {
+    layoutOptions.tiled = false;
+
     mmcifData = "";
     logMsg([level: "info", msg: "Processing ageing factor '" +  nodeName + " " + species + " - " + nodeId + "'..."]);
     logMsg("filterExtension=" + filterExtension);
+
 
     # Filter network data
     networkData..currentSubsetKey = subsetKey;
@@ -4311,9 +4347,11 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
       networkData..importFormat = "coordinateTSV";
       networkData..importFilename = "data/agefactdb-" + networkData..currentSubsetKey + "-coordinates.txt";
       networkData..importSubsetKey = networkData..currentSubsetKey;
+      var currentImportCoordinateScalingFactor = networkData..importCoordinateScalingFactor;
       networkData..importCoordinateScalingFactor = 1.0;
       importSubsetCoordinates(networkData);
-    
+      networkData..importCoordinateScalingFactor = currentImportCoordinateScalingFactor;
+
       # Convert into molecular format and visualize
       buildMmcifData(networkData);
       mmcifData = networkData..subsets.[networkData..currentSubsetKey]..mmcifData;
@@ -4375,10 +4413,22 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
         networkData..subsets.[networkData..currentSubsetKey]..storedSelection = {all};    
       }
       javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "');";
-      javascript @javascriptCommand;
+      if (_applet) {
+        javascript @javascriptCommand;
+      }
 
       #############
-      var optionExtension = " (" + subsetType + " + " + extraNodeTypeString.replace("||", " + ") + ")";
+      var extraNodeTypeStringExtended = extraNodeTypeString;
+      if (nodeSubType != "gene") {
+        if (!speciesIncluded) {
+          if (extraNodeTypeString == "") {
+            extraNodeTypeStringExtended = "species";
+          } else {
+            extraNodeTypeStringExtended = extraNodeTypeString + "||" + "species";
+          }
+        }
+      }
+      var optionExtension = " (" + subsetType + " + " + extraNodeTypeStringExtended.replace("||", " + ") + ")";
       var subsetName = networkData..currentSubsetKey;
       if (extraNodeTypeString == "") {
         optionExtension = " (" + subsetType + ")";
@@ -4386,21 +4436,20 @@ function manageStandardSubset(action, subsetValue, subsetType, extraNodeTypeStri
       if (nodeSubType == "gene") {
         subsetName =  nodeName + ' ' + speciesShortcut2 + ' - ' + nodeId + optionExtension + subsetNameExtension;
       } else {
-        if (optionExtension.find("species") > 0) {
-          optionExtension = optionExtension.replace(" + species", "");
-        }
         subsetName = nodeName + ' - ' + nodeId + optionExtension + subsetNameExtension;
       }
       networkData..subsets.[networkData..currentSubsetKey]..subsetName = subsetName;
       optionHtml = '<option value="' + subsetKey + '">' + subsetName + '</option>';
   
-      if (subsetFileNumber == 1) {
-        var x = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
-      } else {
-        var x = javascript("document.getElementById('displaysubset_menu').innerHTML = document.getElementById('displaysubset_menu').innerHTML + '" + optionHtml + "';");
+      if (_applet) {
+        if (subsetFileNumber == 1) {
+          var x = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
+        } else {
+          var x = javascript("document.getElementById('displaysubset_menu').innerHTML = document.getElementById('displaysubset_menu').innerHTML + '" + optionHtml + "';");
+        }
+        javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "'); menu_state['displaysubset_menu'] = '" + networkData..currentSubsetKey + "';";
+        javascript @javascriptCommand;
       }
-      javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); subsetKeyToName['" + networkData..currentSubsetKey + "']='" + subsetName + "'; $('#page_name').text('" + subsetName + "'); menu_state['displaysubset_menu'] = '" + networkData..currentSubsetKey + "';";
-      javascript @javascriptCommand;
       var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)";
       logMsg([level: "info", msg: "finished building subset '" + networkData..currentSubsetKey + "'" + timeMessage]);
   
@@ -4474,6 +4523,67 @@ function storeCoordinates(dataHashref) {   # store current 'molecular' coordinat
     }
   }
   logMsg([level: "info", msg: "   finished storing ccordinates of  " + nodeCount + " nodes (skipped: " + skippedCount + ") of subset '" + subsetKey + "'"]);
+}
+
+function restoreCoordinates(dataHashref) {   # restore 'molecular' coordinates from 'raw' node info
+  var msg            = "";
+  var subset         = {};
+  var subsetKey      = "";
+  var nodeInfo       = {};
+  var nodeNumberToNodeKey = {};
+
+  # Check required parameters
+  if (dataHashref.type != "hash") {
+    msg = msg + "ERROR: parameter 'dataHashref' NOT PROVIDED in call of method 'storeCoordinates'\n";
+  } else {
+    if (dataHashref..subsets.type != "hash") {
+      msg = msg + "ERROR: subhash 'dataHashref..subsets' NOT PROVIDED in call of method 'storeCoordinates'\n";
+    } else {
+      if (dataHashref..currentSubsetKey == "") {
+        dataHashref..currentSubsetKey = "full";
+      }
+      subsetKey = dataHashref..currentSubsetKey;
+
+      if (dataHashref..subsets.[subsetKey].type != "hash") {
+        msg = msg + "ERROR: subset '" + subsetKey + "' NOT FOUND in call of method 'storeCoordinates'\n";
+      } else {
+        subset = dataHashref..subsets.[subsetKey];
+        if (subset..nodeInfo.type != "hash") {
+          msg = msg + "ERROR: no 'nodeInfo' subhash provided for subset '" + subsetKey + "' in call of method 'storeCoordinates'\n";
+        } else {
+          nodeInfo = subset..nodeInfo;
+        }
+        if (subset..nodeNumberToNodeKey.type != "hash") {
+          msg = msg + "ERROR: no 'nodeNumberToNodeKey' subhash provided for subset '" + subsetKey + "' in call of method 'storeCoordinates'\n";
+        } else {
+          nodeNumberToNodeKey = subset..nodeNumberToNodeKey;
+        }
+      }
+    }
+  }
+
+  nodeCount = nodeInfo.size;
+  logMsg([level: "info", msg: "   started restoring ccordinates of subset '" + subsetKey + "' with " + nodeCount + " nodes..."]);
+  if (msg != "") {
+    logMsg({"level": "mixed", "msg": msg});
+    return;
+  }
+
+  if (nodeCount > 0) {
+    var skippedCount = 0;
+    for (var nodeKey in nodeInfo) {
+      var currentNodeInfo = nodeInfo[nodeKey];
+      var nodeNumber = currentNodeInfo..nodeNumber;
+      if (nodeNumber > 0) {
+        {atomno=@nodeNumber}.x = currentNodeInfo..x;
+        {atomno=@nodeNumber}.y = currentNodeInfo..y;
+        {atomno=@nodeNumber}.z = currentNodeInfo..z;
+      } else {
+        skippedCount++;
+      }
+    }
+  }
+  logMsg([level: "info", msg: "   finished restoring ccordinates of  " + nodeCount + " nodes (skipped: " + skippedCount + ") of subset '" + subsetKey + "'"]);
 }
 
 function exportSubset(dataHashref) {
@@ -4740,7 +4850,7 @@ function importSubsetCoordinates(dataHashref) {
   var nodeCount      = 0;
   var nodeInfo       = {};
   var scalingFactor  = 0.1;   # must be provided as decimal number (with dot)
-  var applyCoordinates = false;
+  var applyCoordinates = true;
 
   # Check required parameters
   if (dataHashref.type != "hash") {
@@ -4815,6 +4925,15 @@ function importSubsetCoordinates(dataHashref) {
               nodeInfo[nodeKey]..y = scalingFactor * y;
               nodeInfo[nodeKey]..z = scalingFactor * z;
               assignedCount++;
+              if (applyCoordinates) {
+                var nodeNumber = nodeInfo[nodeKey]..nodeNumber;
+                var currentNode = {atomno=@nodeNumber};
+                if (currentNode.size > 0) {
+                  currentNode.x = nodeInfo[nodeKey]..x;
+                  currentNode.y = nodeInfo[nodeKey]..y;
+                  currentNode.z = nodeInfo[nodeKey]..z;
+                }
+              }
             } else {
               skippedCount++;
             }
@@ -6883,7 +7002,7 @@ function buildFRLayout(nodeSet, options) {
     }
   }
   #log "FINISHED LAYOUT";
-  pMsg = "FINISHED: iterations=" + options.fr.iterationCount + "  pair counter=" + counter + " (total pairs=" + counter2 + ", skipped pairs=" + counter1 + ")  layout calculation time=" + now(startTime) + " ms";
+  pMsg = "FINISHED: iterations=" + options.fr.iterationCount + "  pair counter=" + counter + "  layout calculation time=" + now(startTime) + " ms";
   logData.push(pMsg);
   logMsg([level: "info", msg: pMsg]);
 }
@@ -8417,7 +8536,7 @@ function getNeighbours(nodeSet, level, mode) {   # works on 'molecular' level
   if (mode == "") {
     mode = "add";
   }
-  if (level == "") {
+  if ("" + level == "") {
     level = 1;
   }
   if (nodeSet.type != "bitset") {
@@ -8882,8 +9001,9 @@ function colorByDegree(nodeBitset, mode, colorList) {   # available modes: absol
   legend = legend + '</ul>';
   var domId = "color_legend";
   var javascriptCommand = '$("#'+ domId + '").html(\'' + legend + '\'); $("#'+ domId + '").css("display","block")';
-  javascript @javascriptCommand;
-
+  if (_applet) {
+    javascript @javascriptCommand;
+  }
 }
 
 function setSizeByChange(type, scalingFactor, nodeBitset) {  # types: node, edge
@@ -9081,16 +9201,16 @@ function manageGenesOfInterest(dataHashref) {
   var matchedHomologyBaseNodeKeys = {};
   var matchedExperimentalNodeKeys = {};
   var totalGeneCount              = 0;
-  var knownActions                = [activate: true, deactivate: true, overview: true];
+  var knownActions                = [activate: true, deactivate: true, overview: true, filterOn: true, filterOff: true];
 
   # Check required parameters
   if (dataHashref.type != "hash") {
-    if (dataHashref == "overview") {
-      action = "overview";
+    if (dataHashref == "overview" || dataHashref == "filterOn" || dataHashref == "filterOff") {
+      action = dataHashref;
       if (networkData.type == "hash") {
         currentNetworkData = networkData;
       }
-      subsetKey = dataHashref..currentSubsetKey;
+      subsetKey = currentNetworkData..currentSubsetKey;
     } else {
       msg = msg + "ERROR: parameter 'dataHashref' NOT PROVIDED in call of method 'manageGenesOfInterest'\n";
     }
@@ -9176,6 +9296,33 @@ function manageGenesOfInterest(dataHashref) {
     fullSubset = currentNetworkData..subsets.[fullSubsetKey];
     fullNodeInfo = fullSubset..nodeInfo;
   }
+
+  if (action == "filterOn" || action == "filterOff") {
+
+    if (action == "filterOn") {
+      subsetFilter = true;
+      msg = "Subset menu filter for genes of interest is switched on";
+    } else {
+      subsetFilter = false;
+      msg = "Subset menu filter for genes of interest is switched off";
+    }
+    logMsg([level: "info", msg: msg]);
+
+    if (fullSubset..genesOfInterest.type == "hash") {
+      fullSubset..genesOfInterest..subsetFilter = subsetFilter;
+
+      if (currentNetworkData..standardSubsetManagement.type != "hash") {
+        currentNetworkData..standardSubsetManagement = {};
+      }
+      if (currentNetworkData..standardSubsetManagement..menuNodeFilter == "") {
+        currentNetworkData..standardSubsetManagement..menuNodeFilter = "* WHEREIN nodeType='ageingFactor'";
+      }
+      updateStandardSubsetManagementMenu(currentNetworkData);
+    }
+
+    return;
+  }
+
 
   if (action == "overview") {
     var startTime = now();
@@ -9271,19 +9418,23 @@ function manageGenesOfInterest(dataHashref) {
     }
 
     javascriptCommand = "last_model=" + subsetFileNumber + "; document.getElementById('subset_count').innerHTML = '" + subsetFileNumber + "'; subset_names.push('" + networkData..currentSubsetKey + "');";
-    javascript @javascriptCommand;
+    if (_applet) {
+      javascript @javascriptCommand;
+    }
 
     # Extend displaysubset menu
     networkData..subsets.[networkData..currentSubsetKey]..subsetType = "goi_overview";
     networkData..subsets.[networkData..currentSubsetKey]..subsetName = currentSubsetName;
     optionHtml = '<option value="' + currentSubsetKey + '">' + currentSubsetName + '</option>';
-    if (subsetFileNumber == 1) {
-      var x = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
-    } else {
-      var x = javascript("document.getElementById('displaysubset_menu').innerHTML = document.getElementById('displaysubset_menu').innerHTML + '" + optionHtml + "';");
+    if (_applet) {
+      if (subsetFileNumber == 1) {
+        var x = javascript("document.getElementById('displaysubset_menu').innerHTML = '" + optionHtml + "';");
+      } else {
+        var x = javascript("document.getElementById('displaysubset_menu').innerHTML = document.getElementById('displaysubset_menu').innerHTML + '" + optionHtml + "';");
+      }
+      javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
+      javascript @javascriptCommand;
     }
-    javascriptCommand = "idbSetSelected(document.getElementById('displaysubset_menu'), '" + networkData..currentSubsetKey + "'); $('#page_name').text('" + subsetName + "');";
-    javascript @javascriptCommand;
     var timeMessage = " (time=" + format("%.1f", now(startTime) / 1000) + " sec)";
 
     logMsg([level: "info", msg: "finished building genes of interest overview subset '" + networkData..currentSubsetKey + "'" + timeMessage]);
@@ -9301,7 +9452,6 @@ function manageGenesOfInterest(dataHashref) {
   totalGeneCount = geneKeys.size + ncbiGeneIds.size;
 
   logMsg("  managing genes of interest (NCBI gene IDs=" + fullNcbiGeneIds.size + ", symbol + species=" + fullGeneKeys.size + ")...");
-  print dataHashref;
   var resultNodeInfo = {};
 
   if (action == "activate") {
@@ -9491,7 +9641,9 @@ show fullGeneKeys;
     tableHtml = separator +matchComment + tableHtml + separator;
     var command = "$(\"#genesofinterest_info_content\").html('" + tableHtml + "')";
     #print command;
-    var x = javascript("" + command);
+    if (_applet) {
+      var x = javascript("" + command);
+    }
 
     fullSubset..genesOfInterest                  = [subsetFilter: subsetFilter, matchOnly: matchOnly, activated: true, matchCount: geneNumber];
     fullSubset..genesOfInterest..nodeIds         = resultNodeInfo.array("id").select("(nodeId)");
@@ -9535,7 +9687,7 @@ function hoverAction(action) {
   if (hoverRangeNeighbourMode == "") {
     hoverRangeNeighbourMode = "add";
   }
-  if (hoverRangeNeighbourDistance == "") {
+  if ("" + hoverRangeNeighbourDistance == "") {
     hoverRangeNeighbourDistance = 1;
   }
   if ("" + hoverEdgeTranslucency == "") {
@@ -10064,7 +10216,9 @@ function updateStandardSubsetManagementMenu(dataHashref) {
     }
     var optionHtmlSorted = optionHtml.sort;
     var firstOptionData = optionHtmlSorted.split('"');
-    x = javascript("document.getElementById('standardsubset_menu').innerHTML = '" + optionHtml.sort.join("") + "';  menu_state['standardsubset_menu'] = '" + firstOptionData[2] + "'; idbSetSelected(document.getElementById('standardsubset_menu'),menu_state['standardsubset_menu']);");
+    if (_applet) {
+      x = javascript("document.getElementById('standardsubset_menu').innerHTML = '" + optionHtml.sort.join("") + "';  menu_state['standardsubset_menu'] = '" + firstOptionData[2] + "'; idbSetSelected(document.getElementById('standardsubset_menu'),menu_state['standardsubset_menu']);");
+    }
   }
 
 
@@ -10072,6 +10226,7 @@ function updateStandardSubsetManagementMenu(dataHashref) {
 
 
 function pickAction(pickMode) {
+  pickRangeNeighbourDistance = hoverRangeNeighbourDistance;
   # Set defaults (currently still global variables, SHOULD BE CHANGED)
   if (pickRange == "") {
     pickRange = "node";
@@ -10079,7 +10234,7 @@ function pickAction(pickMode) {
   if (pickRangeNeighbourMode == "") {
     pickRangeNeighbourMode = "replace";
   }
-  if (pickRangeNeighbourDistance == "") {
+  if ("" + pickRangeNeighbourDistance == "") {
     pickRangeNeighbourDistance = 1;
   }
   if (mouseVisibilityMode == "") {
@@ -10296,11 +10451,15 @@ function initPick(mode) {
 }
 
 function showGui() {
-  javascript jaDisplayGui("show");
+  if (_applet) {
+    javascript jaDisplayGui("show");
+  }
 }
 
 function hideGui() {
-  javascript jaDisplayGui("hide");
+  if (_applet) {
+    javascript jaDisplayGui("hide");
+  }
 }
 
 function displayLabel(action) {

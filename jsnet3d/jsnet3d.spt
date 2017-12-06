@@ -4077,8 +4077,9 @@ function buildSubset(dataHashref) {   # works with raw network data, copies 'nod
   }
 
 
-  newSubset..nodeInfo = finalNewNodeInfo;
+  newSubset..nodeInfo      = finalNewNodeInfo;
   newSubset..baseSubsetKey = baseSubsetKey;
+  newSubset..subsetKey     = subsetKey;
 
   dataHashref..subsets.[subsetKey] = newSubset;
   #logMsg("======== newSubset (" + subsetKey + ") start ===========");
